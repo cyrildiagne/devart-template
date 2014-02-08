@@ -1,4 +1,4 @@
-# A project by Kikko & Bea
+# A project by Kikko and Béatrice
 a poetic digital adventure
 
 ## Authors
@@ -8,17 +8,8 @@ a poetic digital adventure
 ## Description
 We are still sketching :)
 
-## Link to Prototype
-soon!
-
-## Example Code
-```
-function test() {
-  console.log("soon!");
-}
-```
-## Links to External Libraries
-[OpenFrameworks](http://www.openframeworks.cc "OpenFrameworks")
-
 ## Images & Videos
 soon!
+
+## Links to External Libraries
+[OpenFrameworks](http://www.openframeworks.cc "OpenFrameworks")

@@ -5,7 +5,7 @@ This repository is where you will populate your Project Page on the DevArt site.
 
 All updates are made using [Github Flavoured Markdown Language](https://help.github.com/articles/github-flavored-markdown). Please ensure that your files use the GitHub Flavoured formatting.
 
-**You may provide links to websites, videos & images but do not upload content that does not below to you.**
+**You may provide links to websites, videos & images but do not upload content that does not belong to you.**
 
 ## Folder and File Structure
 

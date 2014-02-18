@@ -4,13 +4,24 @@
             "insert apis"
         ],
         "platforms": [
-            "insert platforms"
+            "google chrome"
         ],
         "toolkits": [
-            "insert toolkits"
+            "openframeworks",
+            "pixijs",
+            "socketio",
+            "webgl",
+            "openni",
+            "nite",
+            "nodejs"
         ]
     },
     "themes": [
-        "insert themes"
+        "body",
+        "tracking",
+        "decoration",
+        "costume",
+        "poesy",
+        "multiuser"
     ]
 }

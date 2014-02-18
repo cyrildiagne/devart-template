@@ -6,7 +6,6 @@ We've been able to work a little bit on our project submission!
 
 All we had from last week was something like this statement :
 
-	Fun doesn’t necessarily mean stupid and digital doesn’t necessarily mean nerdy.
 	We want to use technology to create a fun and poetic digital experience,
 	close to the things that we love to do, watch and feel.
 	
@@ -15,15 +14,15 @@ A typical, yet controversy, entry point for making art with code is knowing what
 
 These prototypes are usually purely technical and very briefly documented. Just enough to explain what they do or can do. You can see some of mine on [my flickr](http://www.flickr.com/photos/kikko_fr/).
 
-Considering the competition context and specifications, there are a couple technologies that I already knew I wanted to use. And that helped Beatrice and I choose where to go on the creative side.
+Considering the competition context and specifications, there are a couple technologies that we already knew we wanted to use. And that helped Beatrice and I to see where to go on the creative side.
 
 - First one is **Google Chrome**.
-I used it for the front-end of my latest commercial interactive installation instead of a C++ OpenGL app, and I must say it saved me countless hours on styling and updating the style according to sliding specifications.
+I used it for the front-end of my latest commercial interactive installation instead of a C++ OpenGL app, and it saved me countless hours on styling and updating the style according to sliding specifications. It's large user base and developers make it very robust and many tools are available to optimize the workflow.
 
 - Second one is **Body Tracking**. Even though many great pieces have already well explored the capabilities of this technique, I've always been frustrated that amongst all the prototypes I made based on it, none actually ended up in an actual project (appart from the former jump detection of [playtime](http://playtime.lab212.org)). So researchs were accentuated on topics that could use our knowledge on this technique.
 
 - Third one are **Web Sockets**.
-I've always been fascinated by the feeling you get when you enter a _**live digital space**_. A world with its own rules that have to be discovered. With people. With a history, and ongoing stories..
+There is something fascinating in the feeling you get when you enter a _**live digital space**_. A world with its own rules that have to be discovered. With people. With a history, and ongoing stories..
 
 #### • Interaction considerations
 Parallel to the technical considerations, the interactions we want to work on often guide our creative process. We always discuss of interactions that we found interesting in our lives and see how they could apply to an interactive installation.
@@ -47,11 +46,12 @@ A nice book that treats the subject comprenhensively is _[Interactive Art and Em
 
 **_It's actually really hard to tell a simple, compeling story around an interaction without making a game._**
 
-Even though we love games and we **know** games **can be** art, we don't want to give interaction the biggest part in this piece.
+Even though we love games, we don't want to give interaction the biggest part in this piece.
 
 We had to somehow let down one of the first idea we really liked because its game mechanic was too present :
 
 ![image](../project_images/1st_idea.jpg)
+_(very bad) drawing by kikko to explain the first idea_
 
 This idea is split in 2 parts :
 
@@ -113,7 +113,7 @@ Last but not least, any poetic experience has a mood. And we like to define and 
 ##### Conclusion
 
 Little time and poor english skills prevent me from detailling how much we love all these references and why.
-However our final piece **will try** to integrate some of this love and show it through a medium we manipulate better than words.
+However our final piece will try to integrate some of this love and show it through a medium we manipulate better than words.
 
 One thing is sure, is that we are very excited to start prototyping our **current** idea! And we will share in the next post some of the sketches Beatrice has already done for it!
 

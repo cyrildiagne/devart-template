@@ -1,0 +1,44 @@
+- var page = {}
+- page.path = ""
+- page.styles = []
+- page.libs = []
+- page.scripts = []
+- page.title = ""
+- page.keywords = ""
+- page.description = ""
+
+mixin template()
+  doctype html
+  html(lang='ja')
+    head
+      meta(charset="UTF-8")
+      title #{page.title}
+      script.
+        (function(){
+          var ua = navigator.userAgent.toLowerCase();
+          if (ua.indexOf('iphone') > -1 || (ua.indexOf('android') > -1 && ua.indexOf('mobile') > -1)) {
+            document.write('<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"' + ' />');
+          }
+        })();
+      meta(name="description", content=page.description)
+      meta(name="keywords", content=page.keywords)
+      +styles()
+
+    body
+      block
+      +libs()
+      +scripts()
+      if env === 'development'
+        script(src="//localhost:35729/livereload.js")
+
+mixin styles()
+  - for (var i = 0; i < page.styles.length; i++)
+    link(rel="stylesheet", href= rootDir + 'css/' + page.styles[i] + '.css')
+
+mixin libs()
+  - for (var i = 0; i < page.libs.length; i++)
+    script(src= rootDir + 'js/vendor/' + page.libs[i]+'.js')
+
+mixin scripts()
+  - for (var i = 0; i < page.scripts.length; i++)
+    script(src= rootDir + 'js/' + page.scripts[i]+'.js')

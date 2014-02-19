@@ -32,6 +32,6 @@ I made a very simple app based on the MovieClip example using my current favorit
 
 There is no synchronisation yet, but it runs at 60 fps on my iphone 5 (with retina graphics) and on my early 2011 macbookpro!
 
-[You can try the live version here](kikko.fr/lab/devart/tests/pixijs_test1)
+[You can try the live version here](http://kikko.fr/lab/devart/tests/pixijs_test1)
 
 So far so good, let's hope this continues :)

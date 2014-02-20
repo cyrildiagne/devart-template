@@ -4,7 +4,7 @@
             "insert apis"
         ],
         "platforms": [
-            "google chrome"
+            "google chrome",
             "google compute engine"
         ],
         "toolkits": [

@@ -4,7 +4,7 @@ _by kikko_
 
 https://www.youtube.com/watch?v=jBjVO5G5C-0
 
-Little video of a simple Socket.IO server that synchronizes a desktop and a mobile browser.
+_Little video I recorded of a simple Socket.IO server that synchronizes a desktop and a mobile browser._
 
 Thanks to Socket.IO, the latency is almost imperceptible on a LAN network and the code is very simple!
 

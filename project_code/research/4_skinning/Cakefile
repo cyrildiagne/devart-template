@@ -1,0 +1,32 @@
+fs = require 'fs'
+which = require 'which'
+path = require 'path'
+{spawn, exec} = require 'child_process'
+
+bin_path    = 'bin'
+coffee_path = path.join 'src','coffee'
+stylus_path = path.join 'src','stylus'
+jade_path   = path.join 'src','jade','index.jade'
+jade_options = 
+  rootDir : './'
+
+watch = (cmd_name, options) ->
+  cmd = which.sync cmd_name  
+  prcss = spawn cmd, options
+  prcss.stdout.pipe process.stdout
+  prcss.stderr.pipe process.stderr
+  console.log 'Watching ' + cmd_name + ' files'
+
+simple_server = ->
+  server = spawn 'coffee', ['simple_server.coffee']
+  server.stdout.pipe process.stdout
+  server.stderr.pipe process.stderr
+
+task 'dev', 'start dev env', ->
+  js_path = path.join bin_path,'js'
+  css_path = path.join bin_path,'css'
+  watch 'coffee', ['-w', '-c', '-b', '-o', js_path, coffee_path]
+  watch 'stylus', ['-w', stylus_path, '-o', css_path]
+  watch 'jade',   ['-w', jade_path, '-P', '-o', 'bin', '-O', JSON.stringify jade_options]
+  simple_server()
+  

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>test2 sockets</title>
+    <script>
+      (function(){
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf('iphone') > -1 || (ua.indexOf('android') > -1 && ua.indexOf('mobile') > -1)) {
+          document.write('<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"' + ' />');
+        }
+      })();
+    </script>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="./css/main.css">
+  </head>
+  <body>
+    <script src="./js/vendor/pixi.js"></script>
+    <script src="./js/skeleton.js"></script>
+    <script src="./js/skeleton_sync.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>

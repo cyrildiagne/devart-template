@@ -28,7 +28,7 @@ So I made a very rough animation in flash that I exported as a retina and standa
 
 ![image](../project_images/techtests/pixijs_test1/plop.gif)
 
-I made a very simple app based on the MovieClip example using my current favorite trio CoffeeScript/Jade/Stylus (you can check the sources on the [github repo](https://github.com/kikko/devart-template/tree/master/project_code/research/pixijs_test1))
+I made a very simple app based on the MovieClip example using my current favorite trio CoffeeScript/Jade/Stylus (you can check the sources on the [github repo](https://github.com/kikko/devart-template/tree/master/project_code/research/1_pixijs))
 
 There is no synchronisation yet, but it runs at 60 fps on my iphone 5 (with retina graphics) and on my early 2011 macbookpro!
 

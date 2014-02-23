@@ -27,6 +27,6 @@ task 'dev', 'start dev env', ->
   css_path = path.join bin_path,'css'
   watch 'coffee', ['-w', '-c', '-b', '-o', js_path, coffee_path]
   watch 'stylus', ['-w', stylus_path, '-o', css_path]
-  watch 'jade',   ['-w', jade_path, '-o', 'bin', '-O', JSON.stringify jade_options]
+  watch 'jade',   ['-w', jade_path, '-P', '-o', 'bin', '-O', JSON.stringify jade_options]
   simple_server()
   

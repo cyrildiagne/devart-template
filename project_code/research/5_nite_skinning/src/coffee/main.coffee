@@ -3,10 +3,11 @@ renderer = null
 skeleton = null
 sync = null
 perso = null
+debug = false
 
 setup = ->
   stage = new PIXI.Stage(0xFFFFFF)
-  renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight)
+  renderer = PIXI.autoDetectRenderer window.innerWidth, window.innerHeight, null, false, true
   document.body.appendChild(renderer.view)
 
   skeleton = new Skeleton()
@@ -24,6 +25,8 @@ setup = ->
 
   windowResized()
   window.addEventListener('resize', windowResized)
+  window.addEventListener('keydown', onKeyDown)
+  window.addEventListener('touchstart', toggleDebug)
 
   requestAnimFrame animate
 
@@ -39,6 +42,15 @@ onUserOut = (userId) ->
 
 onDataUpdated = () ->
   perso.setFromSkeleton skeleton
+
+onKeyDown = (ev) ->
+  if ev.keyCode == 83 # s
+    toggleDebug()
+
+toggleDebug = () ->
+  debug = !debug
+  skeleton.setDebug debug
+  perso.setDebug debug
 
 windowResized = (ev) ->
   sw = window.innerWidth*window.devicePixelRatio

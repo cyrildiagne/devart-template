@@ -2,6 +2,7 @@ stage = null
 renderer = null
 skeleton = null
 perso = null
+debug = false
 
 default_data = [
   0.22972357273101807, -0.4395926594734192,   0,    # HEAD
@@ -22,9 +23,9 @@ default_data = [
 ]
 
 setup = ->
-  stage = new PIXI.Stage(0xFFFFFF, true)
-  renderer = PIXI.autoDetectRenderer window.innerWidth, window.innerHeight#, null, false, true
-  document.body.appendChild(renderer.view)
+  stage = new PIXI.Stage 0xFFFFFF
+  renderer = PIXI.autoDetectRenderer window.innerWidth, window.innerHeight, null, false, true
+  document.body.appendChild renderer.view
 
   skeleton = new Skeleton()
   skeleton.data = default_data
@@ -37,12 +38,19 @@ setup = ->
 
   windowResized()
   window.addEventListener('resize', windowResized)
+  window.addEventListener('keydown', onKeyDown)
 
   skeleton.update 1
   perso.setFromSkeleton skeleton
   perso.update()
 
   requestAnimFrame animate
+
+onKeyDown = (ev) ->
+  if ev.keyCode == 83 # s
+    debug = !debug
+    perso.setDebug debug
+    perso.update()
 
 windowResized = (ev) ->
   sw = window.innerWidth*window.devicePixelRatio

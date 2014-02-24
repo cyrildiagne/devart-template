@@ -44,22 +44,23 @@ class Joint
     @view.beginFill(0x000000)
     @view.drawCircle(0, 0, 5)
 
+    @z = 0
+
 
 class Skeleton
 
   constructor : () ->
     @view = new PIXI.DisplayObjectContainer()
     @gfx = new PIXI.Graphics()
-    @view.addChild @gfx
     @width = 0
     @height = 0
     @numJoints = 15
     @joints = []
     @data = []
     @dataRatio = 1
+    @bDebug = false
     for i in [0...NiTE.NUM_JOINTS]
       j = new Joint()
-      @view.addChild j.view
       @joints.push j
 
   resize : () ->
@@ -77,13 +78,24 @@ class Skeleton
     return str
 
   update : (speed=0.2) ->
-    
     for i in [0...@data.length] by 3
       jnt = @joints[i/3]
       jnt.view.position.x += (@data[i] * @width - jnt.view.position.x) * speed
       jnt.view.position.y += (@data[i+1] * @width - jnt.view.position.y) * speed
-      # jnt.scale = data[i+2]
-    @draw()
+      jnt.z += (@data[i+2] - jnt.z) * speed
+    if @bDebug
+      @draw()
+
+  setDebug : (debug) ->
+    if debug == @bDebug then return
+    @bDebug = debug
+    @gfx.clear()
+    while @view.children.length
+      @view.removeChild @view.children[0]
+    if(@bDebug)
+      @view.addChild @gfx
+      for j in @joints
+        @view.addChild j.view
 
   draw : () ->
     @gfx.clear()

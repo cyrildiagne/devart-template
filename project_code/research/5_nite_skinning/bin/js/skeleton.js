@@ -47,6 +47,7 @@ Joint = (function() {
     this.view = new PIXI.Graphics();
     this.view.beginFill(0x000000);
     this.view.drawCircle(0, 0, 5);
+    this.z = 0;
   }
 
   return Joint;
@@ -58,16 +59,15 @@ Skeleton = (function() {
     var i, j, _i, _ref;
     this.view = new PIXI.DisplayObjectContainer();
     this.gfx = new PIXI.Graphics();
-    this.view.addChild(this.gfx);
     this.width = 0;
     this.height = 0;
     this.numJoints = 15;
     this.joints = [];
     this.data = [];
     this.dataRatio = 1;
+    this.bDebug = false;
     for (i = _i = 0, _ref = NiTE.NUM_JOINTS; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
       j = new Joint();
-      this.view.addChild(j.view);
       this.joints.push(j);
     }
   }
@@ -100,8 +100,33 @@ Skeleton = (function() {
       jnt = this.joints[i / 3];
       jnt.view.position.x += (this.data[i] * this.width - jnt.view.position.x) * speed;
       jnt.view.position.y += (this.data[i + 1] * this.width - jnt.view.position.y) * speed;
+      jnt.z += (this.data[i + 2] - jnt.z) * speed;
     }
-    return this.draw();
+    if (this.bDebug) {
+      return this.draw();
+    }
+  };
+
+  Skeleton.prototype.setDebug = function(debug) {
+    var j, _i, _len, _ref, _results;
+    if (debug === this.bDebug) {
+      return;
+    }
+    this.bDebug = debug;
+    this.gfx.clear();
+    while (this.view.children.length) {
+      this.view.removeChild(this.view.children[0]);
+    }
+    if (this.bDebug) {
+      this.view.addChild(this.gfx);
+      _ref = this.joints;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        j = _ref[_i];
+        _results.push(this.view.addChild(j.view));
+      }
+      return _results;
+    }
   };
 
   Skeleton.prototype.draw = function() {

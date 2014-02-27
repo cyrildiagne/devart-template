@@ -3,8 +3,8 @@ var Perso, PersoJoint, PersoPart,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 PersoJoint = (function() {
-  function PersoJoint(radius) {
-    this.radius = radius != null ? radius : 0.005;
+  function PersoJoint(interactive) {
+    this.interactive = interactive != null ? interactive : true;
     this.onMouseUp = __bind(this.onMouseUp, this);
     this.onDrag = __bind(this.onDrag, this);
     this.onMouseDown = __bind(this.onMouseDown, this);
@@ -14,12 +14,14 @@ PersoJoint = (function() {
     this.bDebug = false;
     this.z = 0;
     this.view = new PIXI.Graphics();
-    this.view.interactive = true;
-    this.view.mouseover = this.onMouseOver;
-    this.view.mouseout = this.onMouseOut;
-    this.view.mousedown = this.onMouseDown;
-    this.view.buttonMode = true;
-    this.setRadius(this.radius);
+    if (this.interactive) {
+      this.view.interactive = true;
+      this.view.mouseover = this.onMouseOver;
+      this.view.mouseout = this.onMouseOut;
+      this.view.mousedown = this.onMouseDown;
+      this.view.buttonMode = true;
+      this.setRadius(this.radius);
+    }
   }
 
   PersoJoint.prototype.setRadius = function(radius) {
@@ -126,7 +128,10 @@ Perso = (function() {
     lowFeet: 0.2
   };
 
-  function Perso() {
+  function Perso(interactive) {
+    var i, jnt, _i, _ref,
+      _this = this;
+    this.interactive = interactive;
     this.drawRightLowerArm = __bind(this.drawRightLowerArm, this);
     this.drawRightUpperArm = __bind(this.drawRightUpperArm, this);
     this.drawLeftLowerArm = __bind(this.drawLeftLowerArm, this);
@@ -138,12 +143,10 @@ Perso = (function() {
     this.drawPelvis = __bind(this.drawPelvis, this);
     this.drawTorso = __bind(this.drawTorso, this);
     this.drawHead = __bind(this.drawHead, this);
-    var i, jnt, _i, _ref,
-      _this = this;
     this.view = new PIXI.DisplayObjectContainer();
     this.joints = [];
     for (i = _i = 0, _ref = NiTE.NUM_JOINTS; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-      jnt = new PersoJoint;
+      jnt = new PersoJoint(this.interactive);
       jnt.draggedCallback = function() {
         return _this.update();
       };

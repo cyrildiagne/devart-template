@@ -3,26 +3,48 @@ var SkeletonSync,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 SkeletonSync = (function() {
-  function SkeletonSync(skeleton) {
+  function SkeletonSync(skeleton, endpoint) {
     this.skeleton = skeleton;
+    this.endpoint = endpoint != null ? endpoint : 'local';
     this.onSocketMessage = __bind(this.onSocketMessage, this);
     this.onSocketClosed = __bind(this.onSocketClosed, this);
     this.onSocketOpened = __bind(this.onSocketOpened, this);
+    this.onSocketIOMessage = __bind(this.onSocketIOMessage, this);
     this.socket = null;
     this.reconnecting = false;
     this.onUserIn = null;
     this.onUserOut = null;
     this.onRatio = null;
     this.onDataUpdated = null;
-    this.connect();
   }
 
   SkeletonSync.prototype.connect = function() {
-    this.socket = new WebSocket('ws://kikko.local:9092');
-    this.socket.binaryType = 'arraybuffer';
-    this.socket.onopen = this.onSocketOpened;
-    this.socket.onmessage = this.onSocketMessage;
-    return this.socket.onclose = this.onSocketClosed;
+    var _this = this;
+    if (this.endpoint === 'local') {
+      this.socket = new WebSocket('ws://kikko.local:9092');
+      this.socket.binaryType = 'arraybuffer';
+      this.socket.onopen = this.onSocketOpened;
+      this.socket.onclose = this.onSocketClosed;
+      return this.socket.onmessage = function(msg) {
+        return _this.onSocketMessage(msg.data);
+      };
+    } else {
+      this.socket = io.connect(this.endpoint);
+      this.socket.on('connect', this.onSocketOpened);
+      this.socket.on('message', this.onSocketMessage);
+      return this.socket.on('skeleton', function(data) {
+        if (data) {
+          _this.skeleton.data = data;
+          if (_this.onDataUpdated) {
+            return onDataUpdated();
+          }
+        }
+      });
+    }
+  };
+
+  SkeletonSync.prototype.onSocketIOMessage = function(data) {
+    return console.log('message');
   };
 
   SkeletonSync.prototype.onSocketOpened = function() {
@@ -40,18 +62,18 @@ SkeletonSync = (function() {
     return this.reconnecting = true;
   };
 
-  SkeletonSync.prototype.onSocketMessage = function(msg) {
+  SkeletonSync.prototype.onSocketMessage = function(data) {
     var cmd;
-    if (msg.data instanceof ArrayBuffer) {
-      skeleton.data = new Float32Array(msg.data);
+    if (data instanceof ArrayBuffer) {
+      this.skeleton.data = new Float32Array(data);
       if (this.onDataUpdated) {
         return onDataUpdated();
       }
     } else {
-      if (msg.data === '/skeleton') {
+      if (data === '/skeleton') {
 
       } else {
-        cmd = msg.data.split('/');
+        cmd = data.split('/');
         cmd.shift();
         switch (cmd[0]) {
           case 'user':
@@ -71,7 +93,7 @@ SkeletonSync = (function() {
             }
             break;
           default:
-            return console.log(msg.data);
+            return console.log(data);
         }
       }
     }

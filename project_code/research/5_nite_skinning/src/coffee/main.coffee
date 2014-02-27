@@ -13,15 +13,16 @@ setup = ->
   skeleton = new Skeleton()
   stage.addChild skeleton.view
 
-  sync = new SkeletonSync skeleton
+  perso = new Perso false
+  stage.addChild perso.view
+
+  # sync = new SkeletonSync skeleton, 'http://kikko.local:8080'
+  sync = new SkeletonSync skeleton, 'http://192.158.28.53:80'
   sync.onUserIn = onUserIn
   sync.onUserOut = onUserOut
   sync.onRatio = onRatio
   sync.onDataUpdated = onDataUpdated
-
-  perso = new Perso()
-  perso.setFromSkeleton skeleton
-  stage.addChild perso.view
+  sync.connect()
 
   windowResized()
   window.addEventListener('resize', windowResized)
@@ -33,6 +34,7 @@ setup = ->
 onRatio = (ratio) ->
   skeleton.dataRatio = ratio
   skeleton.resize()
+  console.log 'ratio set to '+ ratio
 
 onUserIn = (userId) ->
   console.log "user #{userId} entered"
@@ -68,6 +70,7 @@ windowResized = (ev) ->
 animate = ->
   requestAnimFrame animate
   skeleton.update()
+  perso.setFromSkeleton skeleton
   perso.update()
   renderer.render stage
 

@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>test2 sockets</title>
+    <title>nite stream test 1</title>
     <script>
       (function(){
         var ua = navigator.userAgent.toLowerCase();
@@ -17,10 +17,20 @@
   </head>
   <body>
     <p class="instruction">press 's' or touch screen to toggle debug draw</p>
+    <script src="./js/vendor/socket.io.js"></script>
     <script src="./js/vendor/pixi.js"></script>
     <script src="./js/skeleton.js"></script>
     <script src="./js/skeleton_sync.js"></script>
     <script src="./js/perso.js"></script>
     <script src="./js/main.js"></script>
   </body>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-48468129-1', 'kikko.fr');
+    ga('send', 'pageview');
+    
+  </script>
 </html>

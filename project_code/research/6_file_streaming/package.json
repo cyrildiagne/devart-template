@@ -1,0 +1,15 @@
+{
+    "name": "socket.io-skeleton-stream",
+    "version": "0.0.1",
+    "author": "Cyril Diagne <contact@kikko.fr>",
+    "description": "a simple test",
+    "engines": {
+        "node": ">=0.10"
+    },
+    "scripts": {
+        "start": "coffee ./server.coffee"
+    },
+    "dependencies": {
+        "socket.io": "~0.9.16"
+    }
+}

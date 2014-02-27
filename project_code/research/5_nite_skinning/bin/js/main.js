@@ -19,14 +19,14 @@ setup = function() {
   document.body.appendChild(renderer.view);
   skeleton = new Skeleton();
   stage.addChild(skeleton.view);
-  sync = new SkeletonSync(skeleton);
+  perso = new Perso(false);
+  stage.addChild(perso.view);
+  sync = new SkeletonSync(skeleton, 'http://192.158.28.53:80');
   sync.onUserIn = onUserIn;
   sync.onUserOut = onUserOut;
   sync.onRatio = onRatio;
   sync.onDataUpdated = onDataUpdated;
-  perso = new Perso();
-  perso.setFromSkeleton(skeleton);
-  stage.addChild(perso.view);
+  sync.connect();
   windowResized();
   window.addEventListener('resize', windowResized);
   window.addEventListener('keydown', onKeyDown);
@@ -36,7 +36,8 @@ setup = function() {
 
 onRatio = function(ratio) {
   skeleton.dataRatio = ratio;
-  return skeleton.resize();
+  skeleton.resize();
+  return console.log('ratio set to ' + ratio);
 };
 
 onUserIn = function(userId) {
@@ -82,6 +83,7 @@ windowResized = function(ev) {
 animate = function() {
   requestAnimFrame(animate);
   skeleton.update();
+  perso.setFromSkeleton(skeleton);
   perso.update();
   return renderer.render(stage);
 };

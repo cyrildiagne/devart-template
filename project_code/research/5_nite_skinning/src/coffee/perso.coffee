@@ -1,19 +1,18 @@
 class PersoJoint
 
-  constructor : (@radius=0.005) ->
+  constructor : (@interactive=true) ->
 
     @isDragged = false
     @bDebug = false
     @z = 0
-
     @view = new PIXI.Graphics()
-    @view.interactive = true
-    @view.mouseover = @onMouseOver
-    @view.mouseout = @onMouseOut
-    @view.mousedown = @onMouseDown
-    @view.buttonMode = true
-
-    @setRadius @radius
+    if @interactive
+      @view.interactive = true
+      @view.mouseover = @onMouseOver
+      @view.mouseout = @onMouseOut
+      @view.mousedown = @onMouseDown
+      @view.buttonMode = true
+      @setRadius @radius
 
   setRadius : (@radius) ->
     @view.hitArea = new PIXI.Circle(0, 0, @radius)
@@ -105,12 +104,12 @@ class Perso
     hipsCloser : 0.25
     lowFeet : 0.2
 
-  constructor: () ->
+  constructor: (@interactive) ->
 
     @view = new PIXI.DisplayObjectContainer()
     @joints = []
     for i in [0...NiTE.NUM_JOINTS]
-      jnt = new PersoJoint
+      jnt = new PersoJoint @interactive
       jnt.draggedCallback = =>
         @update()
       if i isnt NiTE.NECK

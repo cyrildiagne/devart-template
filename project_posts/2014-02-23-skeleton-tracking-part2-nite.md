@@ -14,7 +14,7 @@ Then datas are sent at super high speed thanks to the [libwebsocket](http://libw
 
 Then I had to find a way to :
 
-- morph the input skeleton to match Beatrice's character morphology. That was possible by setting a set of rules such as 'bring shoulders  closer to the head level', 'lower the torso', 'brings hips toward each other'..etc. You can see the difference in the GIF above and in the source files of test 
+- morph the input skeleton to match Beatrice's character morphology. That was possible by setting a set of rules such as 'bring shoulders closer to the head level', 'lower the torso', 'brings hips toward each other'..etc. You can see the difference in the GIF above and in the source files of test 
 - find out how to compute tangent lines between a point and a circle and between 2 circles as shown below (or the [live version](http://kikko.fr/lab/devart/tests/4_skinning))
 
 ![image](../project_images/techtests/skeleton_tracking/drawing_tangents.png)

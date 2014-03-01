@@ -4,7 +4,7 @@ _by kikko_
 
 Hey all!
 
-We've been unfortunately both very busy with our jobs and personnal lives but we still managed to made some progress for our DevArt project.
+We've been unfortunately both very busy with our jobs and personnal lives but we still managed to make some progress for our DevArt project.
 
 ## The perceived redness of an evening sky
 

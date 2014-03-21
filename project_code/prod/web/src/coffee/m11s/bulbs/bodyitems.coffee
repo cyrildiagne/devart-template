@@ -14,7 +14,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
           symbol = @assets.symbols.bulbs[sname]
           bulb = new mk.m11s.SimplePartItem symbol, p
           bulb.view.scale Math.random()*0.8 + 1
-          bulb.view.rotation = Math.random() * 360
+          bulb.view.rotation = -90
           @items.push bulb
     
   addHeadBulb: () ->

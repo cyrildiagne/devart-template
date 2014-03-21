@@ -51,6 +51,7 @@ class mk.m11s.base.Settings
       darkGray    : 0x282022
       red         : 0xAC3A43
       lightRed    : 0xEA4E74
+      whiteGreen  : 0xE4E6DD
 
   setupColors : ->
     @colors =

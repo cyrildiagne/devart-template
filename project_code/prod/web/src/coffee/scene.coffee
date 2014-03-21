@@ -4,8 +4,12 @@ class mk.Scene
     @assets = new mk.Assets
     @settings = null
     @perso = null
+    @isLoading = false
 
   setMetamorphose : (type) ->
+    if @isLoading then return
+    @isLoading = true
+
     @settings = new (m11Class 'Settings')()
 
     @assets.load type, @settings.assets, =>
@@ -18,6 +22,7 @@ class mk.Scene
 
       @perso.setMetamorphose @settings, @assets
       
+      @isLoading = false
       if @onSceneReady
         onSceneReady()
 
@@ -31,4 +36,5 @@ class mk.Scene
     @perso.update()
 
   resize : (viewport) ->
-    #...
+    if @perso
+      @perso.resize viewport

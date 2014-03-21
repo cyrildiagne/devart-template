@@ -4,38 +4,67 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
     @mask    = new paper.Group()
     @content = new paper.Group()
     @view    = new paper.Layer(@mask, @content)
-    # @view.clipped = true
     @type = 'stripes'
     @joints = []
     @parts  = []
     @morph  = null
     @items  = null
+    @stripes = null
     @count = 0
+
+  clean : () ->
+    if @stripes
+      @stripes.clean()
+      @stripes.view.remove()
+    @content.removeChildren()
+    @mask.removeChildren()
+    @view.removeChildren()
+    super()
 
   setMetamorphose : (@settings, @assets) ->
     super @settings, @assets
+    @view.addChild @mask
+    @view.addChild @content
+    @view.clipped = true
     @setupMaskContent()
 
   setupMaskContent : () ->
 
-    rect = new paper.Path.Rectangle(0, 0, 200, 200)
-    rect.fillColor = 'blue'
-    @content.addChild(rect)
+    @stripes = new mk.m11s.stripes.Stripes @settings, @joints, @joints.length
+    @content.addChild @stripes.view
 
     @circle = new paper.Path.Circle
-      center: [200, 200],
-      radius: 100,
-    @circle.fillColor = 'red'
+      center: [0, 0],
+      radius: 10,
     @mask.addChild(@circle)
 
-  update : () ->
-    return
-
-  setupItems : () ->
-    return
+  resize : () ->
+    # @view.position.x = 
 
   setupParts: () ->
+    for name, parts of @settings.partsDefs
+      jts = @getJoints(parts)
+      color = @settings.colors[name]
+      switch name
+        when 'head'
+          HeadClass = m11Class 'Head'
+          part = new HeadClass name, jts, color, 0
+        when 'torso'
+          TorsoClass = m11Class 'Torso'
+          part = new TorsoClass name, jts, color, 7, false
+        when 'pelvis'
+          PelvisClass = m11Class 'Pelvis'
+          part = new PelvisClass name, jts, color, 6, false
+        else
+          PartClass = m11Class 'Part'
+          part = new PartClass name, jts, color
+      @mask.addChild part.view
+      @parts.push part
     return
 
   updateParts: ->
-    return
+    for part in @parts
+      part.update()
+
+    @stripes.update()
+    @circle.position.x = Math.sin(++@count / 30) * 300 + 100

@@ -6,7 +6,8 @@ sync     = null
 setup = ->
   setupPaper()
 
-  setMetamorphose 'stripes'
+  # setMetamorphose 'stripes'
+  setRandomMetamorphose()
 
   window.addEventListener('resize', windowResized)
   window.addEventListener('keydown', onKeyDown)
@@ -21,7 +22,6 @@ setupPaper = ->
   document.body.appendChild canvas
 
   paper.setup canvas
-  # paper.view.onFrame = onFrame
 
   view = new paper.Layer()
   view.transformContent = false
@@ -42,8 +42,10 @@ setupSkeleton = ->
 # Global Setters
 
 setRandomMetamorphose = ->
-  names = ['tribal', 'peaks', 'tiroirs', 'bulbs']
-  m = names[Math.floor(Math.random()*names.length)]
+  names = ['stripes', 'tribal', 'peaks', 'tiroirs', 'bulbs']
+  m = null
+  while m is null or m == window.metamorphose
+    m = names[Math.floor(Math.random()*names.length)]
   setMetamorphose m
 
 setMetamorphose = (m) ->
@@ -63,11 +65,11 @@ toggleDebug = () ->
 
 onSceneReady = () ->
   view.addChild scene.perso.view
-
   if paper.view.onFrame is undefined
     setupSkeleton()
     paper.view.onFrame = onFrame
-  windowResized()
+  if window.debug
+    scene.setDebug true
 
 # System Events
 
@@ -84,8 +86,10 @@ windowResized = (ev) ->
     skeleton.resize viewport
   scene.resize viewport
   
-  view.position.x = (viewport.width + view.bounds.width) * 0.5
-  view.position.y = (viewport.height + view.bounds.height) * 0.5
+  view.position.x = (viewport.width) * 0.5
+  view.position.y = (viewport.height) * 0.5
+  # view.position.x = (viewport.width + view.bounds.width) * 0.5
+  # view.position.y = (viewport.height + view.bounds.height) * 0.5
 
 onKeyDown = (ev) ->
   switch ev.keyCode

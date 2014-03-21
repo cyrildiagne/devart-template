@@ -13,7 +13,8 @@ class mk.m11s.base.Part
     @setColor @color
 
   clean : () ->
-    @path.remove()
+    if @path
+      @path.remove()
     for jv in @jointViews
       jv.view.remove()
 

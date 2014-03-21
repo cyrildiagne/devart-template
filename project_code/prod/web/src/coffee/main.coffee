@@ -6,7 +6,7 @@ sync     = null
 setup = ->
   setupPaper()
 
-  setMetamorphose 'tiroirs'
+  setMetamorphose 'stripes'
 
   window.addEventListener('resize', windowResized)
   window.addEventListener('keydown', onKeyDown)
@@ -42,7 +42,7 @@ setupSkeleton = ->
 # Global Setters
 
 setRandomMetamorphose = ->
-  names = ['tiroirs', 'bulbs', 'base']
+  names = ['tribal', 'peaks', 'tiroirs', 'bulbs']
   m = names[Math.floor(Math.random()*names.length)]
   setMetamorphose m
 
@@ -51,9 +51,8 @@ setMetamorphose = (m) ->
   if scene
     scene.setMetamorphose m
   else
-    scene = new mk.Scene m
-    scene.onSceneLoaded = onSceneLoaded
-    view.addChild scene.perso.view
+    scene = new mk.Scene onSceneReady
+    @setMetamorphose m
 
 toggleDebug = () ->
   window.debug = !window.debug
@@ -62,7 +61,9 @@ toggleDebug = () ->
   skeleton.view.bringToFront()
   scene.setDebug window.debug
 
-onSceneLoaded = () ->
+onSceneReady = () ->
+  view.addChild scene.perso.view
+
   if paper.view.onFrame is undefined
     setupSkeleton()
     paper.view.onFrame = onFrame
@@ -84,7 +85,7 @@ windowResized = (ev) ->
   scene.resize viewport
   
   view.position.x = (viewport.width + view.bounds.width) * 0.5
-  view.position.y = (viewport.height) * 0.5
+  view.position.y = (viewport.height + view.bounds.height) * 0.5
 
 onKeyDown = (ev) ->
   switch ev.keyCode

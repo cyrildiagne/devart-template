@@ -1,0 +1,2 @@
+prod/web/bin/js/*
+!prod/web/bin/js/vendor

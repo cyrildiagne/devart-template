@@ -1,19 +1,25 @@
 class mk.Scene 
 
-  constructor : (m11) ->
+  constructor : (@onSceneReady) ->
     @assets = new mk.Assets
     @settings = null
     @perso = null
-    @setMetamorphose m11
 
   setMetamorphose : (type) ->
     @settings = new (m11Class 'Settings')()
-    @perso = @perso || new (m11Class 'Perso')()
 
     @assets.load type, @settings.assets, =>
+      
+      if @perso is null or @perso.type isnt type
+        if @perso
+          @perso.clean()
+          @perso.view.remove()  
+        @perso = new (m11Class 'Perso')()
+
       @perso.setMetamorphose @settings, @assets
-      if @onSceneLoaded
-        onSceneLoaded()
+      
+      if @onSceneReady
+        onSceneReady()
 
   setDebug : (@debug) ->
     @perso.view.selected = @debug

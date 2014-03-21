@@ -2,7 +2,7 @@ class mk.m11s.base.Perso
 
   constructor : () ->
     @view = new paper.Layer()
-
+    @type = 'base'
     @joints = []
     @parts  = []
     @morph  = null
@@ -30,7 +30,7 @@ class mk.m11s.base.Perso
     @morph = new MorphClass @joints, @settings.morph
 
   setupItems : () ->
-    @items = new (m11Class 'BodyItems') @assets, @parts, @joints
+    @items = new (m11Class 'BodyItems') @settings, @assets, @parts, @joints
     for item in @items.items
       @view.addChild item.view
 

@@ -31,6 +31,18 @@ class mk.m11s.PartFillFollower
     @view.z = @part.z + @zOffset
 
 
+class mk.m11s.PartEdgeFollower
+
+  constructor : (@view, @j1, @j2, @pct) ->
+    @zOffset = Math.random() * 100 + 200
+
+  update : () ->
+    x = @j1.x * @pct + @j2.x * (1-@pct)
+    y = @j1.y * @pct + @j2.y * (1-@pct)
+    @view.position.x = x
+    @view.position.y = y
+
+
 class mk.m11s.SimpleJointItem
   constructor : (@symbol, @joint) ->
     @view = @symbol.place()

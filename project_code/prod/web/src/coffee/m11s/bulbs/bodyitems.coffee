@@ -6,7 +6,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
 
   addBodyBulbs: () ->
     symbs = ['bulb1.svg', 'bulb2.svg', 'bulb3.svg']
-    parts = @getParts ['leftUpperLeg', 'leftLowerLeg', 'rightUpperLeg', 'rightLowerArm', 'leftUpperArm', 'leftLowerArm', 'rightUpperArm', 'rightLowerArm' ]
+    parts = @getPartsExcluding ['head', 'torso', 'pelvis']
     for p in parts
       for i in [1..3]
         if Math.random() > 0.6

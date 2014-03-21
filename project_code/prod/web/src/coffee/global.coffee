@@ -4,6 +4,9 @@ mk =
     base : {}
     tiroirs : {}
     bulbs : {}
+    peaks : {}
+    tribal : {}
+    stripes : {}
   skeleton : {}
   utils : {}
 

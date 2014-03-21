@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>7 - paperjs</title>
+    <script>
+      (function(){
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf('iphone') > -1 || (ua.indexOf('android') > -1 && ua.indexOf('mobile') > -1)) {
+          document.write('<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"' + ' />');
+        }
+      })();
+    </script>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="./css/main.css">
+  </head>
+  <body>
+    <p class="instruction">press 's' or touch screen to toggle debug draw</p>
+    <script src="./js/vendor/paper.js"></script>
+    <script src="./js/vendor/socket.io.js"></script>
+    <script src="./js/global.js"></script>
+    <script src="./js/utils/js_utils.js"></script>
+    <script src="./js/utils/geom_utils.js"></script>
+    <script src="./js/skeleton/skeleton.js"></script>
+    <script src="./js/skeleton/skeleton_sync.js"></script>
+    <script src="./js/m11s/helpers.js"></script>
+    <script src="./js/m11s/base/settings.js"></script>
+    <script src="./js/m11s/base/joint.js"></script>
+    <script src="./js/m11s/base/part.js"></script>
+    <script src="./js/m11s/base/morph.js"></script>
+    <script src="./js/m11s/base/bodyitems.js"></script>
+    <script src="./js/m11s/base/perso.js"></script>
+    <script src="./js/m11s/tiroirs/settings.js"></script>
+    <script src="./js/m11s/tiroirs/items/drawer.js"></script>
+    <script src="./js/m11s/tiroirs/items/hat.js"></script>
+    <script src="./js/m11s/tiroirs/bodyitems.js"></script>
+    <script src="./js/assets.js"></script>
+    <script src="./js/scene.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>

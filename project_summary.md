@@ -9,7 +9,7 @@ a poetic digital adventure
 Comming soon :)
 
 ## Images & Videos
-Comming soon :)
+![image](project_images/id/logo.jpg)
 
 ## Links to External Libraries
 [OpenFrameworks](http://www.openframeworks.cc "OpenFrameworks")

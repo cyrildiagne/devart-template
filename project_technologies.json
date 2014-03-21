@@ -9,7 +9,7 @@
         ],
         "toolkits": [
             "openframeworks",
-            "pixijs",
+            "paperjs",
             "socketio",
             "webgl",
             "openni",

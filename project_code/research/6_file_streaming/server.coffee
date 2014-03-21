@@ -14,7 +14,7 @@ connectCounter = 0
 setup_server = () ->
   server = io.listen port
   server.set 'log level', 2
-  server.set 'origins', 'kikko.fr:*, localhost:*'
+  server.set 'origins', 'kikko.fr:*, localhost:*, kikko.local:*'
   server.on 'connection', on_user_connected
   console.log "listening on port #{port}"
 

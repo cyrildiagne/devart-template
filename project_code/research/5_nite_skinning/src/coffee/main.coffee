@@ -16,8 +16,8 @@ setup = ->
   perso = new Perso false
   stage.addChild perso.view
 
-  # sync = new SkeletonSync skeleton, 'http://kikko.local:8080'
-  sync = new SkeletonSync skeleton, 'http://192.158.28.53:80'
+  sync = new SkeletonSync skeleton, 'http://kikko.local:8080'
+  # sync = new SkeletonSync skeleton, 'http://192.158.28.53:80'
   sync.onUserIn = onUserIn
   sync.onUserOut = onUserOut
   sync.onRatio = onRatio

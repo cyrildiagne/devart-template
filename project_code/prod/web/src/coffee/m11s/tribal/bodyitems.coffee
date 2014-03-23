@@ -11,22 +11,22 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     @items.push item
 
   addFeathers: () ->
-    part = (@getParts ['leftLowerArm'])[0]
+    part = @getPart 'leftLowerArm'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 8, 0.7
     @items.push item
 
-    part = (@getParts ['rightLowerArm'])[0]
+    part = @getPart 'rightLowerArm'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 3, 0
     @items.push item
 
-    # part = (@getParts ['pelvis'])[0]
+    # part = @getPart 'pelvis'
     # item = new (m11Class 'FeatherGroup') @settings, part.joints[0], part.joints[1], 6
     # @items.push item
 
-    part = (@getParts ['rightLowerLeg'])[0]
+    part = @getPart 'rightLowerLeg'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 6, 0.3
     @items.push item
 
-    part = (@getParts ['leftLowerLeg'])[0]
+    part = @getPart 'leftLowerLeg'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 2, 0
     @items.push item

@@ -1,14 +1,21 @@
+metamorphoses = [
+  'tribal'
+  'peaks'
+  'tiroirs'
+  'stripes'
+  'bulbs'
+  'birds'
+]
+
 # packages
 mk =
   m11s :
     base : {}
-    tiroirs : {}
-    bulbs : {}
-    peaks : {}
-    tribal : {}
-    stripes : {}
   skeleton : {}
   utils : {}
+
+for m in metamorphoses
+  mk.m11s[m] = {}
 
 # global vars
 window.metamorphose = null

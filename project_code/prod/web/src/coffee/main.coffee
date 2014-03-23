@@ -3,11 +3,13 @@ scene    = null
 skeleton = null
 sync     = null
 
+currMetamorphoseId = 0
+
 setup = ->
   setupPaper()
 
-  # setMetamorphose 'stripes'
-  setRandomMetamorphose()
+  setMetamorphose 'tiroirs'
+  # setNextMetamorphose()
 
   window.addEventListener('resize', windowResized)
   window.addEventListener('keydown', onKeyDown)
@@ -41,11 +43,10 @@ setupSkeleton = ->
 
 # Global Setters
 
-setRandomMetamorphose = ->
-  names = ['stripes', 'tribal', 'peaks', 'tiroirs', 'bulbs']
-  m = null
-  while m is null or m == window.metamorphose
-    m = names[Math.floor(Math.random()*names.length)]
+setNextMetamorphose = ->
+  if(++currMetamorphoseId >= metamorphoses.length)
+    currMetamorphoseId = 0
+  m = metamorphoses[currMetamorphoseId]
   setMetamorphose m
 
 setMetamorphose = (m) ->
@@ -96,10 +97,10 @@ onKeyDown = (ev) ->
     when 83 # 's'
       toggleDebug()
     when 32 # spacebar
-      setRandomMetamorphose()
+      setNextMetamorphose()
 
 onTouchStart = (ev) ->
-  toggleDebug()
+  setNextMetamorphose()
 
 onFrame = ->
   skeleton.update()

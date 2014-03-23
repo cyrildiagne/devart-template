@@ -10,6 +10,9 @@ class mk.m11s.base.BodyItems
   update : () ->
     item.update() for item in @items
 
+  getPart : (name) ->
+    return (@getParts [name])[0]
+
   getParts : (names) ->
     parts = @parts.filter (p) ->
       p.name in names

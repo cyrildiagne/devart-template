@@ -8,7 +8,7 @@ currMetamorphoseId = 0
 setup = ->
   setupPaper()
 
-  setMetamorphose 'tiroirs'
+  setMetamorphose 'birds'
   # setNextMetamorphose()
 
   window.addEventListener('resize', windowResized)
@@ -103,6 +103,7 @@ onTouchStart = (ev) ->
   setNextMetamorphose()
 
 onFrame = ->
+  TWEEN.update()
   skeleton.update()
   scene.setPersoPose skeleton
   scene.update()

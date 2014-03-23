@@ -36,7 +36,7 @@ mixin styles()
 
 mixin libs()
   - for (var i = 0; i < page.libs.length; i++)
-    script(src= rootDir + 'js/vendor/' + page.libs[i]+'.js')
+    script(src= rootDir + 'vendor/js/' + page.libs[i]+'.js')
 
 mixin scripts()
   - for (var i = 0; i < page.scripts.length; i++)

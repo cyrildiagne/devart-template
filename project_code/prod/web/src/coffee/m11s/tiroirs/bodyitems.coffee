@@ -11,7 +11,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     parts = @getParts ['torso', 'pelvis', 'leftUpperLeg', 'rightUpperLeg']
     for p in parts
       for i in [1..3]
-        symbol = ds[Math.floor(Math.random()*ds.length)]
+        symbol = ds.random()
         drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p
         @items.push drawer
     

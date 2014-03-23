@@ -21,11 +21,16 @@ class mk.m11s.birds.Branches
 
     @follower = new mk.m11s.PartEdgeFollower @view, @j1, @j2, @pct
     @branches = []
+    @trackPoints = []
     @interval = setInterval @newBranchTick, @timeBetweenBranches
     @addBranch()
 
     @velocity = 0
     @prevX = @j1.x
+    @prevY = @j1.y
+
+  clean: ->
+    clearInterval @interval
 
   update: (speed) ->
     
@@ -33,10 +38,11 @@ class mk.m11s.birds.Branches
 
     @follower.update()
 
-    d = (@j1.x - @prevX) * 2
-    speed = if @velocity > d then 0.03 else 0.06
+    d = (@j1.x - @prevX)*2 + (@j1.y - @prevY)*2
+    speed = if @velocity > d then 0.02 else 0.04
     @velocity += (d - @velocity) * speed
     @prevX = @j1.x
+    @prevY = @j1.y
 
     for b,i in @branches
       if b.parent
@@ -46,11 +52,13 @@ class mk.m11s.birds.Branches
 
       b.vec.length += (b.maxLength-b.vec.length) * @growSpeed
       b.currVec = b.vec.clone()
-      b.currVec.angle = b.angle - @velocity * (i+2.5)
+      b.currVec.angle = b.angle - @velocity * (i*1.5+1)
 
       b.path.segments[0].point = b.currStart
       b.path.segments[1].point = b.currStart.add b.currVec
 
+    for tp,i in @trackPoints
+      tp.view.position = tp.parent.currStart.add tp.parent.currVec.normalize( tp.startLength )
 
   hasFreeSpace: (start, a) ->
     for b in @branches
@@ -86,13 +94,13 @@ class mk.m11s.birds.Branches
     parent = null
 
     if @branches.length
-      parent   = @branches[Math.floor(Math.random()*@branches.length)]
+      parent   = @branches.random()
       a        = @getValidAngle parent.vec.angle
       startVec = @getValidStart parent, a
       start    = parent.start.add startVec
     else
       start = new paper.Point(0, 0)
-      a = @firstBranchAngles[ Math.floor(Math.random()*@firstBranchAngles.length) ]
+      a = @firstBranchAngles.random()
     
     maxLength = @minBranchLength + Math.random() * (@maxBranchLength-@minBranchLength)
     maxLength *= 1 - ( (@branches.length+1) / @maxBranches)
@@ -110,16 +118,37 @@ class mk.m11s.birds.Branches
     @view.addChild path
     
     @branches.push
-      start       : start,
-      angle       : a,
-      startLength : startVec.length,
-      vec         : vec,
-      path        : path,
-      parent      : parent,
+      start       : start
+      angle       : a
+      startLength : startVec.length
+      vec         : vec
+      path        : path
+      parent      : parent
       maxLength   : maxLength
+
+  addTrackPoint: (view) ->
+
+    parent   = @branches.random()
+    startVec = new paper.Point()
+    startVec.angle = parent.vec.angle
+    startVec.length = parent.vec.length * (Math.random()*0.5+0.5)
+    start = parent.start.add startVec
+
+    @view.addChild view
+
+    p =
+      start       : start
+      startLength : startVec.length
+      parent      : parent
+      view        : view
+
+    @trackPoints.push p
+      
+    return p
 
   newBranchTick: () =>
     if @branches.length < @maxBranches
       @addBranch()
       for b in @branches
         b.path.strokeWidth = Math.min(@maxBranchWidth, b.path.strokeWidth+0.3)
+    return

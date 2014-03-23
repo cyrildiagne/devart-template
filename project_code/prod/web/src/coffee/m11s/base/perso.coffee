@@ -21,6 +21,7 @@ class mk.m11s.base.Perso
       part.clean()
     @parts.splice 0, @parts.length
     if @items
+      @items.clean()
       item.view.remove() for item in @items.items
       @items.items.splice 0, @items.items.length
     @view.removeChildren()

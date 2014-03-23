@@ -10,8 +10,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     for p in parts
       for i in [1..3]
         if Math.random() > 0.6
-          sname = symbs[Math.floor(Math.random()*symbs.length)]
-          symbol = @assets.symbols.bulbs[sname]
+          symbol = @assets.symbols.bulbs[symbs.random()]
           bulb = new mk.m11s.SimplePartItem symbol, p
           bulb.view.scale Math.random()*0.8 + 1
           bulb.view.rotation = -90

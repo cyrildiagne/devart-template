@@ -25,16 +25,12 @@ class mk.m11s.stripes.Stripes
       
       s.position.x = 0
       s.position.y = (Math.random()-0.5)*h*0.6
-
       s.initPosition = {x:s.position.x , y:s.position.y }
       s.count = Math.random() * 100
       s.amplitude = Math.random() * h * 0.5
       s.vel = 0
-      
       s.rotate 35
-
-      c = colors[Math.floor(Math.random()*colors.length)]
-      s.fillColor = '#' + c.toString(16)
+      s.fillColor = '#' + colors.random().toString(16)
       
       @view.addChild(s)
       @stripes.push s

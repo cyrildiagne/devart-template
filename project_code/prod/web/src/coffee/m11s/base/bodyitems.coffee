@@ -7,6 +7,10 @@ class mk.m11s.base.BodyItems
   setupItems : () ->
     #...
     
+  clean : ->
+    for item in @items
+      if item.clean then item.clean()
+
   update : () ->
     item.update() for item in @items
 

@@ -10,6 +10,7 @@
         "toolkits": [
             "openframeworks",
             "paperjs",
+            "tweenjs",
             "socketio",
             "webgl",
             "openni",

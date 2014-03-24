@@ -9,6 +9,10 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @addHeadBulb()
     @addRope()
 
+  clean: ->
+    super()
+    setBackgroundColor '#fff'
+
   addBodyBulbs: ->
     parts = @getPartsExcluding ['head', 'torso', 'pelvis']
     for p in parts

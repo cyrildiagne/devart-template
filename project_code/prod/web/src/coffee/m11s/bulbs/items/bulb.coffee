@@ -37,6 +37,7 @@ class mk.m11s.bulbs.Bulb
     @freq = (Math.random()*0.5 + 0.5) * Math.PI * 0.05
     @setupStyles()
     @draw()
+    @areLightsOff = false
     if @pct > 0.001
       @follower = new mk.m11s.PartEdgeFollower @view, @part.joints[0], @part.joints[1], @pct
       mirrored = @part.name.indexOf('right') isnt -1
@@ -54,6 +55,10 @@ class mk.m11s.bulbs.Bulb
     @colorOn.alpha = 0.8
     @haloColorOn = @colorOn.clone()
     @haloColorOn.alpha = 0.5
+
+    @colorLightsOff = new paper.Color ('#fff')
+    @haloLightsOff = @colorLightsOff.clone()
+    @haloLightsOff.alpha = 0.5
 
   draw: ->
     @halo = new paper.Path.Circle
@@ -74,12 +79,22 @@ class mk.m11s.bulbs.Bulb
       @halo.style.fillColor = @haloColorOff
     , 3000)
 
+  lightsOff: ->
+    @bulb.style.fillColor = @colorLightsOff
+    @halo.style.fillColor = @haloLightsOff
+    @areLightsOff = true
+
+  lightsOn: ->
+    @bulb.style.fillColor = @colorOff
+    @halo.style.fillColor = @haloColorOff
+    @areLightsOff = false
+
   update: ->
-    if Math.random() > 0.999
+    if !@areLightsOff and Math.random() > 0.999
       @turnOn()
     @follower.update()
     phase = Math.cos(@power+=@freq)+1
-    @haloColorOn.alpha = @haloColorOff.alpha = phase * 0.20 + 0.11
+    @haloColorOn.alpha = @haloColorOff.alpha = @haloLightsOff.alpha = phase * 0.20 + 0.11
     if @socket
       @socket.update()
     

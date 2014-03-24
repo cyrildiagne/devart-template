@@ -18,7 +18,8 @@ setup = ->
   windowResized()
 
 setupPaper = ->
-  canvas = document.createElement('canvas')
+  canvas = window.canvas = document.createElement('canvas')
+  canvas.id = 'paperjs-canvas'
   canvas.setAttribute 'data-paper-hidpi', ''
   canvas.setAttribute 'data-paper-resize', ''
   document.body.appendChild canvas
@@ -87,10 +88,10 @@ windowResized = (ev) ->
     skeleton.resize viewport
   scene.resize viewport
   
-  view.position.x = (viewport.width) * 0.5
-  view.position.y = (viewport.height) * 0.5
-  # view.position.x = (viewport.width + view.bounds.width) * 0.5
-  # view.position.y = (viewport.height + view.bounds.height) * 0.5
+  # view.position.x = (viewport.width) * 0.5
+  # view.position.y = (viewport.height) * 0.5
+  view.position.x = (viewport.width - view.bounds.width) * 0.5
+  view.position.y = (viewport.height - view.bounds.height) * 0.5
 
 onKeyDown = (ev) ->
   switch ev.keyCode

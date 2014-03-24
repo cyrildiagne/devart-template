@@ -24,3 +24,6 @@ window.debug = false
 # global functions
 m11Class = (className) =>
   return mk.m11s[metamorphose][className] || mk.m11s.base[className]
+
+setBackgroundColor = (color) ->
+  canvas.style.backgroundColor = color

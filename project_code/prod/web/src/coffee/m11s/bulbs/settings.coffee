@@ -2,9 +2,7 @@ class mk.m11s.bulbs.Settings extends mk.m11s.base.Settings
   
   setupAssets : ->
     @assets = [
-      'assets/items/bulbs/bulb1.svg'
-      'assets/items/bulbs/bulb2.svg'
-      'assets/items/bulbs/bulb3.svg'
+      'assets/items/bulbs/bulb_socket.svg'
     ]
 
   setupColors : ->

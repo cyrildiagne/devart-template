@@ -34,6 +34,7 @@ class mk.m11s.PartEdgeFollower
     y = @j1.y * @pct + @j2.y * (1-@pct)
     @view.position.x = x
     @view.position.y = y
+    @view.z = @j1.z * @pct + @j2.x * (1-@pct) + @zOffset
 
 
 class mk.m11s.SimpleJointItem

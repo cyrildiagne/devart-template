@@ -8,7 +8,7 @@ currMetamorphoseId = 0
 setup = ->
   setupPaper()
 
-  setMetamorphose 'birds'
+  setMetamorphose 'bulbs'
   # setNextMetamorphose()
 
   window.addEventListener('resize', windowResized)
@@ -34,7 +34,7 @@ setupSkeleton = ->
   view.addChild(skeleton.view)
 
   sync = new mk.skeleton.SkeletonSync skeleton, 'http://kikko.local:8080'
-  # sync = new SkeletonSync skeleton, 'http://192.158.28.53:80'
+  # sync = new mk.skeleton.SkeletonSync skeleton, 'http://192.158.28.53:80'
   sync.onUserIn = onUserIn
   sync.onUserOut = onUserOut
   sync.onRatio = onRatio

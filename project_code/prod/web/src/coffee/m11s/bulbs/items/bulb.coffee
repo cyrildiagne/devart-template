@@ -14,8 +14,9 @@ class mk.m11s.bulbs.BulbSocket
   update: () ->
     @velTracker.update()
     pct = 1 - @follower.pct
-    delta = (@velTracker.get(0) * 0.003 * pct - @freq)
-    speed = if delta > 0 then 0.1 else 0.03
+    trackerSpeed = toPt @velTracker.get(0)
+    delta = (trackerSpeed * 0.005 * pct - @freq)
+    speed = if delta > 0 then 0.1 else 0.02
     @freq += delta * speed
     @freq = Math.min(@freq, 0.4)
     phase = Math.cos(@bounce+=@freq)+1

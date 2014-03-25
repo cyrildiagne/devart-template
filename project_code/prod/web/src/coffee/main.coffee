@@ -81,7 +81,7 @@ onRatio = (ratio) ->
   console.log 'ratio set to '+ ratio
 
 windowResized = (ev) ->
-  viewport = 
+  viewport = window.viewport =
     width  : paper.view.viewSize.width
     height : paper.view.viewSize.height
   if skeleton

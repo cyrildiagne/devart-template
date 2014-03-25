@@ -10,7 +10,7 @@ class mk.m11s.base.Perso
 
   setMetamorphose : (@settings, @assets) ->
     @clean()
-    @setupJoints()
+    @setupJoints toPx(1280)
     @setupParts()
     @setupItems()
     @setupMorph()
@@ -35,10 +35,10 @@ class mk.m11s.base.Perso
     for item in @items.items
       @view.addChild item.view
 
-  setupJoints : () ->
+  setupJoints : (refWidth) ->
     JointClass = m11Class 'Joint'
     for i in [0...NiTE.NUM_JOINTS]
-      jnt = new JointClass i, @settings.radius[i] * 1280
+      jnt = new JointClass i, @settings.radius[i] * refWidth
       @joints.push jnt
 
   setupParts: () ->

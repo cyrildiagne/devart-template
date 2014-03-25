@@ -20,6 +20,7 @@ class mk.m11s.base.Part
 
   setColor: (@color) ->
     @path.fillColor = "#" + @color.toString(16)
+    j.setColor @color for j in @jointViews
 
   update: () ->
     @updatePath()

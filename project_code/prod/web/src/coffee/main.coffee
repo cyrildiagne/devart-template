@@ -8,7 +8,7 @@ currMetamorphoseId = 0
 setup = ->
   setupPaper()
 
-  setMetamorphose 'bulbs'
+  setMetamorphose 'birds'
   # setNextMetamorphose()
 
   window.addEventListener('resize', windowResized)

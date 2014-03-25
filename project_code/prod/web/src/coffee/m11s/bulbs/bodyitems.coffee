@@ -34,8 +34,14 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
 
   onLightsOff: =>
     setBackgroundColor '#172828'
+    @getPart('torso').setColor 0xffffff
+    @getPart('pelvis').setColor 0xffffff
+    # p.setColor @settings.palette.lightRed for p in @parts
     b.lightsOff() for b in @bulbs
 
   onLightsOn: =>
     setBackgroundColor '#fff'
+    @getPart('torso').setColor @settings.palette.lightBlue
+    @getPart('pelvis').setColor @settings.palette.lightBlue
+    # p.setColor @settings.palette.lightBlue for p in @parts
     b.lightsOn() for b in @bulbs

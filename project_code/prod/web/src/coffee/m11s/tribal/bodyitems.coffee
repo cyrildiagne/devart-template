@@ -1,16 +1,17 @@
 class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
 
-  setupItems: () ->
+  setupItems: ->
     @addHead()
     @addFeathers()
+    @addFire()
     
-  addHead: () ->
+  addHead: ->
     symbol = @assets.symbols.tribal['head.svg']
     MaskClass = m11Class 'Mask'
     item = new MaskClass symbol, @joints[NiTE.HEAD]
     @items.push item
 
-  addFeathers: () ->
+  addFeathers: ->
     part = @getPart 'leftLowerArm'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 8, 0.7
     @items.push item
@@ -30,3 +31,25 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     part = @getPart 'leftLowerLeg'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 2, 0
     @items.push item
+
+  addFire: ->
+    colors = [
+      # @settings.palette.cream
+      @settings.palette.lightRed
+      @settings.palette.red
+    ]
+    @fire = new (m11Class 'Fire') colors
+    @fire.view.position.x = -200
+    @fire.view.position.y = 300
+    @items.push @fire
+
+  update: ->
+    super()
+    lh = @joints[NiTE.LEFT_HAND]
+    rh = @joints[NiTE.RIGHT_HAND]
+    head = @joints[NiTE.HEAD]
+    torso = @joints[NiTE.TORSO]
+    lh_pct = (lh.y-torso.y) / (head.y-torso.y) * 0.5
+    rh_pct = (rh.y-torso.y) / (head.y-torso.y) * 0.5
+    pct = Math.min(Math.max(0, lh_pct+rh_pct), 1)
+    @fire.setAmp pct

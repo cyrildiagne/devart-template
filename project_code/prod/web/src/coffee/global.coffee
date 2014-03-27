@@ -18,31 +18,11 @@ for m in metamorphoses
   mk.m11s[m] = {}
 
 # global vars
-window.viewport = null
+window.viewport = {width:1280, height:800}
 window.metamorphose = null
 window.debug = false
 
-stageWidth = ->
-  return window.viewport.width
-
-stageHeight = ->
-  return window.viewport.height
-
-toPt = (px) ->
-  vp = window.viewport
-  if vp.width > vp.height
-    ratio = 1000 / window.viewport.height
-  else
-    ratio = 1400 / window.viewport.width
-  return px * ratio
-
-toPx = (pt) ->
-  vp = window.viewport
-  if vp.width > vp.height
-    ratio = window.viewport.height / 1000
-  else
-    ratio = window.viewport.width / 1400
-  return pt * ratio
+window.mouse = {x:0, y:0}
 
 # global functions
 m11Class = (className) =>

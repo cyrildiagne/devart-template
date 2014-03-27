@@ -75,7 +75,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
   newTreeItemTick: =>
     tree = @trees.random()
-    if tree.trackPoints.length < tree.branches.length / 3
+    if tree.trackPoints.length < tree.branches.length / 2
       symbolName = ['flower1.svg', 'flower2.svg', 'nest1.svg'].random()
       symbol = @assets.symbols.birds[symbolName]
       view = symbol.place()

@@ -14,7 +14,7 @@ class mk.m11s.bulbs.BulbSocket
   update: () ->
     @velTracker.update()
     pct = 1 - @follower.pct
-    trackerSpeed = toPt @velTracker.get(0)
+    trackerSpeed = @velTracker.get(0)
     delta = (trackerSpeed * 0.005 * pct - @freq)
     speed = if delta > 0 then 0.1 else 0.02
     @freq += delta * speed

@@ -5,6 +5,7 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       'assets/items/tiroirs/drawer1.svg'
       'assets/items/tiroirs/drawer2.svg'
       'assets/items/tiroirs/hat.svg'
+      'assets/items/tiroirs/necktie1.svg'
     ]
     
 

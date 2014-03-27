@@ -27,7 +27,7 @@ class mk.Scene
         onSceneReady()
 
   setDebug : (@debug) ->
-    @perso.view.selected = @debug
+    @perso.view.fullySelected = @debug
 
   setPersoPose : (skeleton) ->
     @perso.setPoseFromSkeleton skeleton

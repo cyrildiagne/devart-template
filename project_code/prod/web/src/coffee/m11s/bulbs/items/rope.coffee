@@ -99,7 +99,7 @@ class mk.m11s.bulbs.Rope
     return
 
   applyUnitaryVerletIntegration: (item, ellapsedTime) ->
-    item.x = 2 * item.x - item.prev_x; # No acceleration here
+    item.x = 2 * item.x - item.prev_x
     item.y = 2 * item.y - item.prev_y + @gravity * ellapsedTime * ellapsedTime * @pixelsPerMeter
 
   applyUnitaryDistanceRelaxation: (item, from, targettedLength) ->

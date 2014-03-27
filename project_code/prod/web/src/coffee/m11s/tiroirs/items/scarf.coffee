@@ -1,6 +1,6 @@
 class mk.m11s.tiroirs.Scarf extends mk.m11s.SimpleJointItem
 
-  constructor: (@joint, @options) ->
+  constructor: (@pinPoint, @options) ->
     @view = new paper.Group()
     @view.transformContent = false
     @view.z = 0
@@ -40,7 +40,7 @@ class mk.m11s.tiroirs.Scarf extends mk.m11s.SimpleJointItem
     
   update: ->
 
-    @path.firstSegment.point = @offset.add [@joint.x, @joint.y]
+    @path.firstSegment.point = @offset.add [@pinPoint.x, @pinPoint.y]
 
     for i in [0...@numPoints-1]
     

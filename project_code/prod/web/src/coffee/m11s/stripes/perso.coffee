@@ -30,12 +30,12 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
 
   setupMaskContent : () ->
 
-    @stripes = new mk.m11s.stripes.Stripes @settings, @joints, @joints.length
+    @stripes = new mk.m11s.stripes.Stripes @settings, @joints[NiTE.TORSO], 8
     @content.addChild @stripes.view
 
     @circle = new paper.Path.Circle
       center: [0, 0],
-      radius: 10,
+      radius: 0,
     @mask.addChild(@circle)
 
   resize : () ->

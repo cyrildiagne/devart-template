@@ -8,12 +8,13 @@ currMetamorphoseId = 0
 setup = ->
   setupPaper()
 
-  setMetamorphose 'birds'
+  setMetamorphose 'tribal'
   # setNextMetamorphose()
 
   window.addEventListener('resize', windowResized)
   window.addEventListener('keydown', onKeyDown)
   window.addEventListener('touchstart', onTouchStart)
+  window.addEventListener('mousemove', onMouseMove)
 
   windowResized()
 
@@ -27,6 +28,7 @@ setupPaper = ->
   paper.setup canvas
 
   view = new paper.Layer()
+  view.pivot = new paper.Point 0,0
   view.transformContent = false
   
 setupSkeleton = ->
@@ -34,6 +36,7 @@ setupSkeleton = ->
   skeleton.dataRatio = 640 / 480
   view.addChild(skeleton.view)
 
+  # sync = new mk.skeleton.SkeletonSync skeleton
   sync = new mk.skeleton.SkeletonSync skeleton, 'http://kikko.local:8080'
   # sync = new mk.skeleton.SkeletonSync skeleton, 'http://192.158.28.53:80'
   sync.onUserIn = onUserIn
@@ -88,10 +91,10 @@ windowResized = (ev) ->
     skeleton.resize viewport
   scene.resize viewport
   
-  # view.position.x = (viewport.width) * 0.5
-  # view.position.y = (viewport.height) * 0.5
-  view.position.x = (viewport.width - view.bounds.width) * 0.5
-  view.position.y = (viewport.height - view.bounds.height) * 0.5
+  view.position.x = (viewport.width) * 0.5
+  view.position.y = (viewport.height) * 0.5
+  # view.position.x = (viewport.width - view.bounds.width) * 0.5
+  # view.position.y = (viewport.height - view.bounds.height) * 0.5
 
 onKeyDown = (ev) ->
   switch ev.keyCode
@@ -102,6 +105,10 @@ onKeyDown = (ev) ->
 
 onTouchStart = (ev) ->
   setNextMetamorphose()
+
+onMouseMove = (ev) ->
+  window.mouse.x = ev.clientX
+  window.mouse.y = ev.clientY
 
 onFrame = ->
   TWEEN.update()

@@ -142,7 +142,7 @@ The experience is also be accessible live from the browser, and because only tra
 
 To give everyone access to the prototype, we've recorded some very basic body gestures that we stream through our Google Compute Engine.
 
-- You can access the non-interactive demo here : [Mr. Kalia prototype - stream](kikko.fr/lab/devart/wip)
+- You can access the non-interactive demo here : [Mr. Kalia prototype - stream](http://kikko.fr/lab/devart/wip)
 - The code of this application is available on the [github repository](https://github.com/kikko/devart-template/tree/master/project_code/prod)
 - If you want to try the interactive version, the [skeleton tracking application](https://github.com/kikko/devart-template/tree/master/project_code/prod/installation/NiTE2-userTracking) is also available (OSX only for now).
 

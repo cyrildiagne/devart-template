@@ -12,7 +12,6 @@
             "paperjs",
             "tweenjs",
             "socketio",
-            "webgl",
             "openni",
             "nite",
             "nodejs"

@@ -38,9 +38,9 @@ setupSkeleton = ->
   skeleton.dataRatio = 640 / 480
   view.addChild(skeleton.view)
 
-  sync = new mk.skeleton.SkeletonSync skeleton
+  # sync = new mk.skeleton.SkeletonSync skeleton
   # sync = new mk.skeleton.SkeletonSync skeleton, 'http://kikko.local:8080'
-  # sync = new mk.skeleton.SkeletonSync skeleton, 'http://192.158.28.53:80'
+  sync = new mk.skeleton.SkeletonSync skeleton, 'http://192.158.28.53:80'
   sync.onUserIn = onUserIn
   sync.onUserOut = onUserOut
   sync.onRatio = onRatio

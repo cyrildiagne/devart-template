@@ -10,7 +10,7 @@ class mk.m11s.base.Perso
 
   setMetamorphose : (@settings, @assets) ->
     @clean()
-    @setupJoints 1280/2
+    @setupJoints 1000
     @setupParts()
     @setupItems()
     @setupMorph()

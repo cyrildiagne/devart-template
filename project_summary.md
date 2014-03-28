@@ -1,7 +1,7 @@
 ## Authors
 
 ### • Cyril Diagne
-Cyril Diagne, leaves in Montreuil (eastern Paris suburb), plays a lot with different kind of technologies that he tries to merge with unconventional techniques and people to create unique experiences. Graduated from Les Gobelins in 2008 he studied graphic design, programming and then co-founded the collective lab212 along with 5 other students, where he is now a freelance creative technologist.
+Cyril Diagne plays a lot with different kind of technologies that he tries to merge with unconventional techniques and people to create unique experiences. Graduated from Les Gobelins in 2008 he studied graphic design, programming and then co-founded the collective lab212 along with 5 other students, where he is now a freelance creative technologist.
 
 [Website](http://kikko.fr) | [Github](http://github.com/kikko) | [Twitter](http://twitter.com/kikko_fr) 
 

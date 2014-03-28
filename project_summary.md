@@ -1,6 +1,5 @@
 # Les métamorphoses de Mr. Kalia
 
-
 ## Authors
 
 ### • Cyril Diagne
@@ -182,3 +181,4 @@ To give everyone access to the prototype, we've recorded some very basic body ge
 - [Cake](http://coffeescript.org/documentation/docs/cake.html)
 - [Paper.js sketchpad](http://sketch.paperjs.org)
 - [SVG](http://www.w3.org/Graphics/SVG/)
+

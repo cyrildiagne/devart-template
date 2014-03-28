@@ -1,7 +1,7 @@
 ## Authors
 
 ### • Cyril Diagne
-Cyril Diagne, leaves in Montreuil (eastern Paris suburb), plays a lot with different kind of technologies, that he tries to merge with unconventional techniques and people to create unique experiences. Graduated from Les Gobelins in 2008 he studied graphic design, programming and then co-founded the collective lab212 along with 5 other students, where he is now a freelance creative technologist.
+Cyril Diagne, leaves in Montreuil (eastern Paris suburb), plays a lot with different kind of technologies that he tries to merge with unconventional techniques and people to create unique experiences. Graduated from Les Gobelins in 2008 he studied graphic design, programming and then co-founded the collective lab212 along with 5 other students, where he is now a freelance creative technologist.
 
 [Website](http://kikko.fr) | [Github](http://github.com/kikko) | [Twitter](http://twitter.com/kikko_fr) 
 
@@ -43,9 +43,9 @@ https://www.youtube.com/watch?v=L07v4rNvKKI
 ### • Scenario
 
 Staged as a theatre scenes, M. Kalia metamorphoses follow each other through distinct scenes.
-Each of them is followed by a short pause anouncing the upcoming scene name and context. This the visitor can briefly let the finished scene resonate in his mind, and then get ready for the next one.
+Each of them is followed by a short pause anouncing the upcoming scene name and context.
 
-In the final piece, we would like to include about 20 different scenes that would all treat different aspects and different kinds of metamorphosis. Due to the context of the competition, we concentrated our efforts on prototyping only 7 of them.
+In the final piece, we would like to include about 20 different scenes that would all treat different aspects and different kinds of metamorphoses. Due to the context of the competition, we concentrated our efforts on prototyping only 7 of them.
 
 #### → Scene flow
 
@@ -67,7 +67,7 @@ Each metamorphosis is displayed as a painting, without camera movement, making M
 #### → Scene 1 : Drawers
 _"Mr Kalia is here. But he needs to go to work."_
 ![image](project_images/description/story-tiroirs.png)
-In this scene, Mr. Kalia sees drawers slowly appearing over his body and opening to let everyday's life clothes and accessory fly around, play with him like naughty kids and give him a hard time to be caught back.
+In this scene, Mr. Kalia sees drawers slowly appearing over his body and opening to let everyday's life clothes and accessory fly around, play with him like naughty kids and give him a hard time to be caught back. Mr. Kalia can catch the flying items and put them back in the drawers.
 
 **keywords :** social adaptation, personality drawers, routine
 
@@ -76,14 +76,14 @@ _"Mr Kalia is out of his room. The sun shines."_
 ![image](project_images/description/story-stripes.png)
 In this scene, Mr. Kalia seems invisible at the start. After a moment, we can distinguish his foot, and then his knees as a few stripes seemed to reveal them. As time goes and Mr Kalia moves around, his colorful silhouette becomes visible.
 
-**keywords :** reaction, camouflage
+**keywords :** reaction, immersion, camouflage
 
 #### → Scene  : Bulbs
 _"Mr Kalia shares his body with a few handy items."_
 ![image](project_images/description/story-ampoules.png)
-In this scene, Mr. Kalia wears many light bulbs, forming an excentric costume, despite some nice color fading. However, as he pulls the cord and the whole scene turns dark, his body shines from the bulbs.
+In this scene, Mr. Kalia wears many light bulbs, forming an excentric costume. However, as he pulls the cord and the whole scene turns dark, his body shines beautifuly from the bulbs.
 
-**keywords :** wearable devices, cyborg, technological upgrade of the body
+**keywords :** wearable devices, cyborg, body's technological upgrade
 
 #### → Scene  : Thorns
 _"Mr Kalia pierced his body to make it his own."_
@@ -111,7 +111,7 @@ _"Mr Kalia has been around for a very long time."_
 ![image](project_images/description/story-tree.png)
 In this scene, Mr. Kalia's body slowly grows branches, leaves, nests and even birds houses. After a while, birds start making his body their home.
 
-**keywords :** evolution, symbiosis
+**keywords :** evolution, symbiosis, nature
 
 
 ### Design
@@ -120,12 +120,10 @@ Inside each scene, the metamorphosis is depicted through 4 elements :
 
 - The body elements
 - The scenery
-- The interaction(s)
+- The interactions
 - The music
 
-The minimalistic aesthetics give an appealing first layer of information and symplify access to complex interactions with the audience.
-
-Mr Kalia's silhouette is simple and slender. It can adapt to many different morphological changes and 'body upgrades'
+The overall aesthetics is minimalistic. Mr Kalia's silhouette is simple and slender. It can adapt to many different morphological changes and 'body upgrades'
 
 ![image](project_images/description/character-design.png)
 
@@ -134,9 +132,9 @@ Mr Kalia's silhouette is simple and slender. It can adapt to many different morp
 
 A wide-angle video-projector will prevent the user from creating shadows on the projection canvas.
 
-The animation is projected using Google Chrome in presentation mode. Because of the vector graphic library we use, the application adapt to any resolution and pixel density.
+The animation is projected using Google Chrome in presentation mode. Because of the vector graphic library we use, **the application can adapt to any resolution and pixel density**.
 
-The experience is also be accessible live from the browser, and because only tracking datas are streamed, people with relatively slow connection (edge/3g) can access it as well.
+The experience is also be accessible **live** from the browser, and because only tracking datas are streamed, people with relatively slow connection (edge/3g) can access it as well.
 
 ## Link to prototype
 
@@ -151,18 +149,18 @@ To give everyone access to the prototype, we've recorded some very basic body ge
 - The immediate next step would be to finish the existing scenes, adding more interactions, items and bring in new scenes in order to reach ~20 scenes.
 ![image](project_images/description/next.jpg)
 - Welcome a musician / sound designer in the team to work actively on the sound design of the piece. We expect to eventually adapt some aspect of the project to match the sound designer's work.
-- Explore the interaction possibilities offered by the live streaming, accessible anywhere from a simple web browser. Scalability of the concept, is what has prevented us from including it so far.
+- Explore the remote interaction possibilities offered by the live streaming, accessible anywhere from a simple web browser. Scalability of the concept, is what has prevented us from including it so far.
 
 ## Links to External Libraries
 
-** Skeleton Tracking : **
+**Skeleton Tracking :**
 
 - [OpenFrameworks](http://www.openframeworks.cc)
 - [OpenNI2 & NiTE2](http://www.openni.org)
 - [ofxNi2](https://github.com/satoruhiga/ofxNI2)
 - [ofxLibWebsocket](https://github.com/labatrockwell/ofxLibwebsockets)
 
-** Front-end : **
+**Front-end :**
 
 - [Google Chrome](www.google.com/chrome)
 - [Coffeescript](http://coffeescript.org)
@@ -171,12 +169,12 @@ To give everyone access to the prototype, we've recorded some very basic body ge
 - [Paper.js](http://paperjs.org)
 - [Tween.js](https://github.com/sole/tween.js) 
 
-** Back-end : **
+**Back-end :**
 
 - [NodeJS](http://nodejs.org)
 - [Socket.IO](http://socket.io)
 
-** Tools and workflow : **
+**Tools and workflow :**
 
 - [Cake](http://coffeescript.org/documentation/docs/cake.html)
 - [Paper.js sketchpad](http://sketch.paperjs.org)

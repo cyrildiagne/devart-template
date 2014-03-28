@@ -51,7 +51,7 @@ In the final piece, we would like to include about 20 different scenes that woul
 
 #### → Scene flow
 
-The scenes[1] follow each other that way :
+The scenes follow each other that way :
 
 - Screen 1 : Act number and scene number displayed over a colored background
 - Screen 2 : Scene name and a short phrase providing the context

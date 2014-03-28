@@ -2,13 +2,14 @@ class mk.m11s.tribal.Mask extends mk.m11s.SimpleJointItem
 
   constructor: (@symbol, @joint) ->
     super @symbol, @joint
-    @view.scale 1.2
+    @view.scale 0.8
     @isHandOver = false
     @initY = 0
 
   update: () ->
     @follower.update()
     @view.position.y -= @view.bounds.height*0.35
+    @view.z = @joint.z + 100
 
     p = @view.globalToLocal window.mouse
     

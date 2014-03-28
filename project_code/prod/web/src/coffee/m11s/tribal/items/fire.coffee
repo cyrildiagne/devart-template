@@ -19,7 +19,7 @@ class mk.m11s.tribal.Flame
   update : ->
     @count++
     @time += @speed
-    # @path.style.fillColor.hue += 0.7
+    # @path.style.fillColor.hue += 2
     @path.style.fillColor.saturation -= 0.01
     @path.style.fillColor.brightness += 0.005
     a = @a = Math.cos(@time) * 65 + 15

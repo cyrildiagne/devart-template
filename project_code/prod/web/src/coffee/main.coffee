@@ -8,7 +8,7 @@ currMetamorphoseId = 0
 setup = ->
   setupPaper()
 
-  setMetamorphose 'tribal'
+  setMetamorphose 'birds'
   # setNextMetamorphose()
 
   window.addEventListener('resize', windowResized)
@@ -30,14 +30,16 @@ setupPaper = ->
   view = new paper.Layer()
   view.pivot = new paper.Point 0,0
   view.transformContent = false
+  # view.rotate 90
+  # view.scale 0.8
   
 setupSkeleton = ->
   skeleton = new mk.skeleton.Skeleton window.debug
   skeleton.dataRatio = 640 / 480
   view.addChild(skeleton.view)
 
-  # sync = new mk.skeleton.SkeletonSync skeleton
-  sync = new mk.skeleton.SkeletonSync skeleton, 'http://kikko.local:8080'
+  sync = new mk.skeleton.SkeletonSync skeleton
+  # sync = new mk.skeleton.SkeletonSync skeleton, 'http://kikko.local:8080'
   # sync = new mk.skeleton.SkeletonSync skeleton, 'http://192.158.28.53:80'
   sync.onUserIn = onUserIn
   sync.onUserOut = onUserOut

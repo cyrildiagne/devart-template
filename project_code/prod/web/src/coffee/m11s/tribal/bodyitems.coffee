@@ -19,6 +19,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     part = @getPart 'rightLowerArm'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 3, 0
     @items.push item
+      
 
     # part = @getPart 'pelvis'
     # item = new (m11Class 'FeatherGroup') @settings, part.joints[0], part.joints[1], 6

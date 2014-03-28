@@ -57,7 +57,7 @@ class mk.m11s.bulbs.Rope
     for j in @joints
       jp = new paper.Point(j.x, j.y)
       d = jp.getDistance sp
-      if d < 150
+      if d < 75
         diff = jp.subtract sp
         @items[@handleId].x += diff.x*0.9
         @items[@handleId].y += diff.y*0.9

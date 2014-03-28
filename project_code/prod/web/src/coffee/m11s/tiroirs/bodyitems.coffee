@@ -76,7 +76,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
           if j.isUsed then continue
           fp = fly.view.position
           d = (j.x-fp.x) * (j.x-fp.x) + (j.y-fp.y) * (j.y-fp.y)
-          if d < 50*50
+          if d < 25*25
             fly.joint = j
             fly.stop()
             j.isUsed = true

@@ -67,7 +67,7 @@ class mk.m11s.tribal.FeatherGroup
     d1x = @j1.x - @prev.p1.x
     d1y = @j1.y - @prev.p1.y
     distSquared = d1x * d1x + d1y * d1y
-    speed = Math.min(distSquared / 20, 10)
+    speed = Math.min(distSquared / 5, 10)
 
     f.update(speed) for f in @feathers
 

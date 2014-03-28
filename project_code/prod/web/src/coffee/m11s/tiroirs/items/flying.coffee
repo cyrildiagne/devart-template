@@ -69,11 +69,14 @@ class mk.m11s.tiroirs.Flying
     @leftWing.path.remove()
     @rightWing.path.remove()
 
+  randomPos: ->
+    @dest = new paper.Point (Math.random()-0.5)*400, (Math.random()-0.5)*600 - 200
+
   update : () ->
     if !@isFlying then return
 
     if Math.random() > 0.99
-      @dest = new paper.Point (Math.random()-0.5)*1000, (Math.random()-0.5)*600 - 200
+      @randomPos()
     @velocity = @dest.subtract(@pos).multiply(0.03)
     if @item
       @item.rotation += (@velocity.x * 4 - @item.rotation) * 0.1

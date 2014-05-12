@@ -2,7 +2,7 @@ include base
 
 - page.title = "Les métamorphoses de Mr. Kalia"
 - page.styles = ['main']
-- page.libs = ['paper', 'socket.io', 'tween.min']
+- page.libs = ['paper', 'socket.io', 'tween.min', 'howler.min']
 
 - include('global')
 - include('utils/js_utils')
@@ -51,10 +51,11 @@ include base
 - include('m11s/birds/bodyitems')
 
 - include('assets')
+- include('sounds')
 - include('scene')
 - include('main')
 
 +template()
-  p.instruction 
-    | press 'spacebar' or touch screen to set next metamorphose
-    | press 's' to toggle debug draw
+  //- p.instruction 
+    //- | press 'spacebar' or touch screen to set next metamorphose
+    //- | press 's' to toggle debug draw

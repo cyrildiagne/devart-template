@@ -8,7 +8,7 @@ class mk.m11s.base.Perso
     @morph  = null
     @items  = null
 
-  setMetamorphose : (@settings, @assets) ->
+  setMetamorphose : (@settings, @assets, @sounds) ->
     @clean()
     @setupJoints 1000
     @setupParts()
@@ -31,7 +31,7 @@ class mk.m11s.base.Perso
     @morph = new MorphClass @joints, @settings.morph
 
   setupItems : () ->
-    @items = new (m11Class 'BodyItems') @settings, @assets, @parts, @joints
+    @items = new (m11Class 'BodyItems') @settings, @assets, @sounds, @parts, @joints
     for item in @items.items
       @view.addChild item.view
 

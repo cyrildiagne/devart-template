@@ -1,6 +1,6 @@
 class mk.m11s.base.BodyItems
 
-  constructor : (@settings, @assets, @parts, @joints) ->
+  constructor : (@settings, @assets, @sounds, @parts, @joints) ->
     @items = []
     @setupItems()
 

@@ -6,15 +6,16 @@ sync     = null
 currMetamorphoseId = 0
 
 setup = ->
+
   setupPaper()
 
-  setMetamorphose 'birds'
+  setMetamorphose 'tribal'
   # setNextMetamorphose()
 
-  window.addEventListener('resize', windowResized)
-  window.addEventListener('keydown', onKeyDown)
-  window.addEventListener('touchstart', onTouchStart)
-  window.addEventListener('mousemove', onMouseMove)
+  window.addEventListener 'resize', windowResized
+  window.addEventListener 'keydown', onKeyDown
+  window.addEventListener 'touchstart', onTouchStart
+  window.addEventListener 'mousemove', onMouseMove
 
   windowResized()
 
@@ -102,8 +103,8 @@ onKeyDown = (ev) ->
   switch ev.keyCode
     when 83 # 's'
       toggleDebug()
-    when 32 # spacebar
-      setNextMetamorphose()
+    # when 32 # spacebar
+      # setNextMetamorphose()
 
 onTouchStart = (ev) ->
   setNextMetamorphose()
@@ -112,11 +113,11 @@ onMouseMove = (ev) ->
   window.mouse.x = ev.clientX
   window.mouse.y = ev.clientY
 
-onFrame = ->
+onFrame = (ev) ->
   TWEEN.update()
   skeleton.update()
   scene.setPersoPose skeleton
-  scene.update()
+  scene.update ev.delta
 
 # NiTE events
 

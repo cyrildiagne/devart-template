@@ -4,6 +4,11 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     @addHead()
     @addFeathers()
     @addFire()
+    # for k,l of @sounds.loops.tribal
+      # if k != 'basse_b' && k != 'deltafeu_b'
+      # l.play()
+      # if(k != 'tactac')
+      #   l.volume 0
     
   addHead: ->
     symbol = @assets.symbols.tribal['head.svg']
@@ -19,8 +24,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     part = @getPart 'rightLowerArm'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 3, 0
     @items.push item
-      
-
+    
     # part = @getPart 'pelvis'
     # item = new (m11Class 'FeatherGroup') @settings, part.joints[0], part.joints[1], 6
     # @items.push item
@@ -54,3 +58,6 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     rh_pct = (rh.y-torso.y) / (head.y-torso.y) * 0.5
     pct = Math.min(Math.max(0, lh_pct+rh_pct), 1)
     @fire.setAmp pct
+
+    snd = @sounds.loops.tribal.deltafeu_b
+    snd.volume pct+0.2

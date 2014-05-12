@@ -2,6 +2,7 @@ class mk.m11s.base.Settings
   
   constructor: ->
     @setupAssets()
+    @setupSounds()
     @setupMorph()
     @setupRadius()
     @setupPalette()
@@ -10,6 +11,10 @@ class mk.m11s.base.Settings
 
   setupAssets: ->
     @assets = []
+
+  setupSounds: ->
+    @loops = []
+    @oneshots = []
 
   setupMorph : ->
     @morph =

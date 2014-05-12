@@ -1,8 +1,6 @@
 _by Béatrice_
 
-
 ### Set-up sketches
-
 
 **A/ 'Steps' set-up** 
 
@@ -15,9 +13,7 @@ _ground view_
 ![image](../project_images/set-up_sketches/01_dispositif_coupe.png)
 _cut view_
 
-
 Then we tried to improve this idea, to let all visitors access behind the screen (accessibility for persons with reduced mobility…).
-
 
 ![image](../project_images/set-up_sketches/02_dispositif_perspective_A.png)
 _perspective view_

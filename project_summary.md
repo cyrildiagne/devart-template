@@ -18,7 +18,7 @@ Béatrice and Cyril are both members of the collective **lab212**. From UX desig
 
 ## Description
 
-![image](project_images/id/logo_02.jpg)
+![image](./project_images/id/logo_02.jpg)
 
 **_Les métamorphoses de Mr. Kalia_ (M. Kalia metamorphosis) is an interactive poetic adventure and a study of the concept of metamorphosis, the natural capacity of animals to abruptly change their body structure. To explore this topic, we invite the audience to personify Mr. Kalia as he goes through many surrealistic metamorphoses.**
 

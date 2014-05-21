@@ -14,4 +14,4 @@ We're still discussing this architecture wit the different teams, and it might c
 
 Big props to [Paul Kinlan](http://paul.kinlan.me/) for all his insights and help putting this together.
 
-![image](../project_images/20140512_technical_schema/technical_schema.jpg)
+![image](../project_images/20140512_technical_schema/technical_schema.png)

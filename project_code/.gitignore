@@ -1,3 +1,5 @@
 prod/web/bin/js/*
 prod/web/res/sounds/*
+prod/web/bin/css/*
+prod/web/bin/*.html
 !prod/web/bin/js/vendor

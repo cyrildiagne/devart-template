@@ -2,12 +2,13 @@ view     = null
 scene    = null
 skeleton = null
 sync     = null
+light    = null
 
 currMetamorphoseId = 0
 
 setup = ->
-
   setupPaper()
+  startLightAnimation()
 
   setMetamorphose 'tribal'
   # setNextMetamorphose()
@@ -18,6 +19,16 @@ setup = ->
   window.addEventListener 'mousemove', onMouseMove
 
   windowResized()
+
+startLightAnimation = ->
+  light = new ArtNetClient '192.168.0.2', 6454, ->
+    i = 0
+    speed = 0.05
+    setInterval ->
+      i += Math.PI / 2 * speed
+      val = Math.floor( (1 + Math.sin(i)) * 127 )
+      # light.send([0])
+    , 1000/30
 
 setupPaper = ->
   canvas = window.canvas = document.createElement('canvas')
@@ -39,14 +50,14 @@ setupSkeleton = ->
   skeleton.dataRatio = 640 / 480
   view.addChild(skeleton.view)
 
-  # sync = new mk.skeleton.SkeletonSync skeleton
-  # sync = new mk.skeleton.SkeletonSync skeleton, 'http://kikko.local:8080'
-  sync = new mk.skeleton.SkeletonSync skeleton, 'http://192.158.28.53:80'
+  sync = new mk.skeleton.SkeletonSync skeleton, 7000
   sync.onUserIn = onUserIn
   sync.onUserOut = onUserOut
   sync.onRatio = onRatio
   sync.onDataUpdated = onDataUpdated
   sync.connect()
+
+  windowResized()
 
 # Global Setters
 
@@ -103,8 +114,8 @@ onKeyDown = (ev) ->
   switch ev.keyCode
     when 83 # 's'
       toggleDebug()
-    # when 32 # spacebar
-      # setNextMetamorphose()
+    when 32 # spacebar
+      setNextMetamorphose()
 
 onTouchStart = (ev) ->
   setNextMetamorphose()
@@ -129,6 +140,7 @@ onUserOut = (userId) ->
 
 onDataUpdated = () ->
   # perso.setPoseFromSkeleton skeleton
-
+  # console.log skeleton.toString()
+  # console.log skeleton.width
 
 setup()

@@ -17,7 +17,7 @@ class mk.Scene
     @settings = new (m11Class 'Settings')()
 
     @assets.load type, @settings.assets, =>
-      @sounds.load type, @settings.loops, @settings.oneshots, =>
+      # @sounds.load type, @settings.loops, @settings.oneshots, =>
 
         if @perso is null or @perso.type isnt type
           if @perso
@@ -27,12 +27,12 @@ class mk.Scene
 
         @perso.setMetamorphose @settings, @assets, @sounds
         
-        setTimeout @onMesure, 375 * 7
-        l.play() for k,l of @sounds.loops.tribal
-        for k,l of @sounds.loops.tribal
-          if k != 'tactac'
-            l.volume 0
-        @sounds.loops.tribal.deltafeu_b.volume 0
+        # setTimeout @onMesure, 375 * 7
+        # l.play() for k,l of @sounds.loops.tribal
+        # for k,l of @sounds.loops.tribal
+        #   if k != 'tactac'
+        #     l.volume 0
+        # @sounds.loops.tribal.deltafeu_b.volume 0
 
         @isLoading = false
         if @onSceneReady
@@ -49,17 +49,17 @@ class mk.Scene
     @delta += delta
 
   onMesure : =>
-      @numMesure++
-      pos = @sounds.loops.tribal.basse_a.pos() * 1000
-      if(@numMesure%4==0)
-        @rdmVolume()
-      if @numMesure > 4
-        violon = @sounds.oneshots.tribal.violon_c
-        if Math.random()>0.9 and violon.pos() is 0
-          violon.play()
+      # @numMesure++
+      # pos = @sounds.loops.tribal.basse_a.pos() * 1000
+      # if(@numMesure%4==0)
+      #   @rdmVolume()
+      # if @numMesure > 4
+      #   violon = @sounds.oneshots.tribal.violon_c
+      #   if Math.random()>0.9 and violon.pos() is 0
+      #     violon.play()
 
-      @delta = 0
-      setTimeout @onMesure, (@numMesure+1)*375*7 - pos
+      # @delta = 0
+      # setTimeout @onMesure, (@numMesure+1)*375*7 - pos
 
   rdmVolume : ->
     numSoundOn = 0

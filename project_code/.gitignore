@@ -1,2 +1,3 @@
 prod/web/bin/js/*
+prod/web/res/sounds/*
 !prod/web/bin/js/vendor

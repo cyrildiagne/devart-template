@@ -59,5 +59,5 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     pct = Math.min(Math.max(0, lh_pct+rh_pct), 1)
     @fire.setAmp pct
 
-    snd = @sounds.loops.tribal.deltafeu_b
-    snd.volume pct+0.2
+    #snd = @sounds.loops.tribal.deltafeu_b
+    #snd.volume pct+0.2

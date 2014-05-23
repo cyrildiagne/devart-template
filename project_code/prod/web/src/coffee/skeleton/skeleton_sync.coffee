@@ -1,44 +1,74 @@
 class mk.skeleton.SkeletonSync
   
-  constructor : (@skeleton, @endpoint = 'local') ->
-    @socket = null
-    @reconnecting = false
-    @onUserIn = null
-    @onUserOut = null
-    @onRatio = null
+  constructor : (@skeleton, @port) ->
+    @socketId = -1
+
+    @oscParser = null
+    @data = null
+
+    @currentId = -1
+
+    @onUserIn      = null
+    @onUserOut     = null
+    @onRatio       = null
     @onDataUpdated = null
 
   connect : () ->
-    if @endpoint is 'local'
-      @socket = new WebSocket 'ws://kikko.local:9092'
-      @socket.binaryType = 'arraybuffer'
-      @socket.onopen = @onSocketOpened
-      @socket.onclose = @onSocketClosed
-      @socket.onmessage = (msg) =>
-        @onSocketMessage(msg.data)
+    if chrome && chrome.sockets
+      @connectUDP()
     else
-      @socket = io.connect @endpoint
-      @socket.on 'connect', @onSocketOpened
-      @socket.on 'message', @onSocketMessage
-      # @socket.on 'disconnect', @onSocketClosed
-      @socket.on 'skeleton', (data) =>
-        if data
-          @skeleton.data = data
+      @connectLocalServer()
+
+
+# --------------------------------------------
+# MODE 1 - Chrome App + Windows
+# CHROME APP <-- UDP(OSC) <-- WINDOWS + KINECT
+# --------------------------------------------
+
+  connectUDP : () ->
+    @oscParser = new OSCParser()
+    udp = chrome.sockets.udp
+    udp.create {}, (socketInfo) =>
+      @socketId = socketInfo.socketId
+      udp.onReceive.addListener @onUDPReceive
+      udp.bind @socketId, '0.0.0.0', @port, (result) =>
+        if result < 0
+          console.log "SkeletonSync - Error binding socket."
+          return
+        else
+          console.log "SkeletonSync - udp listening on port " + @port
+
+  onUDPReceive : (info) =>
+    if (info.socketId != @socketId)
+      return
+    
+    setTimeout () => # get out of udp event thread to get error messages
+      @oscParser.parse info.data, 0, (msg) =>
+        if msg.path is '/skeleton'
+          @currentId = msg.params.shift()
+          @skeleton.data = msg.params
           if @onDataUpdated
             onDataUpdated()
+        else
+          console.log msg
+    , 1
 
-  onSocketIOMessage : (data) =>
-    # ab = new ArrayBuffer(data.length*2)
-    # byteview = new Uint16Array ab
-    # for i in [0...data.length]
-    #   byteview[i] = data.charCodeAt[i]
-    # floatview = new Float32Array ab
-    # console.log (typeof data)
-    console.log 'message'
-    # skeleton.data = data
-    # if @onDataUpdated
-    #     onDataUpdated()
-    # console.log floatview.length
+
+# ----------------------------------------------------------
+# MODE 2 - Browser + NodeJS
+# WEB BROWSER <-- SOCKET <-- LOCAL NODEJS <-- FILE STREAMING
+# ----------------------------------------------------------
+
+  connectLocalServer : () ->
+    @socket = io.connect 'kikko.local:'+@port
+    @socket.on 'connect', @onSocketOpened
+    @socket.on 'message', @onSocketMessage
+    # @socket.on 'disconnect', @onSocketClosed
+    @socket.on 'skeleton', (data) =>
+      if data
+        @skeleton.data = data
+        if @onDataUpdated
+          onDataUpdated()
 
   onSocketOpened : () =>
     console.log "websocket connected"
@@ -52,36 +82,19 @@ class mk.skeleton.SkeletonSync
     @reconnecting = true
 
   onSocketMessage : (data) =>
-    # console.log data
-    # console.log( data instanceof Blob )
-    # console.log( msg instanceof ArrayBuffer )
-    # data = b64_buffer.decode data
-    # data = new ArrayBuffer data
-    # data = new Int8Array msg
-    # console.log (data[0])
-    # buf = new ArrayBuffer()
-    # return
-    if (data instanceof ArrayBuffer)
-      @skeleton.data = new Float32Array( data )
-      if @onDataUpdated
-        onDataUpdated()
-    else
-      if data is '/skeleton'
-        #...
+    cmd = data.split '/'
+    cmd.shift()
+    switch cmd[0]
+      when 'user'
+        if cmd[1] is 'in'
+          if@onUserIn
+            @onUserIn(cmd[2])
+        else
+          if @onUserOut
+            @onUserOut(cmd[2])
+      when 'ratio'
+        if @onRatio
+          @onRatio parseFloat(cmd[1])/parseFloat(cmd[2])
       else
-        cmd = data.split '/'
-        cmd.shift()
-        switch cmd[0]
-          when 'user'
-            if cmd[1] is 'in'
-              if@onUserIn
-                @onUserIn(cmd[2])
-            else
-              if @onUserOut
-                @onUserOut(cmd[2])
-          when 'ratio'
-            if @onRatio
-              @onRatio parseFloat(cmd[1])/parseFloat(cmd[2])
-          else
-            console.log data
-    
+        console.log data
+  #   

@@ -2,7 +2,7 @@ fs = require 'fs'
 {Buffer} = require 'buffer'
 io = require 'socket.io'
 
-port = 8080
+port = 7000
 buffer = new Buffer 180 # 15 joints * 3 axis * 4 bytes
 server = null
 file_data = null

@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+
+  "name": "Artnet (udp) test",
+  "description": "test",
+  "version": "0.1",
+  "minimum_chrome_version": "23",
+  "app": {
+    "background": {
+      "scripts": ["chrome_app.js"]
+    }
+  },
+  "sockets": {
+    "udp": {
+      "bind" : "",
+      "send" : ""
+    }
+  }
+}

@@ -12,6 +12,7 @@ mk =
   m11s :
     base : {}
   skeleton : {}
+  playback : {}
   utils : {}
 
 for m in metamorphoses

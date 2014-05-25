@@ -3,25 +3,29 @@ scene    = null
 skeleton = null
 sync     = null
 light    = null
+playback = null
 
 accumulator = 0
 currMetamorphoseId = 0
 totalTime = 0
-bPause = false
 
-setup = ->
+setup = (filename) ->
   setupPaper()
-  startLightAnimation()
-
-  setMetamorphose 'bulbs'
-  # setNextMetamorphose()
 
   window.addEventListener 'resize', windowResized
   window.addEventListener 'keydown', onKeyDown
-  window.addEventListener 'touchstart', onTouchStart
   window.addEventListener 'mousemove', onMouseMove
 
-  windowResized()
+  setupSkeleton()
+
+  if filename
+    setupPlayback filename
+  else 
+    sync = new mk.skeleton.SkeletonSync skeleton, 7000
+    sync.connect()
+    setMetamorphose 'birds'
+
+  # dmxLightAnimation()
 
 setupPaper = ->
   canvas = window.canvas = document.getElementById 'paperjs-canvas'
@@ -42,14 +46,12 @@ setupSkeleton = ->
   skeleton.setDataRatio 640 / 480
   view.addChild(skeleton.view)
 
-  sync = new mk.skeleton.SkeletonSync skeleton, 7000
-  sync.onUserIn = onUserIn
-  sync.onUserOut = onUserOut
-  sync.onRatio = onRatio
-  sync.onDataUpdated = onDataUpdated
-  sync.connect()
-
   windowResized()
+
+setupPlayback = (filename) ->
+  playback = new mk.playback.Playback skeleton
+  playback.load filename, ->
+    setMetamorphose 'birds'
 
 # Global Setters
 
@@ -72,25 +74,17 @@ setMetamorphose = (m) ->
 toggleDebug = () ->
   window.debug = !window.debug
   skeleton.setDebug window.debug
-  # skeleton.update()
   skeleton.view.bringToFront()
   scene.setDebug window.debug
 
 onSceneReady = () ->
   view.addChild scene.perso.view
   if paper.view.onFrame is undefined
-    setupSkeleton()
     paper.view.onFrame = onFrame
-    sceneTime = 0
   if window.debug
     scene.setDebug true
 
 # System Events
-
-onRatio = (ratio) ->
-  skeleton.dataRatio = ratio
-  windowResized()
-  console.log 'ratio set to '+ ratio
 
 windowResized = (ev) ->
   v =
@@ -108,20 +102,18 @@ onKeyDown = (ev) ->
     when 32 # spacebar
       setNextMetamorphose()
 
-onTouchStart = (ev) ->
-  setNextMetamorphose()
-
 onMouseMove = (ev) ->
   window.mouse.x = ev.clientX
   window.mouse.y = ev.clientY
 
 onFrame = (ev) ->
 
-  if bPause then return
-
   if ev.delta < 0.5
     window.dt = ev.delta
   else console.log "resumed"
+
+  if playback
+    playback.update window.dt
 
   dt = 1 / 50
   accumulator += window.dt
@@ -129,27 +121,14 @@ onFrame = (ev) ->
   while accumulator >= dt
     totalTime += dt * 1000
     TWEEN.update totalTime
-    skeleton.update dt
+    skeleton.update dt*7
     scene.setPersoPose skeleton
     scene.update dt
     accumulator -= dt
 
-# NiTE events
-
-onUserIn = (userId) ->
-  console.log "user #{userId} entered"
-
-onUserOut = (userId) ->
-  console.log "user #{userId} exited"
-
-onDataUpdated = () ->
-  # perso.setPoseFromSkeleton skeleton
-  # console.log skeleton.toString()
-  # console.log skeleton.width
-
 # MISCELLANEOUS
 
-startLightAnimation = ->
+dmxLightAnimation = ->
   light = new ArtNetClient '192.168.0.2', 6454, ->
     i = 0
     speed = 0.05
@@ -159,5 +138,6 @@ startLightAnimation = ->
       light.send([val])
     , 1000/30
 
-setup()
+setup 'saved/skel.bin'
+# setup()
 

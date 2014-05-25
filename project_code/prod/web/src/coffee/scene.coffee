@@ -48,27 +48,27 @@ class mk.Scene
     @perso.update dt
     @delta += dt
 
-  onMesure : =>
-      # @numMesure++
-      # pos = @sounds.loops.tribal.basse_a.pos() * 1000
-      # if(@numMesure%4==0)
-      #   @rdmVolume()
-      # if @numMesure > 4
-      #   violon = @sounds.oneshots.tribal.violon_c
-      #   if Math.random()>0.9 and violon.pos() is 0
-      #     violon.play()
+  # onMesure : =>
+  #     @numMesure++
+  #     pos = @sounds.loops.tribal.basse_a.pos() * 1000
+  #     if(@numMesure%4==0)
+  #       @rdmVolume()
+  #     if @numMesure > 4
+  #       violon = @sounds.oneshots.tribal.violon_c
+  #       if Math.random()>0.9 and violon.pos() is 0
+  #         violon.play()
 
-      # @delta = 0
-      # setTimeout @onMesure, (@numMesure+1)*375*7 - pos
+  #     @delta = 0
+  #     setTimeout @onMesure, (@numMesure+1)*375*7 - pos
 
-  rdmVolume : ->
-    numSoundOn = 0
-    for k,l of @sounds.loops.tribal
-      if k is 'deltafeu_b' then continue
-      v = Math.random()
-      if v < 0.7
-        v = 0
-      else numSoundOn++
-      l.volume v
-    if numSoundOn is 0
-      @rdmVolume()
+  # rdmVolume : ->
+  #   numSoundOn = 0
+  #   for k,l of @sounds.loops.tribal
+  #     if k is 'deltafeu_b' then continue
+  #     v = Math.random()
+  #     if v < 0.7
+  #       v = 0
+  #     else numSoundOn++
+  #     l.volume v
+  #   if numSoundOn is 0
+  #     @rdmVolume()

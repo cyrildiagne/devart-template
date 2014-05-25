@@ -6,6 +6,8 @@ light    = null
 
 accumulator = 0
 currMetamorphoseId = 0
+totalTime = 0
+bPause = false
 
 setup = ->
   setupPaper()
@@ -52,12 +54,14 @@ setupSkeleton = ->
 # Global Setters
 
 setNextMetamorphose = ->
+
   if(++currMetamorphoseId >= metamorphoses.length)
     currMetamorphoseId = 0
   m = metamorphoses[currMetamorphoseId]
   setMetamorphose m
 
 setMetamorphose = (m) ->
+  setSeed('test')
   window.metamorphose = m
   if scene
     scene.setMetamorphose m
@@ -77,6 +81,7 @@ onSceneReady = () ->
   if paper.view.onFrame is undefined
     setupSkeleton()
     paper.view.onFrame = onFrame
+    sceneTime = 0
   if window.debug
     scene.setDebug true
 
@@ -111,16 +116,19 @@ onMouseMove = (ev) ->
   window.mouse.y = ev.clientY
 
 onFrame = (ev) ->
-  TWEEN.update()
-  
-  if ev.delta < 0.1
+
+  if bPause then return
+
+  if ev.delta < 0.5
     window.dt = ev.delta
   else console.log "resumed"
-  
+
   dt = 1 / 50
   accumulator += window.dt
   i = 0
   while accumulator >= dt
+    totalTime += dt * 1000
+    TWEEN.update totalTime
     skeleton.update dt
     scene.setPersoPose skeleton
     scene.update dt

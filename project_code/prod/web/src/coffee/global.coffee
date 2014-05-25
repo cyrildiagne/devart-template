@@ -21,8 +21,18 @@ for m in metamorphoses
 window.viewport = {width:800, height:1280}
 window.metamorphose = null
 window.debug = false
-
 window.mouse = {x:0, y:0}
+
+window.seed = null
+window.rngs = {}  
+
+setSeed = (seed) ->
+  window.seed = seed
+  window.rngs = {}  
+
+window.rng = (key) ->
+  rng_ = window.rngs[key] || window.rngs[key] = new Math.seedrandom(window.seed+key)
+  return rng_()
 
 # global functions
 m11Class = (className) =>

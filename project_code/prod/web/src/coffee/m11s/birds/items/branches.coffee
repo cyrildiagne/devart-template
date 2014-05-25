@@ -22,18 +22,19 @@ class mk.m11s.birds.Branches
     @follower = new mk.m11s.PartEdgeFollower @view, @j1, @j2, @pct
     @branches = []
     @trackPoints = []
-    @interval = setInterval @newBranchTick, @timeBetweenBranches
+    @interval = 0
     @addBranch()
 
     @velocity = 0
     @prevX = @j1.x
     @prevY = @j1.y
 
-  clean: ->
-    clearInterval @interval
+  update: (dt) ->
+    @interval+=dt*1000
+    if @interval >= @timeBetweenBranches
+      @interval -= @timeBetweenBranches
+      @newBranchTick()
 
-  update: (speed) ->
-    
     @view.z = @j2.z * @pct + @j1.z * (1-@pct)
 
     @follower.update()
@@ -72,7 +73,7 @@ class mk.m11s.birds.Branches
     tries = 0
     a = 0
     loop
-      rdmSign = Math.floor(Math.random()*2+1)*2-3
+      rdmSign = Math.floor(rng('getValidAngle')*2+1)*2-3
       a = 30 * rdmSign - 90
       break if ++tries > 10 || Math.abs(a-parentAngle) > 1
     return a
@@ -82,7 +83,7 @@ class mk.m11s.birds.Branches
     startVec = new paper.Point()
     startVec.angle = parent.vec.angle
     loop
-      startVec.length = parent.vec.length * (Math.random()*0.5+0.5)
+      startVec.length = parent.vec.length * (rng('getValidStart')*0.5+0.5)
       start = parent.start.add(startVec)
       break if ++tries > 10 || @hasFreeSpace(start, a)
     return startVec
@@ -94,15 +95,15 @@ class mk.m11s.birds.Branches
     parent = null
 
     if @branches.length
-      parent   = @branches.random()
+      parent   = @branches.seedRandom('addBranch1')
       a        = @getValidAngle parent.vec.angle
       startVec = @getValidStart parent, a
       start    = parent.start.add startVec
     else
       start = new paper.Point(0, 0)
-      a = @firstBranchAngles.random()
+      a = @firstBranchAngles.seedRandom('addBranch2')
     
-    maxLength = @minBranchLength + Math.random() * (@maxBranchLength-@minBranchLength)
+    maxLength = @minBranchLength + rng('addBranch3') * (@maxBranchLength-@minBranchLength)
     maxLength *= 1 - ( (@branches.length+1) / @maxBranches)
     maxLength = Math.max(maxLength, @minBranchLength)
 
@@ -128,10 +129,10 @@ class mk.m11s.birds.Branches
 
   addTrackPoint: (view) ->
 
-    parent   = @branches.random()
+    parent   = @branches.seedRandom('addTrackPoint1')
     startVec = new paper.Point()
     startVec.angle = parent.vec.angle
-    startVec.length = parent.vec.length * (Math.random()*0.5+0.5)
+    startVec.length = parent.vec.length * (rng('addTrackPoint2')*0.5+0.5)
     start = parent.start.add startVec
 
     @view.addChild view

@@ -4,10 +4,12 @@ skeleton = null
 sync     = null
 light    = null
 playback = null
+record   = null
 
 accumulator = 0
 currMetamorphoseId = 0
 totalTime = 0
+timestamp = 0
 
 setup = (filename) ->
   setupPaper()
@@ -21,9 +23,7 @@ setup = (filename) ->
   if filename
     setupPlayback filename
   else 
-    sync = new mk.skeleton.SkeletonSync skeleton, 7000
-    sync.connect()
-    setMetamorphose 'birds'
+    setupLive()
 
   # dmxLightAnimation()
 
@@ -49,21 +49,27 @@ setupSkeleton = ->
   windowResized()
 
 setupPlayback = (filename) ->
-  playback = new mk.playback.Playback skeleton
-  playback.load filename, ->
-    setMetamorphose 'birds'
+  playback = new mk.playback.Playback skeleton, onPlaybackComplete
+  playback.load filename, (seed, m11) ->
+    setSeed seed
+    setMetamorphose m11
+
+setupLive = ->
+  sync = new mk.skeleton.SkeletonSync skeleton, 7000
+  sync.connect true
+  setSeed new Date().getTime()
+  setMetamorphose 'birds'
+  record = new mk.playback.Record()
 
 # Global Setters
 
 setNextMetamorphose = ->
-
   if(++currMetamorphoseId >= metamorphoses.length)
     currMetamorphoseId = 0
   m = metamorphoses[currMetamorphoseId]
   setMetamorphose m
 
 setMetamorphose = (m) ->
-  setSeed('test')
   window.metamorphose = m
   if scene
     scene.setMetamorphose m
@@ -78,11 +84,21 @@ toggleDebug = () ->
   scene.setDebug window.debug
 
 onSceneReady = () ->
+  console.log 'onSceneReady'
   view.addChild scene.perso.view
-  if paper.view.onFrame is undefined
+  if !paper.view.onFrame
     paper.view.onFrame = onFrame
+
   if window.debug
     scene.setDebug true
+
+  if record
+    record.begin 
+      timestamp : window.seed
+      m11  : window.metamorphose
+
+onPlaybackComplete = () ->
+  # ...
 
 # System Events
 
@@ -98,7 +114,9 @@ windowResized = (ev) ->
 onKeyDown = (ev) ->
   switch ev.keyCode
     when 83 # 's'
-      toggleDebug()
+      # toggleDebug()
+      if record
+        record.end()
     when 32 # spacebar
       setNextMetamorphose()
 
@@ -107,21 +125,30 @@ onMouseMove = (ev) ->
   window.mouse.y = ev.clientY
 
 onFrame = (ev) ->
-
   if ev.delta < 0.5
     window.dt = ev.delta
-  else console.log "resumed"
+  update window.dt
+
+update = (deltaTime) ->
+
+  deltaTime *= 1000
 
   if playback
-    playback.update window.dt
+    playback.update deltaTime
+  else
+    record.update deltaTime
+    if sync.hasNewData
+      skeleton.setData sync.data
+      record.addFrame sync.data
+      sync.hasNewData = false
 
-  dt = 1 / 50
-  accumulator += window.dt
+  dt = 1000 / 50
+  accumulator += deltaTime
   i = 0
   while accumulator >= dt
-    totalTime += dt * 1000
+    totalTime += dt
     TWEEN.update totalTime
-    skeleton.update dt*7
+    skeleton.update dt*0.007
     scene.setPersoPose skeleton
     scene.update dt
     accumulator -= dt
@@ -136,8 +163,8 @@ dmxLightAnimation = ->
       i += Math.PI / 2 * speed
       val = Math.floor( (1 + Math.sin(i)) * 127 )
       light.send([val])
-    , 1000/30
+    ,1000/30
 
-setup 'saved/skel.bin'
+setup '1401061237730_018304_birds'
 # setup()
-
+     

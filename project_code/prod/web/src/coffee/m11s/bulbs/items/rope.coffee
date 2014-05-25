@@ -44,7 +44,7 @@ class mk.m11s.bulbs.Rope
     @items[0].isPinned = true
 
   update: (delta) ->
-    @updatePhysics delta, @ropeLength / @nbItems
+    @updatePhysics delta * 0.001, @ropeLength / @nbItems
     for item,i in @items
         @path.segments[i].point.x = item.x
         @path.segments[i].point.y = item.y

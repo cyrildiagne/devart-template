@@ -30,7 +30,7 @@ class mk.m11s.birds.Branches
     @prevY = @j1.y
 
   update: (dt) ->
-    @interval+=dt*1000
+    @interval+=dt
     if @interval >= @timeBetweenBranches
       @interval -= @timeBetweenBranches
       @newBranchTick()

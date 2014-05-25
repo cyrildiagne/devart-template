@@ -69,7 +69,7 @@ class mk.skeleton.Skeleton
     @setupJoints()
     @setupBones()
     @setDebug debug
-
+    
   setupJoints : () ->
     @joints = []
     @jointsGrp = new paper.Group()
@@ -90,6 +90,9 @@ class mk.skeleton.Skeleton
 
   setDebug : (@bDebug) ->
     @view.visible = @bDebug
+
+  setData : (data) ->
+    @data = data
 
   setDataRatio : (@dataRatio) ->
     @height = window.viewport.height * 0.5

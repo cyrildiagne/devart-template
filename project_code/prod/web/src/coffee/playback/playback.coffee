@@ -1,6 +1,6 @@
 class mk.playback.Playback
   
-  constructor : (@skeleton) ->
+  constructor : (@skeleton, @onComplete) ->
     @data = null
     @position = 0
     @numFrames = 0
@@ -8,8 +8,9 @@ class mk.playback.Playback
     @currDeltaTime = 0
 
   load : (@filepath, callback) ->
+
     r = new XMLHttpRequest()
-    r.open("GET", @filepath)
+    r.open 'GET', 'saved/' + @filepath
     r.responseType = "arraybuffer"
     r.onload = () =>
       if r.status is 200
@@ -17,7 +18,10 @@ class mk.playback.Playback
         @numFrames = @data.length / (3*15)
         console.log 'PLAYBACK > ' + @filepath + ' loaded (' + @numFrames + ' frames)'
         @update 0
-        if callback then callback()
+
+        arr = @filepath.split '_'
+        if callback 
+          callback arr[0], arr[2]
     r.send()
 
   update : (dt) ->
@@ -30,7 +34,10 @@ class mk.playback.Playback
 
       @currDeltaTime -= @nextFrameDeltaTime
 
-      @nextFrameDeltaTime = 1/30
+      @nextFrameDeltaTime = 1000/30
       @position++
       if (@position > @numFrames)
+        if @onComplete
+          console.log 'PLAYBACK > complete'
+          @onComplete()
         @position = 0

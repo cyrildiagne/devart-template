@@ -1,6 +1,3 @@
-# FILE DEPRECATED
-# NOW LOADING DATA DIRECTLY FROM THE WEB APP
-
 fs = require 'fs'
 {Buffer} = require 'buffer'
 io = require 'socket.io'
@@ -17,7 +14,7 @@ connectCounter = 0
 setup_server = () ->
   server = io.listen port
   server.set 'log level', 2
-  server.set 'origins', 'kikko.fr:*, localhost:*, kikko.local:*'
+  server.set 'origins', 'kikko.fr:*, localhost:*, kikko.local:*, dncfjhdhkgmmibnnhdkkfknledjdemlk:*'
   server.on 'connection', on_user_connected
   console.log "listening on port #{port}"
 

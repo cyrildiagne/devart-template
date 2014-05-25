@@ -7,14 +7,15 @@ class mk.skeleton.SkeletonSync
     @data = null
 
     @currentId = -1
+    @hasNewData = false
 
     @onUserIn      = null
     @onUserOut     = null
     @onRatio       = null
     @onDataUpdated = null
 
-  connect : () ->
-    if chrome && chrome.sockets
+  connect : (forceSocketUse=false) ->
+    if chrome && chrome.sockets && !forceSocketUse
       @connectUDP()
     else
       @connectLocalServer()
@@ -46,7 +47,8 @@ class mk.skeleton.SkeletonSync
       @oscParser.parse info.data, 0, (msg) =>
         if msg.path is '/skeleton'
           @currentId = msg.params.shift()
-          @skeleton.data = msg.params
+          @data = msg.params
+          @hasNewData = true
           if @onDataUpdated
             onDataUpdated()
         else
@@ -66,7 +68,8 @@ class mk.skeleton.SkeletonSync
     # @socket.on 'disconnect', @onSocketClosed
     @socket.on 'skeleton', (data) =>
       if data
-        @skeleton.data = data
+        @data = new Float32Array(data)
+        @hasNewData = true
         if @onDataUpdated
           onDataUpdated()
 

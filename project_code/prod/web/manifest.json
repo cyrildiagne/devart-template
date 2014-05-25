@@ -10,6 +10,10 @@
       "scripts": ["chrome_app.js"]
     }
   },
+  "permissions": [
+    {"fileSystem": ["write", "retainEntries", "directory"]},
+    "storage"
+  ],
   "sockets": {
     "udp": {
       "bind" : "",

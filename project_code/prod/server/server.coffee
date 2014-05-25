@@ -57,6 +57,7 @@ get_floatarray = (buffer) ->
     arr[i] = floatview[i]
 
 start_broadcast = ->
+  file_position = 0
   if interval is null
     interval = setInterval broadcast_next_pose, 1000/30
     console.log 'broadcast started'

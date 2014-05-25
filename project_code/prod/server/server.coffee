@@ -1,3 +1,6 @@
+# FILE DEPRECATED
+# NOW LOADING DATA DIRECTLY FROM THE WEB APP
+
 fs = require 'fs'
 {Buffer} = require 'buffer'
 io = require 'socket.io'

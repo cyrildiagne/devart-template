@@ -21,16 +21,6 @@ setup = ->
 
   windowResized()
 
-startLightAnimation = ->
-  light = new ArtNetClient '192.168.0.2', 6454, ->
-    i = 0
-    speed = 0.05
-    setInterval ->
-      i += Math.PI / 2 * speed
-      val = Math.floor( (1 + Math.sin(i)) * 127 )
-      # light.send([0])
-    , 1000/30
-
 setupPaper = ->
   canvas = window.canvas = document.getElementById 'paperjs-canvas'
   canvas.setAttribute 'data-paper-hidpi', ''
@@ -149,4 +139,17 @@ onDataUpdated = () ->
   # console.log skeleton.toString()
   # console.log skeleton.width
 
+# MISCELLANEOUS
+
+startLightAnimation = ->
+  light = new ArtNetClient '192.168.0.2', 6454, ->
+    i = 0
+    speed = 0.05
+    setInterval ->
+      i += Math.PI / 2 * speed
+      val = Math.floor( (1 + Math.sin(i)) * 127 )
+      light.send([val])
+    , 1000/30
+
 setup()
+

@@ -44,9 +44,9 @@ class mk.Scene
   setPersoPose : (skeleton) ->
     @perso.setPoseFromSkeleton skeleton
 
-  update : (delta) ->
-    @perso.update()
-    @delta += delta
+  update : (dt) ->
+    @perso.update dt
+    @delta += dt
 
   onMesure : =>
       # @numMesure++

@@ -61,12 +61,9 @@ class mk.m11s.base.Perso
       @view.addChild part.view
       @parts.push part
 
-  resize : () ->
-    # todo set circle radius
-
-  update : () ->
+  update : (delta) ->
     if @items
-      @items.update()
+      @items.update delta
 
   getJoints: (types) ->
     res = []

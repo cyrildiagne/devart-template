@@ -11,8 +11,8 @@ class mk.m11s.base.BodyItems
     for item in @items
       if item.clean then item.clean()
 
-  update : () ->
-    item.update() for item in @items
+  update : (delta) ->
+    item.update(delta) for item in @items
 
   getPart : (name) ->
     return (@getParts [name])[0]

@@ -101,8 +101,9 @@ class mk.skeleton.Skeleton
       str += "#{i/3} - #{@data[i]} - #{@data[i+1]}" + '\n'
     return str
 
-  update : (speed=0.2) ->
+  update : (dt) ->
     p = {x:0, y:0}
+    speed = dt * 5
     for i in [0...@data.length] by 3
       jnt = @joints[i/3]
       jnt.view.position.x += (@data[i] * @width - jnt.view.position.x) * speed

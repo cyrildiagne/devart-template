@@ -4,13 +4,14 @@ skeleton = null
 sync     = null
 light    = null
 
+accumulator = 0
 currMetamorphoseId = 0
 
 setup = ->
   setupPaper()
   startLightAnimation()
 
-  setMetamorphose 'tribal'
+  setMetamorphose 'bulbs'
   # setNextMetamorphose()
 
   window.addEventListener 'resize', windowResized
@@ -77,7 +78,7 @@ setMetamorphose = (m) ->
 toggleDebug = () ->
   window.debug = !window.debug
   skeleton.setDebug window.debug
-  skeleton.update()
+  # skeleton.update()
   skeleton.view.bringToFront()
   scene.setDebug window.debug
 
@@ -121,9 +122,19 @@ onMouseMove = (ev) ->
 
 onFrame = (ev) ->
   TWEEN.update()
-  skeleton.update()
-  scene.setPersoPose skeleton
-  scene.update ev.delta
+  
+  if ev.delta < 0.1
+    window.dt = ev.delta
+  else console.log "resumed"
+  
+  dt = 1 / 50
+  accumulator += window.dt
+  i = 0
+  while accumulator >= dt
+    skeleton.update dt
+    scene.setPersoPose skeleton
+    scene.update dt
+    accumulator -= dt
 
 # NiTE events
 

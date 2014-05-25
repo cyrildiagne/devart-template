@@ -72,8 +72,3 @@ class mk.Scene
       l.volume v
     if numSoundOn is 0
       @rdmVolume()
-
-
-  resize : (viewport) ->
-    if @perso
-      @perso.resize viewport

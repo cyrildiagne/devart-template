@@ -47,7 +47,7 @@ setupPaper = ->
   
 setupSkeleton = ->
   skeleton = new mk.skeleton.Skeleton window.debug
-  skeleton.dataRatio = 640 / 480
+  skeleton.setDataRatio 640 / 480
   view.addChild(skeleton.view)
 
   sync = new mk.skeleton.SkeletonSync skeleton, 7000
@@ -98,17 +98,13 @@ onRatio = (ratio) ->
   console.log 'ratio set to '+ ratio
 
 windowResized = (ev) ->
-  viewport = window.viewport =
-    width  : paper.view.viewSize.width
-    height : paper.view.viewSize.height
-  if skeleton
-    skeleton.resize viewport
-  scene.resize viewport
-  
-  view.position.x = (viewport.width) * 0.5
-  view.position.y = (viewport.height) * 0.5
-  # view.position.x = (viewport.width - view.bounds.width) * 0.5
-  # view.position.y = (viewport.height - view.bounds.height) * 0.5
+  v =
+    width : window.innerWidth
+    height : window.innerHeight
+  view.scaling = v.height / viewport.height
+
+  view.position.x = v.width * 0.5
+  view.position.y = v.height * 0.5
 
 onKeyDown = (ev) ->
   switch ev.keyCode

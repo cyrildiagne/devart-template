@@ -62,8 +62,8 @@ class mk.skeleton.Skeleton
 
   constructor : (debug) ->
     @view = new paper.Layer()
-    @width = 0
     @height = 0
+    @width = 0
     @data = []
     @dataRatio = 1
     @setupJoints()
@@ -91,15 +91,9 @@ class mk.skeleton.Skeleton
   setDebug : (@bDebug) ->
     @view.visible = @bDebug
 
-  resize : (vp) ->
-    if vp.width > vp.height
-      @height = vp.height * 0.5
-      @width = @height * @dataRatio
-    else
-      @width = vp.width * 0.5
-      @height = @width * @dataRatio
-
-    @update 1
+  setDataRatio : (@dataRatio) ->
+    @height = window.viewport.height * 0.5
+    @width = @height * @dataRatio
 
   toString : () ->
     str = ""

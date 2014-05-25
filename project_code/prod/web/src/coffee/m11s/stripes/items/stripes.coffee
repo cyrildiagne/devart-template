@@ -5,8 +5,8 @@ class mk.m11s.stripes.Stripes
     @stripes = []
     # @velTracker = new mk.m11s.JointVelocityTracker @joints.slice(0, numStripes)
 
-    w = paper.view.viewSize.width
-    h = paper.view.viewSize.height
+    w = window.viewport.width * 2
+    h = window.viewport.height
     bg = new paper.Path.Rectangle(-w*0.5, -h*0.5, w, h)
     # bg.fillColor = '#' + @settings.palette.lightBlue.toString(16)
     bg.fillColor = 'white'
@@ -21,7 +21,6 @@ class mk.m11s.stripes.Stripes
     ]
     
     for i in [0...numStripes]
-      h = paper.view.viewSize.height
       s = new paper.Path.Rectangle(0, 0, w*0.6, Math.random()*20+30)
       
       s.position.x = 0

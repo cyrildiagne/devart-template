@@ -18,7 +18,7 @@ for m in metamorphoses
   mk.m11s[m] = {}
 
 # global vars
-window.viewport = {width:1280, height:800}
+window.viewport = {width:800, height:1280}
 window.metamorphose = null
 window.debug = false
 

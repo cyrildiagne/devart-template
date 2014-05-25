@@ -1,4 +1,5 @@
 prod/web/bin/js/*
+prod/web/bin/saved/*
 prod/web/res/sounds/*
 prod/web/bin/css/*
 prod/web/bin/*.html

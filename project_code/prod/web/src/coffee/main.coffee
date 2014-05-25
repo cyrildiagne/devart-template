@@ -31,8 +31,7 @@ startLightAnimation = ->
     , 1000/30
 
 setupPaper = ->
-  canvas = window.canvas = document.createElement('canvas')
-  canvas.id = 'paperjs-canvas'
+  canvas = window.canvas = document.getElementById 'paperjs-canvas'
   canvas.setAttribute 'data-paper-hidpi', ''
   canvas.setAttribute 'data-paper-resize', ''
   document.body.appendChild canvas

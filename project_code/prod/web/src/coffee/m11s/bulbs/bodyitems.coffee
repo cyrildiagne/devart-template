@@ -17,12 +17,12 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     parts = @getPartsExcluding ['head', 'torso', 'pelvis']
     for p in parts
       for i in [1..2]
-        bulb = new mk.m11s.bulbs.Bulb p, i * 0.33, @colorOff, @colorOn
+        bulb = new mk.m11s.bulbs.Bulb p, i * 0.33, @colorOff, @colorOn, @bulbs.length
         @items.push bulb
         @bulbs.push bulb
     
   addHeadBulb: ->
-    bulb = new mk.m11s.bulbs.Bulb @getPart('head'), 0, @colorOff, @colorOn
+    bulb = new mk.m11s.bulbs.Bulb @getPart('head'), 0, @colorOff, @colorOn, @bulbs.length
     @items.push bulb
     @bulbs.push bulb
 

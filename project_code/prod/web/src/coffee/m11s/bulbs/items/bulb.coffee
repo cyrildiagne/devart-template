@@ -28,17 +28,21 @@ class mk.m11s.bulbs.BulbSocket
 
 class mk.m11s.bulbs.Bulb
   
-  constructor: (@part, @pct, @defaultColorOff, @defaultColorOn) ->
+  constructor: (@part, @pct, @defaultColorOff, @defaultColorOn, id) ->
+    @rngk = 'Bulb' + id
     @radius = 12
     @haloRadius = 35
     @view = new paper.Group()
     @view.z = 0
     @view.transformContent = false
-    @power = Math.random() * Math.PI
-    @freq = (Math.random()*0.5 + 0.5) * Math.PI * 0.05
+    @power = rng(@rngk) * Math.PI
+    @freq = (rng(@rngk) * 0.5 + 0.5) * Math.PI * 0.05
+    @interval = 0
+    @blinkTime = 3000 + 5000 * rng(@rngk)
     @setupStyles()
     @draw()
     @areLightsOff = false
+    @turnedOn = false
     if @pct > 0.001
       @follower = new mk.m11s.PartEdgeFollower @view, @part.joints[0], @part.joints[1], @pct
       mirrored = @part.name.indexOf('right') isnt -1
@@ -57,7 +61,7 @@ class mk.m11s.bulbs.Bulb
     @haloColorOn = @colorOn.clone()
     @haloColorOn.alpha = 0.5
 
-    @colorLightsOff = new paper.Color ('#fff')
+    @colorLightsOff = new paper.Color '#fff'
     @haloLightsOff = @colorLightsOff.clone()
     @haloLightsOff.alpha = 0.5
 
@@ -75,10 +79,14 @@ class mk.m11s.bulbs.Bulb
   turnOn: ->
     @bulb.style.fillColor = @colorOn
     @halo.style.fillColor = @haloColorOn
-    setTimeout(=>
-      @bulb.style.fillColor = @colorOff
-      @halo.style.fillColor = @haloColorOff
-    , 3000)
+    @turnedOn = true
+
+  turnOff: ->
+    # setTimeout(=>
+    @bulb.style.fillColor = @colorOff
+    @halo.style.fillColor = @haloColorOff
+    @turnedOn = false
+    # , 3000)
 
   lightsOff: ->
     @bulb.style.fillColor = @colorLightsOff
@@ -90,9 +98,14 @@ class mk.m11s.bulbs.Bulb
     @halo.style.fillColor = @haloColorOff
     @areLightsOff = false
 
-  update: ->
-    if !@areLightsOff and Math.random() > 0.999
-      @turnOn()
+  update: (dt) ->
+    @interval += dt
+    if @interval >= @blinkTime
+      @interval -= @blinkTime
+    # if !@areLightsOff and Math.random() > 0.999
+      if @areLightsOff or @turnedOn
+        @turnOff()
+      else @turnOn()
     @follower.update()
     phase = Math.cos(@power+=@freq)+1
     @haloColorOn.alpha = @haloColorOff.alpha = @haloLightsOff.alpha = phase * 0.20 + 0.11

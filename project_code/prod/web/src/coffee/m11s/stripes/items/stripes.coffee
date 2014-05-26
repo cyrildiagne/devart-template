@@ -20,19 +20,20 @@ class mk.m11s.stripes.Stripes
       @settings.palette.whiteGreen
     ]
     
+    rngk = 'Stripes'
     for i in [0...numStripes]
-      s = new paper.Path.Rectangle(0, 0, w*0.6, Math.random()*20+30)
+      s = new paper.Path.Rectangle(0, 0, w*0.6, rng(rngk)*20+30)
       
       s.position.x = 0
-      s.position.y = (Math.random()-0.5)*h*0.6
+      s.position.y = (rng(rngk)-0.5)*h*0.6
       s.initPosition = {x:s.position.x , y:s.position.y }
-      s.count = Math.random() * 100
-      s.amplitude = Math.random() * h * 0.5
+      s.count = rng(rngk) * 100
+      s.amplitude = rng(rngk) * h * 0.5
       # s.scale 1, 1
       s.initPosition = s.position.clone()
       s.vel = 0
       s.rotate 35
-      s.fillColor = '#' + colors.random().toString(16)
+      s.fillColor = '#' + colors.seedRandom(rngk).toString(16)
       s.transformContent = false
       @view.addChild(s)
       @stripes.push s
@@ -55,7 +56,7 @@ class mk.m11s.stripes.Stripes
       # s.position.y = s.initPosition.y
       s.position.x = @torso.x
       s.count += 0.1
-      s.height = Math.random() * 100
+      # s.height = Math.random() * 100
       # s.scale 1, Math.sin(Math.random()*3.14) * 0.5 + 0.5
       # s.scaleY =  Math.random()
     return

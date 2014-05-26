@@ -1,9 +1,9 @@
 metamorphoses = [
-  'tribal'
-  'peaks'
   'tiroirs'
   'stripes'
+  'peaks'
   'bulbs'
+  'tribal'
   'birds'
 ]
 

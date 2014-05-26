@@ -82,11 +82,9 @@ class mk.m11s.bulbs.Bulb
     @turnedOn = true
 
   turnOff: ->
-    # setTimeout(=>
     @bulb.style.fillColor = @colorOff
     @halo.style.fillColor = @haloColorOff
     @turnedOn = false
-    # , 3000)
 
   lightsOff: ->
     @bulb.style.fillColor = @colorLightsOff
@@ -102,7 +100,6 @@ class mk.m11s.bulbs.Bulb
     @interval += dt
     if @interval >= @blinkTime
       @interval -= @blinkTime
-    # if !@areLightsOff and Math.random() > 0.999
       if @areLightsOff or @turnedOn
         @turnOff()
       else @turnOn()

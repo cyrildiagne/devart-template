@@ -32,6 +32,5 @@ class mk.m11s.peaks.BodyItems extends mk.m11s.base.BodyItems
       if rng(rngk) > 0.5
         symbol = @assets.symbols.peaks[symbs.seedRandom(rngk)]
         item = new mk.m11s.SimplePartItem symbol, p, 'Flower'
-        # item.view.scale Math.random()*0.8 + 1
         item.view.rotation = Math.floor(rng(rngk)*2) * 180
         @items.push item

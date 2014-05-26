@@ -105,8 +105,6 @@ class mk.m11s.tribal.Fire
         @flames.splice(i, 1)
       i--
 
-    # if Math.random()>0.7
-    #     @addFlame()
     @timeSinceFlame+=dt
     if @timeSinceFlame > @timeBeforeNextFlame
       @timeSinceFlame -= @timeBeforeNextFlame

@@ -8,7 +8,6 @@ class mk.m11s.stripes.Stripes
     w = window.viewport.width * 2
     h = window.viewport.height
     bg = new paper.Path.Rectangle(-w*0.5, -h*0.5, w, h)
-    # bg.fillColor = '#' + @settings.palette.lightBlue.toString(16)
     bg.fillColor = 'white'
     @view.addChild(bg)
 
@@ -29,7 +28,6 @@ class mk.m11s.stripes.Stripes
       s.initPosition = {x:s.position.x , y:s.position.y }
       s.count = rng(rngk) * 100
       s.amplitude = rng(rngk) * h * 0.5
-      # s.scale 1, 1
       s.initPosition = s.position.clone()
       s.vel = 0
       s.rotate 35
@@ -50,13 +48,6 @@ class mk.m11s.stripes.Stripes
     # @velTracker.update()
     for s,i in @stripes
       # vel = Math.sqrt(@velTracker.get(i)) * 0.003 + 0.001
-      # s.vel += (vel-s.vel) * 0.05
-      # s.count += s.vel
-      # s.position.y = s.initPosition.y + Math.sin(s.count) * s.amplitude
-      # s.position.y = s.initPosition.y
       s.position.x = @torso.x
       s.count += 0.1
-      # s.height = Math.random() * 100
-      # s.scale 1, Math.sin(Math.random()*3.14) * 0.5 + 0.5
-      # s.scaleY =  Math.random()
     return

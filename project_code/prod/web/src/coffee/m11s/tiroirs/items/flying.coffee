@@ -65,7 +65,6 @@ class mk.m11s.tiroirs.Flying
     @rightWing = new mk.m11s.tiroirs.Wing 0, 0, @wingWidth, @wingHeight, @wingSpeed, color2
     @view.addChild @rightWing.path
 
-    # @randomPos()
     @timeSinceRandomPos = 0
     @timeBeforeNextRandomPos = 0
 

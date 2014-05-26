@@ -8,8 +8,9 @@ record   = null
 
 accumulator = 0
 currMetamorphoseId = 0
-totalTime = 0
+currentTime = 0
 timestamp = 0
+frameNum = 0
 
 setup = (filename) ->
   setupPaper()
@@ -52,7 +53,7 @@ setupPlayback = (filename) ->
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
     setSeed seed
-    setMetamorphose m11
+    setMetamorphose 'bulbs' #m11
 
 setupLive = ->
   sync = new mk.skeleton.SkeletonSync skeleton, 7000
@@ -86,9 +87,7 @@ toggleDebug = () ->
 onSceneReady = () ->
   console.log 'onSceneReady'
   view.addChild scene.perso.view
-  if !paper.view.onFrame
-    paper.view.onFrame = onFrame
-
+  
   if window.debug
     scene.setDebug true
 
@@ -96,6 +95,24 @@ onSceneReady = () ->
     record.begin 
       timestamp : window.seed
       m11  : window.metamorphose
+
+  start()
+  # goto 420, true
+
+start = () ->
+  if !paper.view.onFrame
+    paper.view.onFrame = onFrame
+
+stop = () ->
+  paper.view.onFrame = undefined  
+
+goto = (frame, bStop = false) ->
+  if frame < frameNum
+    console.log "Can't go backward yet.."
+    return
+  update 1/50 for i in [frameNum...frame]
+  if bStop
+    stop()
 
 onPlaybackComplete = () ->
   # ...
@@ -106,7 +123,7 @@ windowResized = (ev) ->
   v =
     width : window.innerWidth
     height : window.innerHeight
-  view.scaling = v.height / viewport.height
+  view.scaling = v.height / viewport.height#* 0.85
 
   view.position.x = v.width * 0.5
   view.position.y = v.height * 0.5
@@ -114,9 +131,9 @@ windowResized = (ev) ->
 onKeyDown = (ev) ->
   switch ev.keyCode
     when 83 # 's'
-      # toggleDebug()
-      if record
-        record.end()
+      toggleDebug()
+      # if record
+      #   record.end()
     when 32 # spacebar
       setNextMetamorphose()
 
@@ -133,9 +150,7 @@ update = (deltaTime) ->
 
   deltaTime *= 1000
 
-  if playback
-    playback.update deltaTime
-  else
+  if record
     record.update deltaTime
     if sync.hasNewData
       skeleton.setData sync.data
@@ -146,8 +161,16 @@ update = (deltaTime) ->
   accumulator += deltaTime
   i = 0
   while accumulator >= dt
-    totalTime += dt
-    TWEEN.update totalTime
+
+    if playback
+      playback.update dt
+    
+    currentTime += dt
+    frameNum++
+    if frameNum is 420
+      stop()
+
+    TWEEN.update currentTime
     skeleton.update dt*0.007
     scene.setPersoPose skeleton
     scene.update dt

@@ -3,8 +3,8 @@ class mk.m11s.tribal.Flame
     @speed = speed
     @path = new paper.Path()
     @count = 0
-    @time = Math.random() * 3.14
-    @thickness = Math.random() * 80 + 10
+    @time = 0
+    @thickness = rng('Flame') * 80 + 10
     @mirrored = false
     @path.segments = [
       [[x, y]],
@@ -45,6 +45,10 @@ class mk.m11s.tribal.Fire
     @flames = []
     @numFlames = 9
 
+    @rngk = 'Fire'
+    @timeSinceFlame = 0
+    @timeBeforeNextFlame = 0
+
     @maxCount = 40
     @growSpeed = 1.035
     @initScale = 0.5
@@ -52,21 +56,22 @@ class mk.m11s.tribal.Fire
     @riseSpeed = 10
 
   addFlame : ->
+    rngk = @rngk + 'addFlame'
     flameWidth = 400
     flameHeight = 20
-    flameSpeed = Math.random() * 0.1 + @minSpeed
+    flameSpeed = rng(rngk) * 0.1 + @minSpeed
     # color = new paper.Color
     #   hue : 360
     #   saturation : 0.75
     #   brightness : 1
-    color = '#'+@colors.random().toString(16)
+    color = '#'+@colors.seedRandom(rngk).toString(16)
         
     flame = new mk.m11s.tribal.Flame 0, 10, flameWidth, flameHeight, flameSpeed, color
     flame.path.transformContent = false
     flame.path.pivot = new paper.Point(0,0)
     flame.path.rotate(-90)
-    flame.path.scale(Math.random()*@initScale+0.2, Math.random()*@initScale+0.1)
-    if Math.random()>0.5
+    flame.path.scale(rng(rngk)*@initScale+0.2, rng(rngk)*@initScale+0.1)
+    if rng(rngk)>0.5
       flame.path.scale(-1, 1)
 
     flame.path.fullySelected = @view.fullySelected
@@ -81,7 +86,7 @@ class mk.m11s.tribal.Fire
     @minSpeed = 0.02 + ratio * 0.06
     @riseSpeed = 10 + ratio * 5
 
-  update: ->
+  update: (dt) ->
     i = 0
     for f in @flames
       f.update()
@@ -100,5 +105,10 @@ class mk.m11s.tribal.Fire
         @flames.splice(i, 1)
       i--
 
-    if Math.random()>0.7
-        @addFlame()
+    # if Math.random()>0.7
+    #     @addFlame()
+    @timeSinceFlame+=dt
+    if @timeSinceFlame > @timeBeforeNextFlame
+      @timeSinceFlame -= @timeBeforeNextFlame
+      @timeBeforeNextFlame = rng @rngk + 'newFlame'
+      @addFlame()

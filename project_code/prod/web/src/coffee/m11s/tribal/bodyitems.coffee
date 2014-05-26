@@ -48,8 +48,9 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     @fire.view.position.y = 300
     @items.push @fire
 
-  update: ->
-    super()
+  update: (dt) ->
+    super dt
+    
     lh = @joints[NiTE.LEFT_HAND]
     rh = @joints[NiTE.RIGHT_HAND]
     head = @joints[NiTE.HEAD]

@@ -38,7 +38,7 @@ class mk.m11s.tribal.FeatherGroup
 
   addFeaters: (num) ->
     for i in [1..num]
-      color = @colors.random()
+      color = @colors.seedRandom 'addFeaters'+num
       featherSym = @getFeatherSymbol 90, color
       feather = new mk.m11s.tribal.Feather featherSym, @j1, @j2, (i-0.5)/num * @spacingScale
       feather.view.rotate i*(25-num)

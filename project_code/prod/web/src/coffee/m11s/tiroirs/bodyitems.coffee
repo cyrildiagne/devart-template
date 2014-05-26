@@ -14,7 +14,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     parts = @getParts ['torso', 'pelvis', 'leftUpperLeg', 'rightUpperLeg']
     for p in parts
       for i in [1..3]
-        symbol = ds.random()
+        symbol = ds.seedRandom 'addDrawers'
         drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p
         @items.push drawer
     
@@ -33,7 +33,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     for s in symbols
       item = s.symbol.place()
       item.pivot = s.pivot
-      fly = new (m11Class 'Flying') item, color2, color
+      fly = new (m11Class 'Flying') item, color2, color, @flys.length
       @flys.push fly
       @items.push fly
 
@@ -58,8 +58,8 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @scarf2.view.z = 1
     @items.push @scarf2
   
-  update: ->
-    super()
+  update: (dt) ->
+    super dt
 
     if @flys[2].isFlying
       @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].view.position.x

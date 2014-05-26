@@ -32,7 +32,8 @@ class mk.m11s.tiroirs.Wing
 
 class mk.m11s.tiroirs.Flying
 
-  constructor : (@item, color1, color2) ->
+  constructor : (@item, color1, color2, id) ->
+    @rngk = 'Flying'+id
     @wingWidth = 400
     @wingHeight = 20
     @wingSpeed = 7
@@ -64,19 +65,28 @@ class mk.m11s.tiroirs.Flying
     @rightWing = new mk.m11s.tiroirs.Wing 0, 0, @wingWidth, @wingHeight, @wingSpeed, color2
     @view.addChild @rightWing.path
 
+    # @randomPos()
+    @timeSinceRandomPos = 0
+    @timeBeforeNextRandomPos = 0
+
   stop: () ->
     @isFlying = false
     @leftWing.path.remove()
     @rightWing.path.remove()
 
   randomPos: ->
-    @dest = new paper.Point (Math.random()-0.5)*400, (Math.random()-0.5)*600 - 200
+    @dest = new paper.Point (rng(@rngk)-0.5)*400, (rng(@rngk)-0.5)*600 - 200
+    @timeBeforeNextRandomPos = rng(@rngk) * 4000 + 500
 
-  update : () ->
+
+  update : (dt) ->
     if !@isFlying then return
 
-    if Math.random() > 0.99
+    @timeSinceRandomPos+=dt
+    if @timeSinceRandomPos > @timeBeforeNextRandomPos
+      @timeSinceRandomPos -= @timeBeforeNextRandomPos
       @randomPos()
+    
     @velocity = @dest.subtract(@pos).multiply(0.03)
     if @item
       @item.rotation += (@velocity.x * 4 - @item.rotation) * 0.1

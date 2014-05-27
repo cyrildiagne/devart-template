@@ -34,7 +34,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
           sname = symbs.seedRandom rdmk
           symbol = @assets.symbols.birds[sname]
           
-          item = new mk.m11s.SimplePartItem symbol, p, 'House'
+          item = new mk.helpers.SimplePartItem symbol, p, 'House'
           item.view.scale 0.001
           @items.push item
 
@@ -69,7 +69,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       p = (@getPartsExcluding ['head', 'pelvis', 'torso']).seedRandom rdmk
       symbolName = ['flower1.svg', 'flower2.svg'].seedRandom rdmk
       symbol = @assets.symbols.birds[symbolName]
-      item = new mk.m11s.SimplePartItem symbol, p, 'Flower'
+      item = new mk.helpers.SimplePartItem symbol, p, 'Flower'
       item.view.scale 0.001
       @items.push item
 

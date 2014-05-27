@@ -1,4 +1,4 @@
-class mk.m11s.tiroirs.Drawer extends mk.m11s.SimplePartItem
+class mk.m11s.tiroirs.Drawer extends mk.helpers.SimplePartItem
 
   constructor: (@symbol, @part) ->
     super @symbol, @part, 'Drawer'+@part

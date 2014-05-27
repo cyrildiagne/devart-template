@@ -19,7 +19,7 @@ class mk.m11s.birds.Branches
     @view.transformContent = false
     @view.pivot = new paper.Point(0, 0)
 
-    @follower = new mk.m11s.PartEdgeFollower @view, @j1, @j2, @pct
+    @follower = new mk.helpers.PartEdgeFollower @view, @j1, @j2, @pct
     @branches = []
     @trackPoints = []
     @interval = 0

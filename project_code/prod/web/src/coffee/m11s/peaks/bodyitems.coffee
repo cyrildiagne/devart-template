@@ -13,14 +13,14 @@ class mk.m11s.peaks.BodyItems extends mk.m11s.base.BodyItems
       for i in [1..3]
         if rng(rngk) > 0.3
           symbol = @assets.symbols.peaks[symbs.seedRandom(rngk)]
-          item = new mk.m11s.SimplePartItem symbol, p, 'Peak'+@items.length
+          item = new mk.helpers.SimplePartItem symbol, p, 'Peak'+@items.length
           item.view.scale rng(rngk)*0.3 + 1
           item.view.rotation = Math.floor(rng(rngk)*2) * 180
           @items.push item
     
   addHeadPeak: () ->
     symbol = @assets.symbols.peaks['head.svg']
-    item = new mk.m11s.SimpleJointItem symbol, @joints[NiTE.HEAD]
+    item = new mk.helpers.SimpleJointItem symbol, @joints[NiTE.HEAD]
     item.view.scale 1.5
     @items.push item
 
@@ -31,6 +31,6 @@ class mk.m11s.peaks.BodyItems extends mk.m11s.base.BodyItems
     for p in parts
       if rng(rngk) > 0.5
         symbol = @assets.symbols.peaks[symbs.seedRandom(rngk)]
-        item = new mk.m11s.SimplePartItem symbol, p, 'Flower'
+        item = new mk.helpers.SimplePartItem symbol, p, 'Flower'
         item.view.rotation = Math.floor(rng(rngk)*2) * 180
         @items.push item

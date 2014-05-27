@@ -1,4 +1,4 @@
-class mk.m11s.tribal.Mask extends mk.m11s.SimpleJointItem
+class mk.m11s.tribal.Mask extends mk.helpers.SimpleJointItem
 
   constructor: (@symbol, @joint) ->
     super @symbol, @joint

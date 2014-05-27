@@ -5,6 +5,7 @@ include base
 - page.libs = ['paper-core.min','socket.io', 'tween.min', 'howler.min', 'seedrandom.min']
 
 - include('global')
+
 - include('utils/js_utils')
 - include('utils/geom_utils')
 - include('utils/osc_parser')
@@ -13,7 +14,8 @@ include base
 - include('skeleton/skeleton')
 - include('skeleton/skeleton_sync')
 
-- include('m11s/helpers')
+- include('helpers/helpers')
+- include('helpers/flying')
 
 - include('m11s/base/settings')
 - include('m11s/base/joint')
@@ -23,10 +25,10 @@ include base
 - include('m11s/base/perso')
 
 - include('m11s/tiroirs/settings')
+- include('m11s/tiroirs/items/flying')
 - include('m11s/tiroirs/items/drawer')
 - include('m11s/tiroirs/items/hat')
 - include('m11s/tiroirs/items/scarf')
-- include('m11s/tiroirs/items/flying')
 - include('m11s/tiroirs/bodyitems')
 
 - include('m11s/bulbs/settings')
@@ -51,6 +53,12 @@ include base
 - include('m11s/birds/settings')
 - include('m11s/birds/items/branches')
 - include('m11s/birds/bodyitems')
+
+- include('m11s/lockers/settings')
+- include('m11s/lockers/items/lock')
+- include('m11s/lockers/items/pile')
+- include('m11s/lockers/bodyitems')
+
 
 - include('playback/playback')
 - include('playback/record')

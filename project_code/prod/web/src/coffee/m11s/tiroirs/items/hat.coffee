@@ -1,4 +1,4 @@
-class mk.m11s.tiroirs.Hat extends mk.m11s.SimpleJointItem
+class mk.m11s.tiroirs.Hat extends mk.helpers.SimpleJointItem
 
   constructor: (@symbol, @joint, @mirror=false) ->
     super @symbol, @joint

@@ -19,8 +19,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         @items.push drawer
     
   setupFlyings: ->
-    color = '#' + @settings.palette.cream.toString 16
-    color2 = '#' + @settings.palette.beige.toString 16
+    
     hat = 
       symbol : @assets.symbols.tiroirs['hat.svg']
       pivot : new paper.Point 0, 0
@@ -33,14 +32,17 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     for s in symbols
       item = s.symbol.place()
       item.pivot = s.pivot
-      fly = new (m11Class 'Flying') item, color2, color, @flys.length
+      fly = new (m11Class 'Flying') item, @flys.length,
+        color1 : '#' + @settings.palette.cream.toString 16
+        color2 : '#' + @settings.palette.beige.toString 16
       @flys.push fly
       @items.push fly
 
   addScarf: ->
-    color = '#' + @settings.palette.cream.toString 16
-    color2 = '#' + @settings.palette.beige.toString 16
-    fly = new (m11Class 'Flying') null, color2, color
+    
+    fly = new (m11Class 'Flying') null, @flys.length,
+      color1 : '#' + @settings.palette.cream.toString 16
+      color2 : '#' + @settings.palette.beige.toString 16
     fly.view.z = 0.5
     @flys.push fly
     @items.push fly

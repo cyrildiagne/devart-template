@@ -1,4 +1,4 @@
-class mk.m11s.JointFollower
+class mk.helpers.JointFollower
   constructor : (@view, @joint, @zOffset) ->
     @view.z = 0
     @zOffset = @zOffset || Math.random() + 50
@@ -8,7 +8,7 @@ class mk.m11s.JointFollower
     @view.z = @joint.z + @zOffset
 
 
-class mk.m11s.PartFillFollower
+class mk.helpers.PartFillFollower
   constructor : (@view, @part, @weights, @zOffset) ->
     @view.z = 0
     @zOffset = @zOffset || Math.random() * 100 + 200
@@ -26,7 +26,7 @@ class mk.m11s.PartFillFollower
     @view.z = @part.z + @zOffset
 
 
-class mk.m11s.PartEdgeFollower
+class mk.helpers.PartEdgeFollower
   constructor : (@view, @j1, @j2, @pct, @zOffset) ->
     @zOffset = @zOffset || Math.random() * 100 + 200
   update : ->
@@ -37,26 +37,26 @@ class mk.m11s.PartEdgeFollower
     @view.z = @j1.z * @pct + @j2.x * (1-@pct) + @zOffset
 
 
-class mk.m11s.SimpleJointItem
+class mk.helpers.SimpleJointItem
   constructor : (@symbol, @joint) ->
     @view = @symbol.place()
     @view.z = 0
-    @follower = new mk.m11s.JointFollower @view, @joint
+    @follower = new mk.helpers.JointFollower @view, @joint
   update: ->
     @follower.update()
 
 
-class mk.m11s.SimplePartItem
+class mk.helpers.SimplePartItem
   constructor: (@symbol, @part, @seed) ->
     @view = @symbol.place()
     @view.z = 0
-    weights = mk.m11s.getRandomWeights @part.joints, @seed
-    @follower = new mk.m11s.PartFillFollower @view, @part, weights, rng(@seed) * 100 + 200
+    weights = mk.helpers.getRandomWeights @part.joints, @seed
+    @follower = new mk.helpers.PartFillFollower @view, @part, weights, rng(@seed) * 100 + 200
   update: ->
     @follower.update()
 
 
-class mk.m11s.JointVelocityTracker
+class mk.helpers.JointVelocityTracker
   constructor : (@jnts) ->
     @velocities = []
     @prev = []
@@ -77,7 +77,7 @@ class mk.m11s.JointVelocityTracker
     return @velocities[i]
 
 
-mk.m11s.getRandomWeights = (joints, seed) ->
+mk.helpers.getRandomWeights = (joints, seed) ->
   weights = []
   sum = 0
   for j,i in joints

@@ -4,7 +4,7 @@ class mk.m11s.tribal.Feather
     @view = @symbol.place()
     @view.transformContent = false
     @view.pivot = new paper.Point(-@view.bounds.width*0.5, 0)
-    @follower = new mk.m11s.PartEdgeFollower @view, @j1, @j2, @pct
+    @follower = new mk.helpers.PartEdgeFollower @view, @j1, @j2, @pct
     @speed = 0
 
   setColor: (color) ->

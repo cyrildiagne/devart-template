@@ -3,12 +3,14 @@ metamorphoses = [
   'stripes'
   'peaks'
   'bulbs'
+  'lockers'
   'tribal'
   'birds'
 ]
 
 # packages
 mk =
+  helpers : {}
   m11s :
     base : {}
   skeleton : {}

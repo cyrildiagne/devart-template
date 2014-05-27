@@ -4,6 +4,7 @@ class mk.m11s.base.Morph
     #...
 
   update: () ->
+
     headP         = @getPos NiTE.HEAD
     leftShouldP   = @getPos NiTE.LEFT_SHOULDER
     rightShouldP  = @getPos NiTE.RIGHT_SHOULDER

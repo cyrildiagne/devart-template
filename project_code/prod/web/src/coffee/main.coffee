@@ -12,7 +12,28 @@ currentTime = 0
 timestamp = 0
 frameNum = 0
 
-setup = (filename) ->
+
+setupPlayback = (filename) ->
+  setupApp()
+  playback = new mk.playback.Playback skeleton, onPlaybackComplete
+  playback.load filename, (seed, m11) ->
+    setSeed '1401206392736' #seed
+    setMetamorphose 'lockers' #m11
+
+setupLive = (m11) ->
+  setupApp()
+  sync = new mk.skeleton.SkeletonSync skeleton, 7000
+  sync.connect true
+  seed = new Date().getTime()
+  console.log seed
+  setSeed seed
+  setMetamorphose 'lockers' #m11
+  record = new mk.playback.Record()
+
+
+# Setup 
+
+setupApp = ->
   setupPaper()
 
   window.addEventListener 'resize', windowResized
@@ -20,11 +41,6 @@ setup = (filename) ->
   window.addEventListener 'mousemove', onMouseMove
 
   setupSkeleton()
-
-  if filename
-    setupPlayback filename
-  else 
-    setupLive()
 
   # dmxLightAnimation()
 
@@ -39,8 +55,6 @@ setupPaper = ->
   view = new paper.Layer()
   view.pivot = new paper.Point 0,0
   view.transformContent = false
-  # view.rotate 90
-  # view.scale 0.8
   
 setupSkeleton = ->
   skeleton = new mk.skeleton.Skeleton window.debug
@@ -49,18 +63,6 @@ setupSkeleton = ->
 
   windowResized()
 
-setupPlayback = (filename) ->
-  playback = new mk.playback.Playback skeleton, onPlaybackComplete
-  playback.load filename, (seed, m11) ->
-    setSeed seed
-    setMetamorphose 'bulbs' #m11
-
-setupLive = ->
-  sync = new mk.skeleton.SkeletonSync skeleton, 7000
-  sync.connect true
-  setSeed new Date().getTime()
-  setMetamorphose 'birds'
-  record = new mk.playback.Record()
 
 # Global Setters
 
@@ -97,7 +99,7 @@ onSceneReady = () ->
       m11  : window.metamorphose
 
   start()
-  # goto 420, true
+  # goto 270, true
 
 start = () ->
   if !paper.view.onFrame
@@ -167,8 +169,8 @@ update = (deltaTime) ->
     
     currentTime += dt
     frameNum++
-    if frameNum is 420
-      stop()
+    # if frameNum is 270
+    #   stop()
 
     TWEEN.update currentTime
     skeleton.update dt*0.007
@@ -188,6 +190,6 @@ dmxLightAnimation = ->
       light.send([val])
     ,1000/30
 
-setup '1401061237730_018304_birds'
-# setup()
+setupPlayback '1401061237730_018304_birds'
+# setupLive 'lockers'
      

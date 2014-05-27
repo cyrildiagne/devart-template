@@ -1,4 +1,4 @@
-class mk.m11s.tiroirs.Scarf extends mk.m11s.SimpleJointItem
+class mk.m11s.tiroirs.Scarf extends mk.helpers.SimpleJointItem
 
   constructor: (@pinPoint, @options) ->
     @view = new paper.Group()

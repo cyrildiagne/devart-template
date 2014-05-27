@@ -7,7 +7,7 @@ class mk.m11s.bulbs.BulbSocket
     @view.addChild @item
     @view.pivot = new paper.Point(radius + @item.bounds.width, 0)
     @view.rotation = @initRotation = if @mirrored then 180 - 25 else 25
-    @velTracker = new mk.m11s.JointVelocityTracker [@follower.j2]
+    @velTracker = new mk.helpers.JointVelocityTracker [@follower.j2]
     @bounce = 0
     @freq = 0
 
@@ -44,11 +44,11 @@ class mk.m11s.bulbs.Bulb
     @areLightsOff = false
     @turnedOn = false
     if @pct > 0.001
-      @follower = new mk.m11s.PartEdgeFollower @view, @part.joints[0], @part.joints[1], @pct
+      @follower = new mk.helpers.PartEdgeFollower @view, @part.joints[0], @part.joints[1], @pct
       mirrored = @part.name.indexOf('right') isnt -1
       @socket = new mk.m11s.bulbs.BulbSocket @view, @follower, mirrored, @radius
     else
-      @follower = new mk.m11s.JointFollower @view, @part.joints[0]
+      @follower = new mk.helpers.JointFollower @view, @part.joints[0]
 
   setupStyles: ->
     @colorOff = new paper.Color ('#' + @defaultColorOff.toString(16))

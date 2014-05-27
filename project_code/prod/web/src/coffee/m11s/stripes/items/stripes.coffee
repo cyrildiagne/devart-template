@@ -3,7 +3,7 @@ class mk.m11s.stripes.Stripes
   constructor: (@settings, @torso, numStripes) ->
     @view = new paper.Group()
     @stripes = []
-    # @velTracker = new mk.m11s.JointVelocityTracker @joints.slice(0, numStripes)
+    # @velTracker = new mk.helpers.JointVelocityTracker @joints.slice(0, numStripes)
 
     w = window.viewport.width * 2
     h = window.viewport.height

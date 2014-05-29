@@ -100,3 +100,6 @@ class mk.m11s.base.Perso
     rightUpperLeg.updateZ  pelvis.z - 1
     @view.children.sort (a, b) ->
       return if a.z > b.z then 1 else -1
+
+  onMusicEvent: (eventId) ->
+    @items.onMusicEvent eventId

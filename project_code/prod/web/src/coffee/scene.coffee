@@ -2,7 +2,8 @@ class mk.Scene
 
   constructor : (@onSceneReady) ->
     @assets = new mk.Assets
-    @sounds = new mk.Sounds
+    @sounds = new mk.sound.Sounds
+    @music = new mk.sound.Music @onMusicEvent
     @settings = null
     @perso = null
     @isLoading = false
@@ -17,6 +18,7 @@ class mk.Scene
     @settings = new (m11Class 'Settings')()
 
     @assets.load type, @settings.assets, =>
+      @music.load @settings, =>
       # @sounds.load type, @settings.loops, @settings.oneshots, =>
 
         if @perso is null or @perso.type isnt type
@@ -26,7 +28,8 @@ class mk.Scene
           @perso = new (m11Class 'Perso')()
 
         @perso.setMetamorphose @settings, @assets, @sounds
-        
+        # @start()
+
         # setTimeout @onMesure, 375 * 7
         # l.play() for k,l of @sounds.loops.tribal
         # for k,l of @sounds.loops.tribal
@@ -44,9 +47,19 @@ class mk.Scene
   setPersoPose : (skeleton) ->
     @perso.setPoseFromSkeleton skeleton
 
-  update : (dt) ->
+  update : (dt, currentTime) ->
+    @music.update dt, currentTime
     @perso.update dt
     @delta += dt
+
+  stop : ->
+    @music.stop()
+
+  start : ->
+    @music.play()
+
+  onMusicEvent : (eventId) =>
+    @perso.onMusicEvent eventId
 
   # onMesure : =>
   #     @numMesure++

@@ -36,3 +36,6 @@ class mk.m11s.base.BodyItems
     joints = @joints.filter (j) ->
       j.type not in types
     return joints
+
+   onMusicEvent: (eventId) ->
+    #...

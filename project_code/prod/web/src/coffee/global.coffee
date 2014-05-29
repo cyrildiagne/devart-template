@@ -14,6 +14,7 @@ mk =
   m11s :
     base : {}
   skeleton : {}
+  sound : {}
   playback : {}
   utils : {}
 
@@ -27,11 +28,14 @@ window.debug = false
 window.mouse = {x:0, y:0}
 
 window.seed = null
-window.rngs = {}  
+window.rngs = {}
+
+window.currentTime = 0
 
 setSeed = (seed) ->
   window.seed = seed
   window.rngs = {}  
+  console.log 'set seed ' + seed
 
 window.rng = (key) ->
   rng_ = window.rngs[key] || window.rngs[key] = new Math.seedrandom(window.seed+key)

@@ -17,17 +17,16 @@ setupPlayback = (filename) ->
   setupApp()
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
-    setSeed '1401206392736' #seed
-    setMetamorphose 'lockers' #m11
+    setSeed new Date().getTime() #seed
+    setMetamorphose m11
 
 setupLive = (m11) ->
   setupApp()
   sync = new mk.skeleton.SkeletonSync skeleton, 7000
   sync.connect true
   seed = new Date().getTime()
-  console.log seed
   setSeed seed
-  setMetamorphose 'lockers' #m11
+  setMetamorphose m11
   record = new mk.playback.Record()
 
 
@@ -37,6 +36,8 @@ setupApp = ->
   setupPaper()
 
   window.addEventListener 'resize', windowResized
+  window.addEventListener 'focus', windowFocus
+  window.addEventListener 'blur', windowLostFocus
   window.addEventListener 'keydown', onKeyDown
   window.addEventListener 'mousemove', onMouseMove
 
@@ -99,14 +100,17 @@ onSceneReady = () ->
       m11  : window.metamorphose
 
   start()
-  # goto 270, true
+  if playback
+    goto 2500#, true
 
 start = () ->
   if !paper.view.onFrame
     paper.view.onFrame = onFrame
+  scene.start()
 
 stop = () ->
   paper.view.onFrame = undefined  
+  scene.stop()
 
 goto = (frame, bStop = false) ->
   if frame < frameNum
@@ -129,6 +133,12 @@ windowResized = (ev) ->
 
   view.position.x = v.width * 0.5
   view.position.y = v.height * 0.5
+
+windowFocus = (ev) ->
+  start()
+
+windowLostFocus = (ev) ->
+  stop()
 
 onKeyDown = (ev) ->
   switch ev.keyCode
@@ -169,13 +179,14 @@ update = (deltaTime) ->
     
     currentTime += dt
     frameNum++
-    # if frameNum is 270
+    # if frameNum is 500
     #   stop()
+    window.currentTime = currentTime
 
     TWEEN.update currentTime
     skeleton.update dt*0.007
     scene.setPersoPose skeleton
-    scene.update dt
+    scene.update dt, currentTime
     accumulator -= dt
 
 # MISCELLANEOUS
@@ -191,5 +202,5 @@ dmxLightAnimation = ->
     ,1000/30
 
 setupPlayback '1401061237730_018304_birds'
-# setupLive 'lockers'
+# setupLive 'birds'
      

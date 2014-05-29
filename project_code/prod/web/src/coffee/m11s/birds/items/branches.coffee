@@ -2,13 +2,13 @@ class mk.m11s.birds.Branches
 
   constructor: (@j1, @j2, @pct, options) ->
     @branchColor                = "#B5CEC0"
-    @branchWidth                = 2
+    @branchWidth                = 3
     @maxBranchWidth             = 10
-    @maxBranches                = 10
+    @maxBranches                = 7
     @minBranchLength            = 50
     @maxBranchLength            = 500
     @growSpeed                  = 0.01
-    @timeBetweenBranches        = 2000
+    @timeBetweenBranches        = 625 * 2
     @minDistanceBetweenBranches = 8
     @firstBranchAngles          = [-135, -45]
 

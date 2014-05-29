@@ -27,7 +27,7 @@ class mk.m11s.lockers.Pile
     @grains.push g
 
   addSome : ->
-    @addGrainTime += 1500
+    @addGrainTime += 1000
 
   update : (dt) ->
 

@@ -108,5 +108,5 @@ class mk.m11s.tribal.Fire
     @timeSinceFlame+=dt
     if @timeSinceFlame > @timeBeforeNextFlame
       @timeSinceFlame -= @timeBeforeNextFlame
-      @timeBeforeNextFlame = rng @rngk + 'newFlame'
+      @timeBeforeNextFlame = rng(@rngk + 'newFlame') * 40 + 20
       @addFlame()

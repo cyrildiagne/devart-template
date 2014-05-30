@@ -59,7 +59,11 @@ class mk.m11s.birds.Branches
       b.path.segments[1].point = b.currStart.add b.currVec
 
     for tp,i in @trackPoints
-      tp.view.position = tp.parent.currStart.add tp.parent.currVec.normalize( tp.startLength )
+      p = tp.parent.currStart.add tp.parent.currVec.normalize( tp.startLength )
+      tp.pos.x = p.x
+      tp.pos.y = p.y
+      if tp.view
+        tp.view.position = p
 
   hasFreeSpace: (start, a) ->
     for b in @branches
@@ -135,13 +139,16 @@ class mk.m11s.birds.Branches
     startVec.length = parent.vec.length * (rng('addTrackPoint2')*0.5+0.5)
     start = parent.start.add startVec
 
-    @view.addChild view
+    if view
+      @view.addChild view
 
     p =
       start       : start
       startLength : startVec.length
       parent      : parent
       view        : view
+      ref         : @view
+      pos         : new paper.Point()
 
     @trackPoints.push p
       

@@ -11,6 +11,8 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
       'assets/items/birds/house_side1.svg'
       'assets/items/birds/house_side2.svg'
       'assets/items/birds/house_side3.svg'
+      'assets/items/birds/bird1.svg'
+      'assets/items/birds/bird2.svg'
     ]
 
   setupSounds : ->

@@ -27,6 +27,7 @@ class mk.sound.Music
       @track.pos @animTime
       @bSettingPos = false
       @isPlaying = true
+      # @track.mute()
 
   stop : ->
     @track.pause()
@@ -38,6 +39,12 @@ class mk.sound.Music
     if @animTime > @nextEventTime
       @onMusicEvent @currEvent if @onMusicEvent
       @setNextEvent()
+
+  mute : ->
+    @track.mute()
+
+  unmute : ->
+    @track.unmute()
 
   setNextEvent : ->
     pos = @animTime

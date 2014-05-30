@@ -16,12 +16,6 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     # @timeBetweenNewHouse = 625 * 4
     # @intervalHouse = 0
 
-    # @addTree()
-    # @addTree()
-    # @addTree()
-    # @addHouses()
-    # @addBodyFlowers()
-
   update : (dt) ->
     super dt
     if @bGrowTrees
@@ -36,8 +30,6 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @newTreeItemTick()
 
   onMusicEvent : (evId) ->
-    console.log evId
-    # @bGrowTrees = false
     switch evId
       when 0
         @bGrowTrees = true
@@ -47,10 +39,22 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @newTreeItemTick()
         @addBodyFlowers()
       when 2
-        # @bGrowHouses = true
         @addHouse()
       when 3
         @bGrowTrees = false
+
+  addBird: (tree)->
+    symbs = ['bird1.svg', 'bird2.svg']
+    rdmk = 'addBird'
+    sname = symbs.seedRandom rdmk
+    symbol = @assets.symbols.birds[sname].place()
+    color = if sname is 'bird2.svg' then 'lightRed' else 'blue'
+    color = '#' + @settings.palette[color].toString 16
+    bird = new mk.m11s.birds.Bird symbol, @items.length, color
+    if !tree
+      tree = @trees.seedRandom 'addBird'
+    bird.flyToBranch tree.addTrackPoint()
+    @items.push bird
 
   addHouse: ->
     symbs = ['house1.svg', 'house2.svg', 'house3.svg', 'house_side1.svg', 'house_side2.svg', 'house_side3.svg']
@@ -83,7 +87,6 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
              ).start window.currentTime
 
   addTree: ->
-    console.log 'addtree'
     if rng('addTree') > 0.5
       parts = @getParts ['leftLowerLeg', 'leftLowerArm']
       ang = -135
@@ -131,6 +134,8 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       view.transformContent = false
       if symbolName isnt 'nest1.svg'
         view.rotation = rng(rdmk) * 360
+      else
+        @addBird tree
       tree.addTrackPoint view
       
       tween = new TWEEN.Tween( { scale: 0.01 } )

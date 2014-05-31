@@ -87,6 +87,7 @@ class mk.m11s.tiroirs.Drawer
     else @dOpenness = 1
     @isOpen = !@isOpen
     @isChanging = true
+    return true
 
   updateOpenness : ->
     @left.segments[0].point = @front.bounds.topLeft

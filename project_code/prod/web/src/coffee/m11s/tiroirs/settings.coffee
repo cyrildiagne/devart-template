@@ -4,6 +4,9 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
     @assets = [
       'assets/items/tiroirs/hat.svg'
       'assets/items/tiroirs/necktie1.svg'
+      'assets/items/tiroirs/button1.svg'
+      'assets/items/tiroirs/button2.svg'
+      'assets/items/tiroirs/button3.svg'
     ]
     
 

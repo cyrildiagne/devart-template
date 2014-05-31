@@ -1,11 +1,6 @@
 class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems: ->
-    @flys = []
-    # @setupFlyings()
-    # @addScarf()
-    @availableJoints = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
-    @count = 0
     @drawerPos =
       torso : [
         { weights : [0.0, 0.25, 0.75], scale : 0.4, z: 55 }
@@ -33,6 +28,21 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @drawers = []
     @addDrawers()
 
+    @physics = new mk.helpers.Physics()
+    @addPersoPartRectCount = 0
+    @physics.addPersoPartRect @getPart('leftLowerArm')
+    @physics.addPersoPartRect @getPart('rightLowerArm')
+    @physics.addPersoPartRect @getPart('leftUpperArm')
+    @physics.addPersoPartRect @getPart('rightUpperArm')
+
+    @buttons = null
+    @addButtons()
+
+    @flys = []
+    # @setupFlyings()
+    # @addScarf()
+    @availableJoints = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
+
   onMusicEvent : (evId) ->
     console.log evId
 
@@ -53,6 +63,9 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, @settings, opt
         @items.push drawer
         @drawers.push drawer
+
+  addButtons: ->
+    @buttons = new mk.m11s.tiroirs.Buttons @physics, @assets.symbols.tiroirs
 
   setupFlyings: ->
     hat = 
@@ -123,12 +136,18 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         dpos = dr.view.position
         dist = (j.x-dpos.x) * (j.x-dpos.x) + (j.y-dpos.y) * (j.y-dpos.y)
         if dist < distMax
-          dr.toggle()
-      
-
+          if dr.toggle()
+            if dr.isOpen
+              for i in [0...4]
+                @buttons.buttonsToAdd.push {x:dpos.x, y:dpos.y-10}
+  
   update: (dt) ->
     super dt
-    
+
+    @physics.update dt
+
+    @buttons.update dt
+
     @updateDrawerOpening()
 
     if @flys.length

@@ -10,7 +10,7 @@ class mk.m11s.base.Perso
 
   setMetamorphose : (@settings, @assets, @sounds) ->
     @clean()
-    @setupJoints 1280 * 0.9
+    @setupJoints window.jointRatio
     @setupParts()
     @setupItems()
     @setupMorph()

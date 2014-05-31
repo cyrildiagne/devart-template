@@ -27,6 +27,8 @@ window.metamorphose = null
 window.debug = false
 window.mouse = {x:0, y:0}
 
+window.jointRatio = 1280 * 0.9
+
 window.seed = null
 window.rngs = {}
 

@@ -26,10 +26,16 @@ class mk.m11s.tiroirs.Drawer
     @isChanging = false
 
   setup : ->
-    @setupBack 'darkGray'
-    # @setupBottom 'beige'
-    @setupSides 'beige'
-    @setupFront 'cream', 'red'
+    if rng(@rgnk+'setup') > 0.3
+      c1 = ['beige', 'cream']
+    else c1 = ['lightBlue', 'blue']
+    if @part.name is 'torso'
+      c2 = ['red', 'darkGray']
+    else c2 = ['darkGray', 'red']
+
+    @setupBack c2[1]
+    @setupSides c1[1]
+    @setupFront c1[0], c2[0]
 
   setupFront : (color, handleColor) ->
     @front = new paper.Group
@@ -54,7 +60,7 @@ class mk.m11s.tiroirs.Drawer
     @back = new paper.Path.Rectangle
       point : [-55, -30]
       size  : [110, 60]
-      fillColor : '#000'# + @settings.palette[color].toString 16
+      fillColor : '#' + @settings.palette[color].toString 16
     @view.addChild @back
 
   setupBottom : (color) ->

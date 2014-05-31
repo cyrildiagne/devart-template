@@ -2,22 +2,53 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems: ->
     @flys = []
-    @addDrawers()
     @setupFlyings()
     @addScarf()
     @availableJoints = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
     @count = 0
+    @drawerPos =
+      torso : [
+        { weights : [0.0, 0.25, 0.75], scale : 0.4, z: 150 }
+        { weights : [0.15, 0.65, 0.2], scale : 0.4, z: 140 }
+        { weights : [0.28, 0.16, 0.56], scale : 0.4, z: 130 }
+        { weights : [0.42, 0.45, 0.13], scale : 0.4, z: 120 }
+        { weights : [0.6, 0.2, 0.2], scale : 0.6, z: 110 }
+        { weights : [0.8, 0.1, 0.1], scale : 0.5, z: 100 }
+      ]
+      pelvis : [
+       { weights : [0.4, 0.3, 0.3], scale : 0.4, z: 90 } 
+      ]
+      leftUpperLeg : [
+       { weights : [0.2, 0.8], scale : 0.2, z: 80 } 
+       { weights : [0.4, 0.6], scale : 0.2, z: 70 } 
+       { weights : [0.6, 0.4], scale : 0.2, z: 60 } 
+       { weights : [0.8, 0.2], scale : 0.2, z: 50 } 
+      ]
+      rightUpperLeg : [
+       { weights : [0.2, 0.8], scale : 0.2, z: 80 } 
+       { weights : [0.4, 0.6], scale : 0.2, z: 70 } 
+       { weights : [0.6, 0.4], scale : 0.2, z: 60 } 
+       { weights : [0.8, 0.2], scale : 0.2, z: 50 } 
+      ]
+    @addDrawers()
 
   addDrawers: ->
     DrawerClass = m11Class 'Drawer'
     ds = ['drawer1.svg', 'drawer2.svg']
     parts = @getParts ['torso', 'pelvis', 'leftUpperLeg', 'rightUpperLeg']
     for p in parts
-      for i in [1..3]
+      max = 2
+      switch p.name
+        when 'pelvis' then max = 1
+        when 'torso' then max = @drawerPos['torso'].length
+      for i in [1..max]
         symbol = ds.seedRandom 'addDrawers'
-        drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p
+        opts = @drawerPos[p.name]
+        id = Math.floor(rng('addDrawer')*opts.length)
+        opt = opts.splice(id, 1)[0]
+        drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, @settings, opt
         @items.push drawer
-    
+  
   setupFlyings: ->
     
     hat = 
@@ -63,14 +94,14 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
   update: (dt) ->
     super dt
 
+    # return
+
     if @flys[2].isFlying
       @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].view.position.x
       @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].view.position.y - 10
     else
       @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].joint.x
       @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].joint.y - 10
-    
-    if(@count++ < 50) then return
 
     for fly in @flys
       if fly.isFlying

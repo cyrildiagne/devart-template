@@ -20,8 +20,10 @@ class mk.m11s.tiroirs.Drawer
     @maxOpenness = 60
 
     @openness = 0
+    @dOpenness = 0
     @time = 0
-    @timeoffset = rng('Drawer') * Math.PI
+    @isOpen = false
+    @isChanging = false
 
   setup : ->
     @setupBack 'darkGray'
@@ -72,12 +74,15 @@ class mk.m11s.tiroirs.Drawer
     @right.fillColor = '#' + @settings.palette[color].toString 16
     @view.addChild @right
 
-  updateOpenness : ->
-    # @bottom.segments[0].point = @front.bounds.bottomLeft
-    # @bottom.segments[1].point = @front.bounds.bottomRight
-    # @bottom.segments[2].point = @back.bounds.bottomRight
-    # @bottom.segments[3].point = @back.bounds.bottomLeft
+  toggle : ->
+    if @isChanging
+      return false
+    if @isOpen then @dOpenness = 0
+    else @dOpenness = 1
+    @isOpen = !@isOpen
+    @isChanging = true
 
+  updateOpenness : ->
     @left.segments[0].point = @front.bounds.topLeft
     @left.segments[1].point = @front.bounds.bottomLeft
     @left.segments[2].point = @back.bounds.bottomLeft
@@ -90,9 +95,11 @@ class mk.m11s.tiroirs.Drawer
 
   update : (dt) ->
     @follower.update()
-    @time += dt
-    @openness = Math.sin(@time / 400 + @timeoffset) * 0.5 + 0.5
+    @openness += (@dOpenness-@openness) * 0.005 * dt
+    if @isChanging
+      if Math.abs(@dOpenness-@openness) < 0.1
+        @isChanging = false
     @front.position.x = @openness * @maxOpenness * @side
     @front.position.y = @openness * @maxOpenness * 0.5
-    # console.log @openness
+    
     @updateOpenness()

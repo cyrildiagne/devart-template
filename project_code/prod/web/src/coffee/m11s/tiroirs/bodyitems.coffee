@@ -2,35 +2,39 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems: ->
     @flys = []
-    @setupFlyings()
-    @addScarf()
+    # @setupFlyings()
+    # @addScarf()
     @availableJoints = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
     @count = 0
     @drawerPos =
       torso : [
-        { weights : [0.0, 0.25, 0.75], scale : 0.4, z: 150 }
-        { weights : [0.15, 0.65, 0.2], scale : 0.4, z: 140 }
-        { weights : [0.28, 0.16, 0.56], scale : 0.4, z: 130 }
-        { weights : [0.42, 0.45, 0.13], scale : 0.4, z: 120 }
-        { weights : [0.6, 0.2, 0.2], scale : 0.6, z: 110 }
-        { weights : [0.8, 0.1, 0.1], scale : 0.5, z: 100 }
+        { weights : [0.0, 0.25, 0.75], scale : 0.4, z: 55 }
+        { weights : [0.15, 0.65, 0.2], scale : 0.4, z: 50 }
+        { weights : [0.28, 0.16, 0.56], scale : 0.4, z: 45 }
+        { weights : [0.42, 0.45, 0.13], scale : 0.4, z: 40 }
+        { weights : [0.6, 0.2, 0.2], scale : 0.6, z: 35 }
+        { weights : [0.8, 0.1, 0.1], scale : 0.5, z: 30 }
       ]
       pelvis : [
-       { weights : [0.4, 0.3, 0.3], scale : 0.4, z: 90 } 
+       { weights : [0.4, 0.3, 0.3], scale : 0.4, z: 25 } 
       ]
       leftUpperLeg : [
-       { weights : [0.2, 0.8], scale : 0.2, z: 80 } 
-       { weights : [0.4, 0.6], scale : 0.2, z: 70 } 
-       { weights : [0.6, 0.4], scale : 0.2, z: 60 } 
-       { weights : [0.8, 0.2], scale : 0.2, z: 50 } 
+       { weights : [0.2, 0.8], scale : 0.2, z: 20 } 
+       { weights : [0.4, 0.6], scale : 0.2, z: 15 } 
+       { weights : [0.6, 0.4], scale : 0.2, z: 10 } 
+       { weights : [0.8, 0.2], scale : 0.2, z: 5 } 
       ]
       rightUpperLeg : [
-       { weights : [0.2, 0.8], scale : 0.2, z: 80 } 
-       { weights : [0.4, 0.6], scale : 0.2, z: 70 } 
-       { weights : [0.6, 0.4], scale : 0.2, z: 60 } 
-       { weights : [0.8, 0.2], scale : 0.2, z: 50 } 
+       { weights : [0.2, 0.8], scale : 0.2, z: 20 } 
+       { weights : [0.4, 0.6], scale : 0.2, z: 15 } 
+       { weights : [0.6, 0.4], scale : 0.2, z: 10 } 
+       { weights : [0.8, 0.2], scale : 0.2, z: 5 } 
       ]
+    @drawers = []
     @addDrawers()
+
+  onMusicEvent : (evId) ->
+    console.log evId
 
   addDrawers: ->
     DrawerClass = m11Class 'Drawer'
@@ -48,9 +52,9 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         opt = opts.splice(id, 1)[0]
         drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, @settings, opt
         @items.push drawer
-  
+        @drawers.push drawer
+
   setupFlyings: ->
-    
     hat = 
       symbol : @assets.symbols.tiroirs['hat.svg']
       pivot : new paper.Point 0, 0
@@ -70,7 +74,6 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       @items.push fly
 
   addScarf: ->
-    
     fly = new (m11Class 'Flying') null, @flys.length,
       color1 : '#' + @settings.palette.cream.toString 16
       color2 : '#' + @settings.palette.beige.toString 16
@@ -91,11 +94,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @scarf2.view.z = 1
     @items.push @scarf2
   
-  update: (dt) ->
-    super dt
-
-    # return
-
+  updateFlyings : ->
     if @flys[2].isFlying
       @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].view.position.x
       @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].view.position.y - 10
@@ -116,3 +115,22 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       else
         fly.view.position.x = fly.joint.x
         fly.view.position.y = fly.joint.y
+
+  updateDrawerOpening : ->
+    distMax = 20 * 20
+    for j in [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
+      for dr in @drawers
+        dpos = dr.view.position
+        dist = (j.x-dpos.x) * (j.x-dpos.x) + (j.y-dpos.y) * (j.y-dpos.y)
+        if dist < distMax
+          dr.toggle()
+      
+
+  update: (dt) ->
+    super dt
+    
+    @updateDrawerOpening()
+
+    if @flys.length
+      @updateFlyings()
+      

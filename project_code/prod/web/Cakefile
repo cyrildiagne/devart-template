@@ -1,6 +1,7 @@
-fs = require 'fs'
-which = require 'which'
-path = require 'path'
+fs         = require 'fs-extra'
+which      = require 'which'
+path       = require 'path'
+coffeebar  = require 'coffeebar'
 {spawn, exec} = require 'child_process'
 
 bin_path    = 'bin'
@@ -30,3 +31,100 @@ task 'dev', 'start dev env', ->
   watch 'jade',   ['-w', jade_path, '-P', '-o', 'bin', '-O', JSON.stringify jade_options]
   simple_server()
   
+
+
+appFiles  = [
+  'global'
+
+  'utils/js_utils'
+  'utils/geom_utils'
+  'utils/osc_parser'
+  'utils/artnet_client'
+
+  'skeleton/skeleton'
+  'skeleton/skeleton_sync'
+
+  'helpers/helpers'
+  'helpers/flying'
+  'helpers/physics'
+
+  'm11s/base/settings'
+  'm11s/base/joint'
+  'm11s/base/part'
+  'm11s/base/morph'
+  'm11s/base/bodyitems'
+  'm11s/base/perso'
+
+  'm11s/tiroirs/settings'
+  'm11s/tiroirs/items/flying'
+  'm11s/tiroirs/items/drawer'
+  'm11s/tiroirs/items/hat'
+  'm11s/tiroirs/items/scarf'
+  'm11s/tiroirs/items/buttons'
+  'm11s/tiroirs/bodyitems'
+
+  'm11s/bulbs/settings'
+  'm11s/bulbs/items/bulb'
+  'm11s/bulbs/items/rope'
+  'm11s/bulbs/bodyitems'
+
+  'm11s/peaks/settings'
+  'm11s/peaks/bodyitems'
+  'm11s/peaks/part'
+
+  'm11s/tribal/settings'
+  'm11s/tribal/bodyitems'
+  'm11s/tribal/items/feather'
+  'm11s/tribal/items/mask'
+  'm11s/tribal/items/fire'
+  'm11s/tribal/part'
+
+  'm11s/stripes/items/stripes'
+  'm11s/stripes/perso'
+
+  'm11s/birds/settings'
+  'm11s/birds/items/branches'
+  'm11s/birds/items/bird'
+  'm11s/birds/items/house'
+  'm11s/birds/items/lucioles'
+  'm11s/birds/bodyitems'
+
+  'm11s/lockers/settings'
+  'm11s/lockers/items/lock'
+  'm11s/lockers/items/pile'
+  'm11s/lockers/bodyitems'
+
+  'playback/playback'
+  'playback/record'
+
+  'sound/music'
+  'sound/sounds'
+
+  'assets'
+  'scene'
+  'main'
+]
+
+
+task 'build', 'Build single application file from source files', ->
+
+  jade = which.sync 'jade'
+  opt = {}
+  opt.build = true
+  exec 'jade -P -o bin -O '+JSON.stringify(opt)+' src/jade/index.jade', (err, stdout, stderr) ->
+    if err then console.log 'exec error: ' + err
+    else console.log('stdout: ' + stdout)
+
+  for i in [0...appFiles.length]
+    appFiles[i] = 'src/coffee/' + appFiles[i] + '.coffee'
+
+  files = fs.readdirSync 'bin/js'
+  for file in files
+    uri = path.join 'bin/js',file
+    fs.removeSync uri
+
+  coffeebar appFiles,
+    output : path.join 'bin/js', 'all.min.js'
+    minify : true
+    bare : true
+    silent : false

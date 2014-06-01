@@ -2,9 +2,12 @@ include base
 
 - page.title = "Les métamorphoses de Mr. Kalia"
 - page.styles = ['main']
-
-- include('app')
+- page.libs = ['Matrix']
 
 +template()
   iframe( id="frame", src="main.html" )
+  .quad#topLeft
+  .quad#topRight
+  .quad#bottomLeft
+  .quad#bottomRight
   

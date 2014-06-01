@@ -7,7 +7,6 @@
 - page.title = ""
 - page.keywords = ""
 - page.description = ""
-- var include = function(script) { page.scripts.push(script); }
 
 mixin template()
   doctype html
@@ -43,5 +42,5 @@ mixin libs()
     script(src= rootDir + 'vendor/js/' + page.libs[i]+'.js')
 
 mixin scripts()
-  - for (var i = 0; i < page.scripts.length; i++)
-    script(src= rootDir + 'js/' + page.scripts[i]+'.js')
+  - for (var i = 0; i < includes.length; i++)
+    script(src= rootDir + 'js/' + includes[i]+'.js')

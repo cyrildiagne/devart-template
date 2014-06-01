@@ -5,4 +5,4 @@ window.onmessage = (e) ->
   if e.data=="ready"
     iframe.contentWindow.postMessage currScene, '*'
   else
-    iframe.src = "main.html"
+    iframe.contentWindow.location.reload()

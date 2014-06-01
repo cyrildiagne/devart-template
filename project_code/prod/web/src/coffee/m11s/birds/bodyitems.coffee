@@ -12,9 +12,19 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @timeBetweenNewTree = 625 * 7 * 3
     @intervalTree = 0
 
+    @bodyFlowers = []
+    @treeItems = []
+
+    @houses = []
+    @addHouses()
+
+    @birds = []
+
+    @moon = null
     # @bGrowHouses = false
     # @timeBetweenNewHouse = 625 * 4
     # @intervalHouse = 0
+    # @fadeToColor @settings.palette.blue
 
   update : (dt) ->
     super dt
@@ -30,18 +40,87 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @newTreeItemTick()
 
   onMusicEvent : (evId) ->
+    console.log 'onMusicEvent'
     switch evId
-      when 0
+      when 0 # apparition branches
         @bGrowTrees = true
         @addTree()
-      when 1
+      when 1 # apparition fleurs/feuilles
         @bTreeGrowsItems = true
         @newTreeItemTick()
         @addBodyFlowers()
-      when 2
-        @addHouse()
-      when 3
+        break
+      when 2 # apparition des oiseaux
+        times = [625, 625*5, 625*9]
+        for duration in times
+          tween = new TWEEN.Tween().to({}, duration)
+           .onComplete(=>
+              @newTreeItemTick 'nest1.svg'
+           ).start window.currentTime
+      when 3 # oiseaux in/out maisons
         @bGrowTrees = false
+      when 4 # oiseaux in/out maisons
+        @setNightMode()
+      when 5 # apparition lucioles
+        break
+      when 6
+        #...
+        break
+
+  setNightMode : ->
+    color = @settings.palette.blue
+    i = 0
+    for p in @parts
+      i++
+      p.color = color
+      @fadeToColor p.path, color, 4000, 2000
+      for j in p.jointViews
+        @fadeToColor j.view, color, 4000, 2000
+    @setNightHouses()
+    @sendBirdsToHouses()
+    @removeTreeItems()
+    @removeBodyFlowers()
+    @addMoon()
+
+  addMoon : ->
+    hex = '#' + @settings.palette.lightBlue.toString 16
+
+    @moon = new paper.Path.Circle
+      position : new paper.Point 100,-1000
+      radius : 250
+    @moon.fillColor = hex
+    @moon.sendToBack()
+
+    brightness = new paper.Color(hex).convert('hsb').brightness
+
+    m = @moon
+    tween = new TWEEN.Tween({ y: -1000})
+     .to({ y: -270 }, 20000)
+     .easing( TWEEN.Easing.Quadratic.Out )
+     .onUpdate(->
+        m.position.y = @y
+     ).start window.currentTime
+
+  fadeToColor : (item, color, duration=1000, delay=0) ->
+    hexa = '#' + color.toString 16
+    hsb = new paper.Color(hexa).convert('hsb')
+    tween = new TWEEN.Tween(
+      h: item.fillColor.hue
+      s: item.fillColor.saturation
+      b: item.fillColor.brightness
+     )
+     .to({ h: hsb.hue, s: hsb.saturation, b: hsb.brightness }, duration)
+     .easing( TWEEN.Easing.Linear.None )
+     .delay( delay )
+     .onUpdate(->
+        item.fillColor.hue        = @h
+        item.fillColor.saturation = @s
+        item.fillColor.brightness = @b
+     ).start window.currentTime
+    # for t in @trees
+    #   for b in t.branches
+    #     b.path.strokeColor = hexa
+    # return null
 
   addBird: (tree)->
     symbs = ['bird1.svg', 'bird2.svg']
@@ -55,36 +134,41 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       tree = @trees.seedRandom 'addBird'
     bird.flyToBranch tree.addTrackPoint()
     @items.push bird
+    @birds.push bird
 
-  addHouse: ->
-    symbs = ['house1.svg', 'house2.svg', 'house3.svg', 'house_side1.svg', 'house_side2.svg', 'house_side3.svg']
+  sendBirdsToHouses : ->
+    for b in @birds
+      house = @houses.seedRandom 'sbth'
+      b.flyToHouse house, ->
+        # ...
+        # @birds.splice @birds.indexOf(b),1
+        # console.log @birds.length
+
+  addHouses: ->
+    symbs = ['house1', 'house2', 'house3', 'house_side1', 'house_side2', 'house_side3']
     parts = @getPartsExcluding ['head', 'pelvis']
 
     numHouse = 0
     rdmk = 'addHouses'
     for p in parts
       isTorso = p.name is 'torso'
-      num = if isTorso then 8 else 2
+      num = if isTorso then 6 else 2
       scale = rng(rdmk)*(if isTorso then 1 else -0.3) + 1
-
       for i in [1..num]
         if rng(rdmk) > 0.5
           sname = symbs.seedRandom rdmk
-          symbol = @assets.symbols.birds[sname]
-          
-          item = new mk.helpers.SimplePartItem symbol, p, 'House'
-          item.view.scale 0.01
-          @items.push item
+          house = new mk.m11s.birds.House sname, p, @assets.symbols.birds
+          house.show scale, numHouse++
+          @items.push house
+          @houses.push house
+    return null
 
-          do (item) ->
-            rdm = rng(rdmk+'HouseDelay') * 15
-            tween = new TWEEN.Tween({ scale: 0.01 })
-             .to({ scale: scale }, 1000)
-             .delay((numHouse++)*(2650))
-             .easing( TWEEN.Easing.Quadratic.Out )
-             .onUpdate(->
-                item.view.scaling = new paper.Point(@scale, @scale)
-             ).start window.currentTime
+  setNightHouses: ->
+    delay = 0
+    @houses.sort (a, b) ->
+      return (if a.view.position.y < b.view.position.y then 1 else -1)
+    for h in @houses
+      h.setNight (delay++)*300
 
   addTree: ->
     if rng('addTree') > 0.5
@@ -101,6 +185,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       firstBranchAngles : [ang]
     @items.push tree
     @trees.push tree
+    return null
 
   addBodyFlowers: ->
     rdmk = 'addBodyFlowers'
@@ -111,6 +196,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       item = new mk.helpers.SimplePartItem symbol, p, 'Flower'
       item.view.scale 0.001
       @items.push item
+      @bodyFlowers.push item
 
       do (item) ->
         rdm = rng(rdmk)*8000
@@ -121,26 +207,60 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
          .onUpdate(->
             item.view.scaling = new paper.Point(@scale, @scale)
          ).start window.currentTime
+    return null
 
-  newTreeItemTick: =>
+  removeBodyFlowers : ->
+    delay = 0
+    items = @items
+    for item in @bodyFlowers
+      delay+=300
+      do (item) ->
+        tween = new TWEEN.Tween({scale:1}).to({scale:0}, 500)
+         .delay(delay)
+         .onUpdate(->
+          item.scaling = @scale
+         )
+         .onComplete(->
+          item.view.remove()
+          items.splice items.indexOf(item), 1
+         ).start window.currentTime
+
+  removeTreeItems : ->
+    delay = 0
+    for item in @treeItems
+      delay+=300
+      do (item) ->
+        tween = new TWEEN.Tween({scale:1}).to({scale:0}, 500)
+         .delay(delay)
+         .onUpdate(->
+          item.scaling = @scale
+         )
+         .onComplete(->
+          item.remove()
+         ).start window.currentTime
+
+  newTreeItemTick: (symbolName) =>
     if !@bTreeGrowsItems then return
     rdmk = 'newTreeItemTick'
     tree = @trees.seedRandom rdmk
-    if tree.trackPoints.length < tree.branches.length / 2
-      symbolName = ['flower1.svg', 'flower2.svg', 'nest1.svg'].seedRandom rdmk
-      symbol = @assets.symbols.birds[symbolName]
-      view = symbol.place()
-      view.scale 0.01
-      view.transformContent = false
-      if symbolName isnt 'nest1.svg'
-        view.rotation = rng(rdmk) * 360
-      else
-        @addBird tree
-      tree.addTrackPoint view
-      
-      tween = new TWEEN.Tween( { scale: 0.01 } )
-       .to( { scale: 1 }, 3000 )
-       .easing( TWEEN.Easing.Elastic.Out )
-       .onUpdate( ->
-          view.scaling = new paper.Point(@scale, @scale)
-       ).start window.currentTime
+    if symbolName is undefined && tree.trackPoints.length >= tree.branches.length / 2
+      return
+    console.log '> doing it'
+    symbolName = symbolName || ['flower1.svg', 'flower2.svg'].seedRandom rdmk
+    symbol = @assets.symbols.birds[symbolName]
+    view = symbol.place()
+    view.scale 0.01
+    view.transformContent = false
+    if symbolName isnt 'nest1.svg'
+      view.rotation = rng(rdmk) * 360
+    else
+      @addBird tree
+    tree.addTrackPoint view
+    @treeItems.push view
+    
+    tween = new TWEEN.Tween( { scale: 0.01 } )
+     .to( { scale: 1 }, 3000 )
+     .easing( TWEEN.Easing.Elastic.Out )
+     .onUpdate( ->
+        view.scaling = new paper.Point(@scale, @scale)
+     ).start window.currentTime

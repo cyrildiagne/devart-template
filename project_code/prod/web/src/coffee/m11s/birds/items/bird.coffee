@@ -17,22 +17,37 @@ class mk.m11s.birds.Bird extends mk.helpers.Flying
       wingSpeed : @speed
       pos : new paper.Point -600, (rng(rngk)-0.5) * 800 - 50
       v1length : 180
-    @speed *= @speed * 0.002
+    @speed *= 0.002
     @bFlyingToBranch = false
+    @bFlyingToHouse = false
 
   flyToBranch : (@target) ->
     @bFlyingToBranch = true
     if !@isFlying
       @start()
 
+  flyToHouse : (@house, @goneHomeCallback) ->
+    @bFlyingToHouse = true
+    @bFlyingToBranch = false
+    @speed *= 3
+
   land : () ->
     if @isFlying
       @stop()
     @bFlyingToBranch = false
+    if @bFlyingToHouse
+      @hide()
+      @goneHomeCallback()
+
+  hide : () ->
+    @view.remove()
 
   update: (dt) ->
-    t = @target.pos.add(@target.ref.position)
-    t.y -= 20
+    if @bFlyingToHouse
+      t = @house.view.position
+    else 
+      t = @target.pos.add(@target.ref.position)
+      t.y -= 20
     dist = t.subtract(@view.position)
     if @bFlyingToBranch
       @velocity.x = dist.x * @speed * dt

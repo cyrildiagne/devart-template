@@ -8,16 +8,23 @@ class mk.sound.Music
     @currEvent = 0
     @soundId = null
     @bSettingPos = false
+    @endCallback = null
+    @isFinished = false
 
-  load : (@settings, callback) ->
+  load : (@settings, loadedCallback) ->
     path = @settings.track
     @track = new Howl
       urls : [ path ]
       onload : =>
-        if callback
-          callback()
+        if loadedCallback
+          loadedCallback()
       onloaderror : ->
-        console.log "error loading #{url}"
+        console.log "> Music error loading #{url}"
+      onend : =>
+        @stop()
+        console.log '> Music finished'
+        if @endCallback
+          @endCallback()
       onplay : @onPlay
 
   play : ->
@@ -25,10 +32,11 @@ class mk.sound.Music
       @track.play()
       @bSettingPos = true
       @track.pos @animTime
+      # @track.pos 106.671 + 0.3
       @bSettingPos = false
       @isPlaying = true
     else
-      console.log 'already playing'
+      console.log '> Music already playing'
       
       # @track.mute()
 
@@ -38,8 +46,11 @@ class mk.sound.Music
     console.log '> Music paused'
 
   update : (dt, currentTime) ->
+    if @isFinished
+      return
     @animTime = currentTime / 1000
     if @animTime > @nextEventTime
+      console.log '> Music Event ' + @currEvent
       @onMusicEvent @currEvent if @onMusicEvent
       @setNextEvent()
 
@@ -57,8 +68,10 @@ class mk.sound.Music
       if time > pos
         @currEvent = i
         @nextEventTime = time
-        console.log 'Setting next event at ' + @nextEventTime + 's'
+        console.log '> Music setting next event at ' + @nextEventTime + 's'
         break
+    if @nextEventTime < pos
+      @isFinished = true
 
   onPlay : () =>
     if !@bSettingPos then return

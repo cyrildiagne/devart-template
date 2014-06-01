@@ -78,7 +78,7 @@ setMetamorphose = (m) ->
   if scene
     scene.setMetamorphose m
   else
-    scene = new mk.Scene onSceneReady
+    scene = new mk.Scene onSceneReady, onSceneFinished
     @setMetamorphose m
 
 toggleDebug = () ->
@@ -100,8 +100,13 @@ onSceneReady = () ->
       m11  : window.metamorphose
 
   start()
-  if playback
-    goto 2900, false
+  # if playback
+  #   goto 8500, false
+
+onSceneFinished = () ->
+  console.log 'scene finished'
+  curtainDown ->
+    window.location.href = 'http://google.com'#localhost:3000'
 
 start = () ->
   if !paper.view.onFrame

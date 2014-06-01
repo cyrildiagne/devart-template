@@ -35,7 +35,7 @@ class mk.m11s.birds.House
     @view.addChild night
     v = @view
     tween = new TWEEN.Tween({ opacity: 0 })
-     .to({ opacity: 1 }, 3000)
+     .to({ opacity: 1 }, 1000)
      .delay(delay)
      .easing( TWEEN.Easing.Linear.None )
      .onUpdate(->

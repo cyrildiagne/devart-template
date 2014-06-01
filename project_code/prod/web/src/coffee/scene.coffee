@@ -1,13 +1,13 @@
 class mk.Scene 
 
-  constructor : (@onSceneReady) ->
+  constructor : (@onSceneReady, @onSceneFinished) ->
     @assets = new mk.Assets
     @sounds = new mk.sound.Sounds
     @music = new mk.sound.Music @onMusicEvent
+    @music.endCallback = @endCallback
     @settings = null
     @perso = null
     @isLoading = false
-
     @delta = 0
     @numMesure = 0
 
@@ -41,6 +41,10 @@ class mk.Scene
         if @onSceneReady
           onSceneReady()
 
+  endCallback : =>
+    if @onSceneFinished
+      @onSceneFinished()
+
   setDebug : (@debug) ->
     @perso.view.fullySelected = @debug
 
@@ -56,7 +60,8 @@ class mk.Scene
     @music.stop()
 
   start : ->
-    @music.play()
+    if !@music.isFinished
+      @music.play()
 
   onMusicEvent : (eventId) =>
     @perso.onMusicEvent eventId

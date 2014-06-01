@@ -21,6 +21,9 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @birds = []
 
     @moon = null
+
+    @lucioles = null
+
     # @bGrowHouses = false
     # @timeBetweenNewHouse = 625 * 4
     # @intervalHouse = 0
@@ -40,7 +43,6 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @newTreeItemTick()
 
   onMusicEvent : (evId) ->
-    console.log 'onMusicEvent'
     switch evId
       when 0 # apparition branches
         @bGrowTrees = true
@@ -62,9 +64,14 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       when 4 # oiseaux in/out maisons
         @setNightMode()
       when 5 # apparition lucioles
-        break
-      when 6
-        #...
+        @addLucioles()
+      when 7
+        @lucioles.addRightHand()
+      when 8
+        @lucioles.leave()
+        @removeMoon()
+      when 9
+        fadeoutScene 7000
         break
 
   setNightMode : ->
@@ -73,9 +80,9 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     for p in @parts
       i++
       p.color = color
-      @fadeToColor p.path, color, 4000, 2000
+      @fadeToColor p.path, color, 500, 4000
       for j in p.jointViews
-        @fadeToColor j.view, color, 4000, 2000
+        @fadeToColor j.view, color, 500, 4000
     @setNightHouses()
     @sendBirdsToHouses()
     @removeTreeItems()
@@ -101,6 +108,16 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         m.position.y = @y
      ).start window.currentTime
 
+  removeMoon : ->
+    m = @moon
+    tween = new TWEEN.Tween({ y: -270})
+     .to({ y: -1000 }, 18000)
+     .easing( TWEEN.Easing.Quadratic.In )
+     .onUpdate(->
+        m.position.y = @y
+     ).start window.currentTime
+
+
   fadeToColor : (item, color, duration=1000, delay=0) ->
     hexa = '#' + color.toString 16
     hsb = new paper.Color(hexa).convert('hsb')
@@ -121,6 +138,12 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     #   for b in t.branches
     #     b.path.strokeColor = hexa
     # return null
+
+  addLucioles : ()->
+    leftHand = @joints[NiTE.LEFT_HAND]
+    rightHand = @joints[NiTE.RIGHT_HAND]
+    @lucioles = new mk.m11s.birds.Lucioles @assets.symbols.birds['luciole.svg'], leftHand, rightHand
+    @items.push @lucioles
 
   addBird: (tree)->
     symbs = ['bird1.svg', 'bird2.svg']
@@ -168,7 +191,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @houses.sort (a, b) ->
       return (if a.view.position.y < b.view.position.y then 1 else -1)
     for h in @houses
-      h.setNight (delay++)*300
+      h.setNight (delay++)*500
 
   addTree: ->
     if rng('addTree') > 0.5
@@ -180,7 +203,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     p = parts.seedRandom 'addTree'
     tree = new mk.m11s.birds.Branches p.joints[1], p.joints[0], rng('addTree'),
       branchColor       : '#' + p.color.toString(16)
-      # maxBranches       : Math.floor(rng('addTree')*4) + 4
+      maxBranches       : Math.floor(rng('addTree')*3) + 4
       maxBranchLength   : rng('addTree') * 450 + 250
       firstBranchAngles : [ang]
     @items.push tree

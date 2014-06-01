@@ -19,7 +19,7 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
       'assets/items/birds/house_side3_night.svg'
       'assets/items/birds/bird1.svg'
       'assets/items/birds/bird2.svg'
-      'assets/items/birds/luciolle.svg'
+      'assets/items/birds/luciole.svg'
     ]
 
   setupSounds : ->
@@ -40,10 +40,10 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
       # oiseaux rentent dans les maisons
       # lune apparait
       # changement de couleur progressif
-      106.671 # reprise rythmique
+      106.671 + 0.3 # reprise rythmique
       # apparition des lucioles
       117.342 # retour violon
       138.669 # 2eme violon
       159.995 # break
-      183.304 # end
+      176.046 # fadeout
     ]

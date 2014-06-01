@@ -47,3 +47,4 @@ class mk.m11s.tiroirs.Buttons
           bt.scaling = bt.buttonScale
         else
           bt.scaling = bt.scaling.x + d
+    return null

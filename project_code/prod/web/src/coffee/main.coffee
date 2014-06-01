@@ -18,7 +18,7 @@ setupPlayback = (filename) ->
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
     setSeed new Date().getTime() #seed
-    setMetamorphose m11
+    setMetamorphose 'birds'
 
 setupLive = (m11) ->
   setupApp()
@@ -101,22 +101,26 @@ onSceneReady = () ->
 
   start()
   if playback
-    goto 2500#, true
+    goto 2900, false
 
 start = () ->
   if !paper.view.onFrame
     paper.view.onFrame = onFrame
   scene.start()
+  console.log '> started'
 
 stop = () ->
   paper.view.onFrame = undefined  
   scene.stop()
+  console.log '> stopped'
 
-goto = (frame, bStop = false) ->
+goto = (frame, bStop = false, dt = 1/50) ->
   if frame < frameNum
     console.log "Can't go backward yet.."
     return
-  update 1/50 for i in [frameNum...frame]
+  scene.music.stop()
+  update dt for i in [frameNum...frame]
+  scene.music.play()
   if bStop
     stop()
 
@@ -171,7 +175,6 @@ update = (deltaTime) ->
 
   dt = 1000 / 50
   accumulator += deltaTime
-  i = 0
   while accumulator >= dt
 
     if playback

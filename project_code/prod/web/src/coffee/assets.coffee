@@ -23,7 +23,7 @@ class mk.Assets
       name = @files[@curr].split('/').last()
       @symbols[@type][name] = sym
       
-      console.log "#{name} loaded"
+      # console.log "#{name} loaded"
 
       if ++@curr >= @files.length
         @onCompleteCb()

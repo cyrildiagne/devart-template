@@ -26,7 +26,7 @@ mkdirRecSync = (path) ->
         console.log 'err'
         return
 
-s_path = path.join 'birds', 'track'
+s_path = path.join 'tiroirs', 'track'
 
 files = fs.readdirSync path.join(in_path,s_path)
 for f in files

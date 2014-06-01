@@ -27,6 +27,9 @@ class mk.sound.Music
       @track.pos @animTime
       @bSettingPos = false
       @isPlaying = true
+    else
+      console.log 'already playing'
+      
       # @track.mute()
 
   stop : ->

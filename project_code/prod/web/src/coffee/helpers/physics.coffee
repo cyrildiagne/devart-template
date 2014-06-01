@@ -83,6 +83,7 @@ class mk.helpers.Physics
       ppb.debug.strokeColor = 'red'
     for i in [0...4]
       ppb.debug.segments[i].point = ppb.body.vertices[i]
+    return null
 
   addCircle : (view, pos, radius, opt) ->
     circle = Matter.Bodies.circle pos.x, pos.y, radius, opt
@@ -110,4 +111,5 @@ class mk.helpers.Physics
     
     for ppb in @persoPartBodies 
       @updatePersoPartRect ppb
+    return null
     

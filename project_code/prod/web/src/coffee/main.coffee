@@ -18,7 +18,7 @@ setupPlayback = (filename) ->
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
     setSeed new Date().getTime() #seed
-    setMetamorphose 'birds'
+    setMetamorphose 'tiroirs'
 
 setupLive = (m11) ->
   setupApp()
@@ -100,13 +100,14 @@ onSceneReady = () ->
       m11  : window.metamorphose
 
   start()
+
   # if playback
   #   goto 8500, false
 
 onSceneFinished = () ->
   console.log 'scene finished'
   curtainDown ->
-    window.location.href = 'http://google.com'#localhost:3000'
+    window.top.postMessage '1401061237730_018304_birds', '*'
 
 start = () ->
   if !paper.view.onFrame
@@ -209,6 +210,12 @@ dmxLightAnimation = ->
       light.send([val])
     ,1000/30
 
-setupPlayback '1401061237730_018304_birds'
-# setupLive 'birds'
+window.onmessage = (e) ->
+  arg = e.data
+  if arg.split("_").length > 1
+    setupPlayback arg
+  else
+    setupLive arg
+
+window.top.postMessage 'ready', '*'
      

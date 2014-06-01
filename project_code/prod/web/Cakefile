@@ -7,7 +7,7 @@ coffeebar  = require 'coffeebar'
 bin_path    = 'bin'
 coffee_path = path.join 'src','coffee'
 stylus_path = path.join 'src','stylus'
-jade_path   = path.join 'src','jade','index.jade'
+jade_path   = path.join 'src','jade','main.jade'
 jade_options = 
   rootDir : './'
 
@@ -111,17 +111,19 @@ task 'build', 'Build single application file from source files', ->
   jade = which.sync 'jade'
   opt = {}
   opt.build = true
-  exec 'jade -P -o bin -O '+JSON.stringify(opt)+' src/jade/index.jade', (err, stdout, stderr) ->
+  exec 'jade -P -o bin -O '+JSON.stringify(opt)+' src/jade/main.jade', (err, stdout, stderr) ->
     if err then console.log 'exec error: ' + err
     else console.log('stdout: ' + stdout)
-
-  for i in [0...appFiles.length]
-    appFiles[i] = 'src/coffee/' + appFiles[i] + '.coffee'
 
   files = fs.readdirSync 'bin/js'
   for file in files
     uri = path.join 'bin/js',file
     fs.removeSync uri
+
+  for i in [0...appFiles.length]
+    appFiles[i] = 'src/coffee/' + appFiles[i] + '.coffee'
+
+  exec 'coffee -c -o bin/js src/coffee/app.coffee'
 
   coffeebar appFiles,
     output : path.join 'bin/js', 'all.min.js'

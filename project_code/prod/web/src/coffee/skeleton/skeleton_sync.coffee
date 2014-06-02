@@ -62,7 +62,7 @@ class mk.skeleton.SkeletonSync
 # ----------------------------------------------------------
 
   connectLocalServer : () ->
-    @socket = io.connect 'kikko.local:'+@port
+    @socket = io.connect '127.0.0.1:'+@port
     @socket.on 'connect', @onSocketOpened
     @socket.on 'message', @onSocketMessage
     # @socket.on 'disconnect', @onSocketClosed

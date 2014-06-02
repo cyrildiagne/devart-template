@@ -1,6 +1,7 @@
 iframe = document.getElementById "frame"
 
-currScene = "1401061237730_018304_birds"
+# currScene = "1401061237730_018304_birds"
+currScene = "peaks"
 
 window.onmessage = (e) ->
   if e.data=="ready"
@@ -17,13 +18,8 @@ pts = []
 dst = []
 src = []
 
-updateTransform = ->
-  i = 0
-  for id in ['topLeft', 'topRight', 'bottomRight', 'bottomLeft']
-    point = document.getElementById id
-    dst[i].x = parseInt(point.style.left ,10) || 0
-    dst[i].y = parseInt(point.style.top  ,10) || 0
-    i++
+update = ->
+  updatePtsView()
   perspectiveTransform()
 
 perspectiveTransform = ->
@@ -84,21 +80,25 @@ perspectiveTransform = ->
   iframe.style.webkitTransform = matrix
 
 initPts = ->
+  dst.length = 4
+  src.length = 4
   for i in [0...4]
-    dst.push {x:0, y:0}
-    src.push {x:0, y:0}
+    dst[i] = {x:0, y:0}
+    src[i] = {x:0, y:0}
   src[1].x = src[2].x = dst[1].x = dst[2].x = window.innerWidth
   src[2].y = src[3].y = dst[2].y = dst[3].y = window.innerHeight
 
 initPtsView = ->
-  i = 0
   for id in ['topLeft', 'topRight', 'bottomRight', 'bottomLeft']
     point = document.getElementById id
-    point.style.left = src[i].x + 'px'
-    point.style.top  = src[i].y + 'px'
     point.addEventListener 'mousedown', onPointMouseDown
+    point.id = pts.length
     pts.push point
-    i++
+
+updatePtsView = ->
+  for pt in pts
+    pt.style.left = dst[pt.id].x + 'px'
+    pt.style.top  = dst[pt.id].y + 'px'
 
 onPointMouseDown = (e) ->
   current = e.currentTarget
@@ -106,9 +106,9 @@ onPointMouseDown = (e) ->
   window.addEventListener 'mousemove', onMouseMove
 
 onMouseMove = (e) ->
-  current.style.left = e.x + 'px'
-  current.style.top  = e.y + 'px'
-  updateTransform()
+  dst[current.id].x = e.x
+  dst[current.id].y = e.y
+  update()
 
 onMouseUp = (e) ->
   current = null
@@ -116,12 +116,11 @@ onMouseUp = (e) ->
   window.removeEventListener 'mousemove', onMouseMove
 
 onWindowResize = ->
-  src[1].x = src[2].x = window.innerWidth
-  src[2].y = src[3].y = window.innerHeight
-  updateTransform()
+  initPts()
+  update()
 
 initPts()
 initPtsView()
 window.addEventListener 'resize', onWindowResize
 
-updateTransform()
+update()

@@ -42,7 +42,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @intervalTreeItem -= @timeBetweenNewTreeItem
         @newTreeItemTick()
     if @moon
-      @moon.x += (window.viewport.width-@joints[Nite.HEAD].x-@moon.x) * 0.001 * dt
+      @moon.position.x += (window.viewport.width*0.5-@joints[NiTE.HEAD].x-@moon.position.x) * 0.0007 * dt
 
   onMusicEvent : (evId) ->
     switch evId

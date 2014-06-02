@@ -14,16 +14,13 @@ frameNum = 0
 
 currDMXVal = 0
 
-bMinOneUSer = false
-bTimeoutForComeback = -1
-
 setupPlayback = (filename) ->
   console.log 'Setting up playback ' + filename
   setupApp()
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
     setSeed new Date().getTime() #seed
-    setMetamorphose 'tiroirs'
+    setMetamorphose 'birds'
 
 setupLive = (m11) ->
   console.log 'Setting up live ' + m11
@@ -109,30 +106,32 @@ onSceneReady = () ->
       timestamp : window.seed
       m11  : window.metamorphose
 
-  if bMinOneUSer
+  if sync.bMinOneUser or playback
     beginScene()
   # if playback
-  #   goto 8500, false
-
+  #   goto 4500, false
 
 # gerer utilisateur déjà présent
-# déplacer la lune en x en fonction de la tete
 # sound design tree
 
 beginScene = ->
+  if scene.isStarted then return
   console.log '> begin scene'
   start()
-  fadeDMXLightTo 0.2, 1000
+  if record
+    fadeDMXLightTo 0.2, 1000
   fadeScene 'on', 1000
 
 finishScene = ->
+  if !scene.isStarted then return
   console.log '> finish scene'
   onSceneFinished()
 
 onSceneFinished = () ->
   console.log 'scene finished'
   fadeScene 'off', 1000
-  fadeDMXLightTo 1, 3000
+  if record
+    fadeDMXLightTo 1, 3000
   setTimeout ->
     stop()
     clean ->
@@ -169,19 +168,11 @@ onPlaybackComplete = () ->
 
 onFirstUserIn = () ->
   console.log 'first user in'
-  if bTimeoutForComeback > -1
-    clearTimeout bTimeoutForComeback
-    bTimeoutForComeback = -1
-  else
-    bMinOneUSer = true
-    beginScene()
+  beginScene()
 
 onLastUserOut = () ->
   console.log 'last user out'
-  bTimeoutForComeback = setTimeout ->
-    bMinOneUSer = false
-    finishScene()
-  , 3000
+  finishScene()
 
 # System Events
 

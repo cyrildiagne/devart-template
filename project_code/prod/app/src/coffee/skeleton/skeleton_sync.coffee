@@ -9,6 +9,9 @@ class mk.skeleton.SkeletonSync
     @currentId = -1
     @hasNewData = false
 
+    @bMinOneUser = false
+    @bTimeoutForComeback = -1
+
     @onFirstUserIn = null
     @onLastUserOut = null
     @onRatio       = null
@@ -47,6 +50,9 @@ class mk.skeleton.SkeletonSync
       @oscParser.parse info.data, 0, (msg) =>
         switch msg.path
           when '/skeleton'
+            if !@bMinOneUser
+              @bMinOneUser = true
+              if @onFirstUserIn then @onFirstUserIn()
             @currentId = msg.params.shift()
             @data = msg.params
             @hasNewData = true
@@ -54,11 +60,19 @@ class mk.skeleton.SkeletonSync
               onDataUpdated()
             break
           when '/first_user_entered'
-            if @onFirstUserIn
-              onFirstUserIn()
+            if @bTimeoutForComeback > -1
+              clearTimeout @bTimeoutForComeback
+              @bTimeoutForComeback = -1
+            else
+              if !@bMinOneUser
+                @bMinOneUser = true
+                if @onFirstUserIn then @onFirstUserIn()
           when '/last_user_left'
             if @onLastUserOut
-              onLastUserOut()
+              @bTimeoutForComeback = setTimeout =>
+                @bMinOneUser = false
+                @onLastUserOut()
+              , 3000
           else
             console.log msg
     , 1

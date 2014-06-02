@@ -10,6 +10,7 @@ class mk.Scene
     @isLoading = false
     @delta = 0
     @numMesure = 0
+    @isStarted = false
 
   setMetamorphose : (type) ->
     if @isLoading then return
@@ -61,10 +62,12 @@ class mk.Scene
     @delta += dt
 
   stop : ->
+    @isStarted = false
     if @music
       @music.stop()
 
   start : ->
+    @isStarted = true
     if @music and !@music.isFinished
       @music.play()
 

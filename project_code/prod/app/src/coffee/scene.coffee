@@ -21,6 +21,7 @@ class mk.Scene
       @music.load @settings, (err) =>
         if err
           @music = null
+          console.log err
       # @sounds.load type, @settings.loops, @settings.oneshots, =>
 
         if @perso is null or @perso.type isnt type

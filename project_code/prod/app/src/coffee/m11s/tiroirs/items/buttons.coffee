@@ -4,7 +4,7 @@ class mk.m11s.tiroirs.Buttons
     @view = new paper.Group()
     @view.transformContent = false
     @view.pivot = new paper.Point 0,0
-    @view.z = 200
+    @view.z = 1500
 
     @buttons = []
     @buttonsToAdd = []

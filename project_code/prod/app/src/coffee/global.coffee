@@ -50,10 +50,14 @@ m11Class = (className) =>
 setBackgroundColor = (color) ->
   canvas.style.backgroundColor = color
 
-fadeoutScene = (duration=1000) ->
+fadeSceneTimeout = -1
+fadeScene = (mode, duration=1000, callback) ->
   canvas = document.getElementById 'paperjs-canvas'
-  canvas.className += 'end'
+  canvas.className = mode
   canvas.style.transition = 'opacity '+duration+'ms ease'
+  clearTimeout fadeSceneTimeout
+  if callback
+    fadeSceneTimeout = setTimeout callback, duration
 
 curtainDown = (callback) ->
   curtain = document.getElementById 'curtain'

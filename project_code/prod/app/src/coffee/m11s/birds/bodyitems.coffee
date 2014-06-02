@@ -41,6 +41,8 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       if @intervalTreeItem >= @timeBetweenNewTreeItem
         @intervalTreeItem -= @timeBetweenNewTreeItem
         @newTreeItemTick()
+    if @moon
+      @moon.x += (window.viewport.width-@joints[Nite.HEAD].x-@moon.x) * 0.001 * dt
 
   onMusicEvent : (evId) ->
     switch evId
@@ -71,7 +73,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @lucioles.leave()
         @removeMoon()
       when 9
-        fadeoutScene 7000
+        fadeScene 'off', 7000
         break
 
   setNightMode : ->

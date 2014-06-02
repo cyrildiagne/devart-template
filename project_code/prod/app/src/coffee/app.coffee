@@ -1,13 +1,17 @@
 iframe = document.getElementById "frame"
 
+scenes = ["tiroirs"] #"birds"
 # currScene = "1401061237730_018304_birds"
-currScene = "peaks"
+currScene = "tiroirs"
 
 window.onmessage = (e) ->
   if e.data=="ready"
     iframe.contentWindow.postMessage currScene, '*'
-  else
+  else if e.data=="next_scene"
+    currScene = scenes[ Math.floor(Math.random()*scenes.length) ]
     iframe.contentWindow.location.reload()
+  else
+    console.log 'app received unknown message : ' + e.data
 
 
 

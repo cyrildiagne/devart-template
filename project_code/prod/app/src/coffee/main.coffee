@@ -14,6 +14,9 @@ frameNum = 0
 
 currDMXVal = 0
 
+bMinOneUSer = false
+bTimeoutForComeback = -1
+
 setupPlayback = (filename) ->
   console.log 'Setting up playback ' + filename
   setupApp()
@@ -25,7 +28,9 @@ setupPlayback = (filename) ->
 setupLive = (m11) ->
   console.log 'Setting up live ' + m11
   setupDMXLight ->
-    fadeDMXLightTo 1, 2000
+    currDMXVal = 255
+    light.send [255]
+    console.log 'dmx light set up'
   setupApp()
   sync = new mk.skeleton.SkeletonSync skeleton, 7000
   sync.onFirstUserIn = onFirstUserIn
@@ -104,15 +109,35 @@ onSceneReady = () ->
       timestamp : window.seed
       m11  : window.metamorphose
 
-  start()
-
+  if bMinOneUSer
+    beginScene()
   # if playback
   #   goto 8500, false
 
+
+# gerer utilisateur déjà présent
+# déplacer la lune en x en fonction de la tete
+# sound design tree
+
+beginScene = ->
+  console.log '> begin scene'
+  start()
+  fadeDMXLightTo 0.2, 1000
+  fadeScene 'on', 1000
+
+finishScene = ->
+  console.log '> finish scene'
+  onSceneFinished()
+
 onSceneFinished = () ->
   console.log 'scene finished'
-  curtainDown ->
-    window.top.postMessage '1401061237730_018304_birds', '*'
+  fadeScene 'off', 1000
+  fadeDMXLightTo 1, 3000
+  setTimeout ->
+    stop()
+    clean ->
+      window.top.postMessage 'next_scene', '*'
+  , 3000
 
 start = () ->
   if !paper.view.onFrame
@@ -124,6 +149,10 @@ stop = () ->
   paper.view.onFrame = undefined  
   scene.stop()
   console.log '> stopped'
+
+clean = (callback) ->
+  sync.close ->
+    callback()
 
 goto = (frame, bStop = false, dt = 1/50) ->
   if frame < frameNum
@@ -139,10 +168,20 @@ onPlaybackComplete = () ->
   # ...
 
 onFirstUserIn = () ->
-  fadeDMXLightTo 0.2, 1000
+  console.log 'first user in'
+  if bTimeoutForComeback > -1
+    clearTimeout bTimeoutForComeback
+    bTimeoutForComeback = -1
+  else
+    bMinOneUSer = true
+    beginScene()
 
 onLastUserOut = () ->
-  fadeDMXLightTo 1, 3000
+  console.log 'last user out'
+  bTimeoutForComeback = setTimeout ->
+    bMinOneUSer = false
+    finishScene()
+  , 3000
 
 # System Events
 
@@ -216,14 +255,18 @@ setupDMXLight = (callback) ->
     console.log 'DMX light ready'
     if callback then callback()
 
-fadeDMXLightTo = (value, duration) ->
+fadeDMXLightTo = (value, duration, callback) ->
   tween = new TWEEN.Tween({ val : currDMXVal})
    .to({ val: value*255 }, duration)
    .easing( TWEEN.Easing.Linear.None )
    .onUpdate(->
       currDMXVal = Math.floor @val
       light.send [currDMXVal]
-   ).start window.currentTime
+   )
+   .onComplete(->
+      if callback then callback()
+   )
+   .start window.currentTime
 
 window.onmessage = (e) ->
   arg = e.data

@@ -63,6 +63,8 @@ class mk.skeleton.SkeletonSync
             console.log msg
     , 1
 
+  close : (callback) =>
+    chrome.sockets.udp.close @socketId, callback
 
 # ----------------------------------------------------------
 # MODE 2 - Browser + NodeJS

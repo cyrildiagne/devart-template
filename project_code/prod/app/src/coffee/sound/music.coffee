@@ -12,8 +12,8 @@ class mk.sound.Music
     @isFinished = false
 
   load : (@settings, loadedCallback) ->
-    if !path
-      loadedCallback 'path is null'
+    if !@settings.track
+      loadedCallback 'no track for this scene'
       return
     path = @settings.track
     @track = new Howl

@@ -7,87 +7,88 @@ coffeebar  = require 'coffeebar'
 bin_path    = 'bin'
 coffee_path = path.join 'src','coffee'
 stylus_path = path.join 'src','stylus'
-# jade_path   = path.join 'src','jade','main.jade'
-# jade_options = 
-#   rootDir : './'
-#   includes : [
-#     'global'
 
-#     'utils/js_utils'
-#     'utils/geom_utils'
-#     'utils/osc_parser'
-#     'utils/artnet_client'
-
-#     'skeleton/skeleton'
-#     'skeleton/skeleton_sync'
-
-#     'helpers/helpers'
-#     'helpers/flying'
-#     'helpers/physics'
-
-#     'm11s/base/settings'
-#     'm11s/base/joint'
-#     'm11s/base/part'
-#     'm11s/base/morph'
-#     'm11s/base/bodyitems'
-#     'm11s/base/perso'
-
-#     'm11s/tiroirs/settings'
-#     'm11s/tiroirs/items/flying'
-#     'm11s/tiroirs/items/drawer'
-#     'm11s/tiroirs/items/hat'
-#     'm11s/tiroirs/items/scarf'
-#     'm11s/tiroirs/items/buttons'
-#     'm11s/tiroirs/bodyitems'
-
-#     'm11s/bulbs/settings'
-#     'm11s/bulbs/items/bulb'
-#     'm11s/bulbs/items/rope'
-#     'm11s/bulbs/bodyitems'
-
-#     'm11s/peaks/settings'
-#     'm11s/peaks/bodyitems'
-#     'm11s/peaks/part'
-
-#     'm11s/tribal/settings'
-#     'm11s/tribal/bodyitems'
-#     'm11s/tribal/items/feather'
-#     'm11s/tribal/items/mask'
-#     'm11s/tribal/items/fire'
-#     'm11s/tribal/part'
-
-#     'm11s/stripes/items/stripes'
-#     'm11s/stripes/perso'
-
-#     'm11s/birds/settings'
-#     'm11s/birds/items/branches'
-#     'm11s/birds/items/bird'
-#     'm11s/birds/items/house'
-#     'm11s/birds/items/lucioles'
-#     'm11s/birds/bodyitems'
-
-#     'm11s/lockers/settings'
-#     'm11s/lockers/items/lock'
-#     'm11s/lockers/items/pile'
-#     'm11s/lockers/bodyitems'
-
-#     'playback/playback'
-#     'playback/record'
-
-#     'sound/music'
-#     'sound/sounds'
-
-#     'assets'
-#     'scene'
-#     'main'
-#   ]
-
-jade_path   = path.join 'src','jade','index.jade'
+jade_path   = path.join 'src','jade','main.jade'
 jade_options = 
   rootDir : './'
   includes : [
-    'app'
+    'global'
+
+    'utils/js_utils'
+    'utils/geom_utils'
+    'utils/osc_parser'
+    'utils/artnet_client'
+
+    'skeleton/skeleton'
+    'skeleton/skeleton_sync'
+
+    'helpers/helpers'
+    'helpers/flying'
+    'helpers/physics'
+
+    'm11s/base/settings'
+    'm11s/base/joint'
+    'm11s/base/part'
+    'm11s/base/morph'
+    'm11s/base/bodyitems'
+    'm11s/base/perso'
+
+    'm11s/tiroirs/settings'
+    'm11s/tiroirs/items/flying'
+    'm11s/tiroirs/items/drawer'
+    'm11s/tiroirs/items/hat'
+    'm11s/tiroirs/items/scarf'
+    'm11s/tiroirs/items/buttons'
+    'm11s/tiroirs/bodyitems'
+
+    'm11s/bulbs/settings'
+    'm11s/bulbs/items/bulb'
+    'm11s/bulbs/items/rope'
+    'm11s/bulbs/bodyitems'
+
+    'm11s/peaks/settings'
+    'm11s/peaks/bodyitems'
+    'm11s/peaks/part'
+
+    'm11s/tribal/settings'
+    'm11s/tribal/bodyitems'
+    'm11s/tribal/items/feather'
+    'm11s/tribal/items/mask'
+    'm11s/tribal/items/fire'
+    'm11s/tribal/part'
+
+    'm11s/stripes/items/stripes'
+    'm11s/stripes/perso'
+
+    'm11s/birds/settings'
+    'm11s/birds/items/branches'
+    'm11s/birds/items/bird'
+    'm11s/birds/items/house'
+    'm11s/birds/items/lucioles'
+    'm11s/birds/bodyitems'
+
+    'm11s/lockers/settings'
+    'm11s/lockers/items/lock'
+    'm11s/lockers/items/pile'
+    'm11s/lockers/bodyitems'
+
+    'playback/playback'
+    'playback/record'
+
+    'sound/music'
+    'sound/sounds'
+
+    'assets'
+    'scene'
+    'main'
   ]
+
+# jade_path   = path.join 'src','jade','index.jade'
+# jade_options = 
+#   rootDir : './'
+#   includes : [
+#     'app'
+#   ]
 
 watch = (cmd_name, options) ->
   cmd = which.sync cmd_name  

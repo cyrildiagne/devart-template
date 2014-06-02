@@ -106,12 +106,11 @@ onSceneReady = () ->
       timestamp : window.seed
       m11  : window.metamorphose
 
-  if sync.bMinOneUser or playback
+  if playback || sync.bMinOneUser
     beginScene()
   # if playback
   #   goto 4500, false
 
-# gerer utilisateur déjà présent
 # sound design tree
 
 beginScene = ->

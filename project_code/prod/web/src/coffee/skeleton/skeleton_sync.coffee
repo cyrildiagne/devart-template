@@ -9,8 +9,8 @@ class mk.skeleton.SkeletonSync
     @currentId = -1
     @hasNewData = false
 
-    @onUserIn      = null
-    @onUserOut     = null
+    @onFirstUserIn = null
+    @onLastUserOut = null
     @onRatio       = null
     @onDataUpdated = null
 
@@ -35,6 +35,7 @@ class mk.skeleton.SkeletonSync
       udp.bind @socketId, '0.0.0.0', @port, (result) =>
         if result < 0
           console.log "SkeletonSync - Error binding socket."
+          console.log chrome.runtime.lastError
           return
         else
           console.log "SkeletonSync - udp listening on port " + @port
@@ -42,17 +43,24 @@ class mk.skeleton.SkeletonSync
   onUDPReceive : (info) =>
     if (info.socketId != @socketId)
       return
-    
     setTimeout () => # get out of udp event thread to get error messages
       @oscParser.parse info.data, 0, (msg) =>
-        if msg.path is '/skeleton'
-          @currentId = msg.params.shift()
-          @data = msg.params
-          @hasNewData = true
-          if @onDataUpdated
-            onDataUpdated()
-        else
-          console.log msg
+        switch msg.path
+          when '/skeleton'
+            @currentId = msg.params.shift()
+            @data = msg.params
+            @hasNewData = true
+            if @onDataUpdated
+              onDataUpdated()
+            break
+          when '/first_user_entered'
+            if @onFirstUserIn
+              onFirstUserIn()
+          when '/last_user_left'
+            if @onLastUserOut
+              onLastUserOut()
+          else
+            console.log msg
     , 1
 
 

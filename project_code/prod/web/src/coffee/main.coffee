@@ -12,8 +12,10 @@ currentTime = 0
 timestamp = 0
 frameNum = 0
 
+currDMXVal = 0
 
 setupPlayback = (filename) ->
+  console.log 'Setting up playback ' + filename
   setupApp()
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
@@ -21,9 +23,14 @@ setupPlayback = (filename) ->
     setMetamorphose 'tiroirs'
 
 setupLive = (m11) ->
+  console.log 'Setting up live ' + m11
+  setupDMXLight ->
+    fadeDMXLightTo 1, 2000
   setupApp()
   sync = new mk.skeleton.SkeletonSync skeleton, 7000
-  sync.connect true
+  sync.onFirstUserIn = onFirstUserIn
+  sync.onLastUserOut = onLastUserOut
+  sync.connect false #true
   seed = new Date().getTime()
   setSeed seed
   setMetamorphose m11
@@ -43,8 +50,6 @@ setupApp = ->
 
   setupSkeleton()
 
-  # dmxLightAnimation()
-
 setupPaper = ->
   canvas = window.canvas = document.getElementById 'paperjs-canvas'
   canvas.setAttribute 'data-paper-hidpi', ''
@@ -59,7 +64,7 @@ setupPaper = ->
   
 setupSkeleton = ->
   skeleton = new mk.skeleton.Skeleton window.debug
-  skeleton.setDataRatio 640 / 480
+  skeleton.setDataRatio 800 / 480
   view.addChild(skeleton.view)
 
   windowResized()
@@ -133,6 +138,12 @@ goto = (frame, bStop = false, dt = 1/50) ->
 onPlaybackComplete = () ->
   # ...
 
+onFirstUserIn = () ->
+  fadeDMXLightTo 0.2, 1000
+
+onLastUserOut = () ->
+  fadeDMXLightTo 1, 3000
+
 # System Events
 
 windowResized = (ev) ->
@@ -193,29 +204,32 @@ update = (deltaTime) ->
     window.currentTime = currentTime
 
     TWEEN.update currentTime
-    skeleton.update dt*0.007
+    skeleton.update dt*0.01
     scene.setPersoPose skeleton
     scene.update dt, currentTime
     accumulator -= dt
 
 # MISCELLANEOUS
 
-dmxLightAnimation = ->
-  light = new ArtNetClient '192.168.0.2', 6454, ->
-    i = 0
-    speed = 0.05
-    setInterval ->
-      i += Math.PI / 2 * speed
-      val = Math.floor( (1 + Math.sin(i)) * 127 )
-      light.send([val])
-    ,1000/30
+setupDMXLight = (callback) ->
+  light = new ArtNetClient '192.168.3.3', 6454, ->
+    console.log 'DMX light ready'
+    if callback then callback()
+
+fadeDMXLightTo = (value, duration) ->
+  tween = new TWEEN.Tween({ val : currDMXVal})
+   .to({ val: value*255 }, duration)
+   .easing( TWEEN.Easing.Linear.None )
+   .onUpdate(->
+      currDMXVal = Math.floor @val
+      light.send [currDMXVal]
+   ).start window.currentTime
 
 window.onmessage = (e) ->
   arg = e.data
   if arg.split("_").length > 1
     setupPlayback arg
-  else
+  else if arg != 'ready'
     setupLive arg
 
 window.top.postMessage 'ready', '*'
-     

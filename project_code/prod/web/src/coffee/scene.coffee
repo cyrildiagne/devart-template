@@ -18,7 +18,9 @@ class mk.Scene
     @settings = new (m11Class 'Settings')()
 
     @assets.load type, @settings.assets, =>
-      @music.load @settings, =>
+      @music.load @settings, (err) =>
+        if err
+          @music = null
       # @sounds.load type, @settings.loops, @settings.oneshots, =>
 
         if @perso is null or @perso.type isnt type
@@ -52,15 +54,17 @@ class mk.Scene
     @perso.setPoseFromSkeleton skeleton
 
   update : (dt, currentTime) ->
-    @music.update dt, currentTime
+    if @music
+      @music.update dt, currentTime
     @perso.update dt
     @delta += dt
 
   stop : ->
-    @music.stop()
+    if @music
+      @music.stop()
 
   start : ->
-    if !@music.isFinished
+    if @music and !@music.isFinished
       @music.play()
 
   onMusicEvent : (eventId) =>

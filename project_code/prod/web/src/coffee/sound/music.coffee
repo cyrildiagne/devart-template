@@ -12,6 +12,9 @@ class mk.sound.Music
     @isFinished = false
 
   load : (@settings, loadedCallback) ->
+    if !path
+      loadedCallback 'path is null'
+      return
     path = @settings.track
     @track = new Howl
       urls : [ path ]

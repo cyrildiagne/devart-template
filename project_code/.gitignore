@@ -1,6 +1,6 @@
-prod/web/bin/js/*
-prod/web/bin/saved/*
-prod/web/res/sounds/*
-prod/web/bin/css/*
-prod/web/bin/*.html
-!prod/web/bin/js/vendor
+prod/app/bin/js/*
+prod/app/bin/saved/*
+prod/app/res/sounds/*
+prod/app/bin/css/*
+prod/app/bin/*.html
+!prod/app/bin/js/vendor

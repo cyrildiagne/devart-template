@@ -1,3 +1,11 @@
+prod/tracking/K4W-BodyOSC/build
+prod/tracking/K4W-BodyOSC/bin/*.ilk
+prod/tracking/K4W-BodyOSC/bin/*.pdb
+*.suo
+*.vcxproj.filters
+*.vcxproj.user
+*.vcxproj.user
+
 prod/app/bin/js/*
 prod/app/bin/saved/*
 prod/app/res/sounds/*

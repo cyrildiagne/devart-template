@@ -92,7 +92,7 @@ class mk.helpers.Flying
       v1length : opt.v1length
     @view.addChild @rightWing.path
 
-  start: () ->
+  start: (pos) ->
     @isFlying = true
     if @item
       @item.remove()
@@ -100,6 +100,8 @@ class mk.helpers.Flying
     if @item
       @view.addChild @item
     @view.addChild @rightWing.path
+    if pos
+      @pos = pos
 
   stop: () ->
     @isFlying = false

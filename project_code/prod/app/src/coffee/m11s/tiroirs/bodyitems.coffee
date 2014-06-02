@@ -29,19 +29,17 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @addDrawers()
 
     @physics = new mk.helpers.Physics()
-    @addPersoPartRectCount = 0
     @physics.addPersoPartRect @getPart('leftLowerArm')
     @physics.addPersoPartRect @getPart('rightLowerArm')
     @physics.addPersoPartRect @getPart('leftUpperArm')
     @physics.addPersoPartRect @getPart('rightUpperArm')
 
     @buttons = null
-    @addButtons()
+    # @addButtons()
 
     @flys = []
-    # @setupFlyings()
-    # @addScarf()
     @availableJoints = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
+    @velTracker = new mk.helpers.JointVelocityTracker @availableJoints
 
   onMusicEvent : (evId) ->
     console.log evId
@@ -63,57 +61,94 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, @settings, opt
         @items.push drawer
         @drawers.push drawer
+    return
 
   addButtons: ->
     @buttons = new mk.m11s.tiroirs.Buttons @physics, @assets.symbols.tiroirs
 
-  setupFlyings: ->
-    hat = 
-      symbol : @assets.symbols.tiroirs['hat.svg']
-      pivot : new paper.Point 0, 0
+  addFlying: (drawer) ->
+    if @flys.length is 0
+      obj = 
+        symbol : @assets.symbols.tiroirs['hat.svg']
+        pivot : new paper.Point 0, 0
+    else if @flys.length is 1
+      obj = 
+        symbol : @assets.symbols.tiroirs['necktie1.svg']
+        pivot : new paper.Point 0, -28
+    else
+      @addScarf drawer
+      return
 
-    necktie = 
-      symbol : @assets.symbols.tiroirs['necktie1.svg']
-      pivot : new paper.Point 0, -28
+    item = obj.symbol.place()
+    item.pivot = obj.pivot
+    fly = new (m11Class 'Flying') item, @flys.length,
+      color1 : '#' + @settings.palette.cream.toString 16
+      color2 : '#' + @settings.palette.beige.toString 16
+      pos : new paper.Point 0,0
+      # dest : new paper.Point 0, -400
+    
+    @flys.push fly
+    @items.push fly
 
-    symbols = [hat, necktie]
-    for s in symbols
-      item = s.symbol.place()
-      item.pivot = s.pivot
-      fly = new (m11Class 'Flying') item, @flys.length,
-        color1 : '#' + @settings.palette.cream.toString 16
-        color2 : '#' + @settings.palette.beige.toString 16
-      @flys.push fly
-      @items.push fly
+    fly.stop()
+    fly.view.transformContent = false
+    fly.view.scaling = 0.01
+    tween = new TWEEN.Tween({scale:0.01}).to({scale:1}, 700)
+     .delay(400)
+     .easing( TWEEN.Easing.Quadratic.Out )
+     .onStart(->
+      fly.view.position.x = fly.pos.x = drawer.view.position.x
+      fly.view.position.y = fly.pos.y = drawer.view.position.y - 10
+      fly.start()
+     )
+     .onUpdate(->
+      fly.view.scaling = @scale
+     ).start window.currentTime
 
-  addScarf: ->
+  addScarf: (drawer) ->
     fly = new (m11Class 'Flying') null, @flys.length,
       color1 : '#' + @settings.palette.cream.toString 16
       color2 : '#' + @settings.palette.beige.toString 16
+      pos : new paper.Point 0,0
     fly.view.z = 0.5
     @flys.push fly
     @items.push fly
     
-    @scarf1 = new (m11Class 'Scarf') new paper.Point(),
+    s1 = @scarf1 = new (m11Class 'Scarf') new paper.Point(),
       color     : '#' + @settings.palette.blue.toString(16)
       stiffness : 0.85
     @items.push @scarf1
 
     j = @joints[NiTE.LEFT_HAND]
-    @scarf2 = new (m11Class 'Scarf') new paper.Point(),
+    s2 = @scarf2 = new (m11Class 'Scarf') new paper.Point(),
       color     : '#' + @settings.palette.lightBlue.toString(16)
       stiffness : 0.9
       numPoints : 6
     @scarf2.view.z = 1
     @items.push @scarf2
+
+    fly.stop()
+    # fly.view.transformContent = false
+    s1.view.scaling = s2.view.scaling = fly.view.scaling = 0.01
+    tween = new TWEEN.Tween({scale:0.01}).to({scale:1}, 400)
+     .easing( TWEEN.Easing.Quadratic.Out )
+     .onStart(->
+      # fly.view.position.x = fly.pos.x = drawer.view.position.x
+      # fly.view.position.y = fly.pos.y = drawer.view.position.y - 10
+      fly.start()
+     )
+     .onUpdate(->
+      s1.view.scaling = s2.view.scaling = fly.view.scaling = @scale
+     ).start window.currentTime
   
   updateFlyings : ->
-    if @flys[2].isFlying
-      @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].view.position.x
-      @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].view.position.y - 10
-    else
-      @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].joint.x
-      @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].joint.y - 10
+    if @flys.length is 3
+      if @flys[2].isFlying
+        @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].view.position.x
+        @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].view.position.y - 10
+      else if @flys[2].joint
+        @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].joint.x
+        @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].joint.y - 10
 
     for fly in @flys
       if fly.isFlying
@@ -121,13 +156,20 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
           if j.isUsed then continue
           fp = fly.view.position
           d = (j.x-fp.x) * (j.x-fp.x) + (j.y-fp.y) * (j.y-fp.y)
-          if d < 25*25
+          if d < 50*50
             fly.joint = j
             fly.stop()
             j.isUsed = true
-      else
+      else if fly.joint
         fly.view.position.x = fly.joint.x
         fly.view.position.y = fly.joint.y
+        if fly.joint is @joints[NiTE.LEFT_HAND]
+          vel = @velTracker.get 0
+        else
+          vel = @velTracker.get 1
+        if vel > 700
+          fly.start new paper.Point fly.joint.x, fly.joint.y
+    return
 
   updateDrawerOpening : ->
     distMax = 20 * 20
@@ -138,18 +180,22 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         if dist < distMax
           if dr.toggle()
             if dr.isOpen
-              for i in [0...4]
-                @buttons.buttonsToAdd.push {x:dpos.x, y:dpos.y-10}
+              if @buttons
+                for i in [0...4]
+                  @buttons.buttonsToAdd.push {x:dpos.x, y:dpos.y-10}
+              else if @flys.length < 3
+                @addFlying dr
+    return
   
   update: (dt) ->
     super dt
 
-    @physics.update dt
-
-    @buttons.update dt
+    if @buttons
+      @physics.update dt
+      @buttons.update dt
+    else if @flys.length
+      @velTracker.update()
+      @updateFlyings()
 
     @updateDrawerOpening()
-
-    if @flys.length
-      @updateFlyings()
       

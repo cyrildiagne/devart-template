@@ -3,6 +3,7 @@ class mk.m11s.tiroirs.Scarf extends mk.helpers.SimpleJointItem
   constructor: (@pinPoint, @options) ->
     @view = new paper.Group()
     @view.transformContent = false
+    @view.pivot = new paper.Point 0, 0
     @view.z = 0
 
     @numPoints = 10

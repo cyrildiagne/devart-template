@@ -71,6 +71,10 @@ class mk.Scene
     if @music and !@music.isFinished
       @music.play()
 
+  fadeOut : ->
+    if @music
+      @music.fadeOut()
+
   onMusicEvent : (eventId) =>
     @perso.onMusicEvent eventId
 

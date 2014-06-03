@@ -57,6 +57,9 @@ class mk.sound.Music
       @onMusicEvent @currEvent if @onMusicEvent
       @setNextEvent()
 
+  fadeOut : () ->
+    @track.fade 1, 0, 1000
+
   mute : ->
     @track.mute()
 

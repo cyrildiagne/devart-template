@@ -129,6 +129,7 @@ finishScene = ->
 onSceneFinished = () ->
   console.log 'scene finished'
   fadeScene 'off', 1000
+  scene.fadeOut()
   if record
     fadeDMXLightTo 1, 3000
   setTimeout ->

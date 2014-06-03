@@ -8,7 +8,7 @@ class mk.m11s.stripes.Stripes
     w = window.viewport.width * 2
     h = window.viewport.height
     bg = new paper.Path.Rectangle(-w*0.5, -h*0.5, w, h)
-    bg.fillColor = 'white'
+    bg.fillColor = 'black'
     @view.addChild(bg)
 
     colors = [

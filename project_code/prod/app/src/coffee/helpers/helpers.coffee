@@ -11,7 +11,7 @@ class mk.helpers.JointFollower
 class mk.helpers.PartFillFollower
   constructor : (@view, @part, @weights, @zOffset) ->
     @view.z = 0
-    @zOffset = @zOffset || Math.random() * 100 + 200
+    @zOffset = @zOffset || Math.random() * 10 + 20
     @joints = @part.joints
     if @joints.length > 3
       @joints = @joints.slice(0, 3)
@@ -28,7 +28,8 @@ class mk.helpers.PartFillFollower
 
 class mk.helpers.PartEdgeFollower
   constructor : (@view, @j1, @j2, @pct, @zOffset) ->
-    @zOffset = @zOffset || Math.random() * 100 + 200
+    @zOffset = @zOffset || -Math.random() * 100 - 200
+    # console.log @zOffset
   update : ->
     x = @j1.x * @pct + @j2.x * (1-@pct)
     y = @j1.y * @pct + @j2.y * (1-@pct)

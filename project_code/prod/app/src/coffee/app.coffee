@@ -1,8 +1,8 @@
 iframe = document.getElementById "frame"
 
-scenes = ["tiroirs"] #"birds"
 # currScene = "1401061237730_018304_birds"
-currScene = "tiroirs"
+currScene = "lockers"
+scenes = [currScene]
 
 window.onmessage = (e) ->
   if e.data=="ready"

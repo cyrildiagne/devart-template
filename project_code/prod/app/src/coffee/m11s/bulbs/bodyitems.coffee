@@ -33,13 +33,13 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @items.push rope
 
   onLightsOff: =>
-    setBackgroundColor '#172828'
-    @getPart('torso').setColor 0xffffff
-    @getPart('pelvis').setColor 0xffffff
+    setBackgroundColor '#fff'
+    # @getPart('torso').setColor 0xffffff
+    # @getPart('pelvis').setColor 0xffffff
     b.lightsOff() for b in @bulbs
 
   onLightsOn: =>
-    setBackgroundColor '#fff'
-    @getPart('torso').setColor @settings.palette.lightBlue
-    @getPart('pelvis').setColor @settings.palette.lightBlue
+    setBackgroundColor 'black'#'#172828'
+    # @getPart('torso').setColor @settings.palette.lightBlue
+    # @getPart('pelvis').setColor @settings.palette.lightBlue
     b.lightsOn() for b in @bulbs

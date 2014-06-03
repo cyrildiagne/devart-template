@@ -29,6 +29,9 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     # @intervalHouse = 0
     # @fadeToColor @settings.palette.blue
 
+    # make birds movement more amplified
+    # only 1 branch per segment
+
   update : (dt) ->
     super dt
     if @bGrowTrees
@@ -42,7 +45,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @intervalTreeItem -= @timeBetweenNewTreeItem
         @newTreeItemTick()
     if @moon
-      @moon.position.x += (window.viewport.width*0.5-@joints[NiTE.HEAD].x-@moon.position.x) * 0.0007 * dt
+      @moon.position.x += (-@joints[NiTE.HEAD].x*0.5-@moon.position.x) * 0.0007 * dt
 
   onMusicEvent : (evId) ->
     switch evId

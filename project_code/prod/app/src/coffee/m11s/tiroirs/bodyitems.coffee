@@ -167,8 +167,14 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
           vel = @velTracker.get 0
         else
           vel = @velTracker.get 1
-        if vel > 700
+        if vel > 180
           fly.start new paper.Point fly.joint.x, fly.joint.y
+          jnt = fly.joint
+          fly.joint = null
+          tween = new TWEEN.Tween({}).to({}, 500)
+           .onComplete(->
+              jnt.isUsed = false
+           ).start window.currentTime
     return
 
   updateDrawerOpening : ->

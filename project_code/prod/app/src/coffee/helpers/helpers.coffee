@@ -57,13 +57,24 @@ class mk.helpers.SimplePartItem
 
 
 class mk.helpers.JointVelocityTracker
-  constructor : (@jnts) ->
+  constructor : (jnts) ->
     @velocities = []
     @prev = []
-    for j in @jnts
-      @velocities.push 0
-      p = new paper.Point(0, 0)
-      @prev.push p
+    @jnts = []
+    for j in jnts
+      @add j
+  add : (jnt) ->
+    @velocities.push 0
+    p = new paper.Point(0, 0)
+    @prev.push p
+    @jnts.push jnt
+  remove : (jnt) ->
+    i = 0
+    for i in [0...@jnts.length]
+      if jnt is @jnts[i] then break
+    @velocities.splice i,1
+    @prev.splice i,1
+    @jnts.splice i,1
   update: ->
     for j,i in @jnts
       p = @prev[i]

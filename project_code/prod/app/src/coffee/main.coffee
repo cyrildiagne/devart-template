@@ -29,10 +29,6 @@ setupLive = (m11) ->
     light.send [255]
     console.log 'dmx light set up'
   setupApp()
-  sync = new mk.skeleton.SkeletonSync skeleton, 7000
-  sync.onFirstUserIn = onFirstUserIn
-  sync.onLastUserOut = onLastUserOut
-  sync.connect false #true
   seed = new Date().getTime()
   setSeed seed
   setMetamorphose m11
@@ -102,6 +98,12 @@ onSceneReady = () ->
     scene.setDebug true
 
   if record
+
+    sync = new mk.skeleton.SkeletonSync skeleton, 7000
+    sync.onFirstUserIn = onFirstUserIn
+    sync.onLastUserOut = onLastUserOut
+    sync.connect false #true
+
     record.begin 
       timestamp : window.seed
       m11  : window.metamorphose

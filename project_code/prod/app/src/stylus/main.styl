@@ -44,8 +44,9 @@ w = 80px
   width 100%
   height 0
   position absolute
+  z-index 999
   background-color white
-  transition height 2s ease, opacity 2s
+  transition height 3s cubic-bezier(0.875, 0.155, 0.535, 0.985), opacity 2s
   &.down
     height 100%
   &.off

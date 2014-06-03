@@ -59,10 +59,27 @@ fadeScene = (mode, duration=1000, callback) ->
   if callback
     fadeSceneTimeout = setTimeout callback, duration
 
-curtainDown = (callback) ->
+curtainDown = (callback1, callback2) ->
   curtain = document.getElementById 'curtain'
   curtain.className = 'down'
   setTimeout ->
+    if callback1
+      callback1()
     curtain.className = 'down off'
-    setTimeout callback, 2000
+    if callback2
+      setTimeout callback2, 2000
+    return
+  , 3000
+  return
+
+curtainUp = (callback1, callback2) ->
+  curtain = document.getElementById 'curtain'
+  curtain.className = 'down'
+  setTimeout ->
+    if callback1
+      callback1()
+    curtain.className = ''
+    if callback2
+      setTimeout callback2, 3000
   , 2000
+  return

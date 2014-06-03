@@ -110,6 +110,9 @@ onSceneReady = () ->
 
   if playback || sync.bMinOneUser
     beginScene()
+
+  # curtainUp ->
+  #   console.log 'curtain is up'
   # if playback
   #   goto 4500, false
 
@@ -118,10 +121,11 @@ onSceneReady = () ->
 beginScene = ->
   if scene.isStarted then return
   console.log '> begin scene'
-  start()
   if record
-    fadeDMXLightTo 0.2, 1000
-  fadeScene 'on', 1000
+    fadeDMXLightTo 0.2, 2000
+  curtainUp ->
+    start()
+    fadeScene 'on', 1000
 
 finishScene = ->
   if !scene.isStarted then return
@@ -130,15 +134,16 @@ finishScene = ->
 
 onSceneFinished = () ->
   console.log 'scene finished'
+  curtainDown ->
+    if record
+      fadeDMXLightTo 1, 3000
   fadeScene 'off', 1000
   scene.fadeOut()
-  if record
-    fadeDMXLightTo 1, 3000
   setTimeout ->
     stop()
     clean ->
       window.top.postMessage 'next_scene', '*'
-  , 3000
+  , 4000
 
 start = () ->
   if !paper.view.onFrame
@@ -249,17 +254,16 @@ setupDMXLight = (callback) ->
     if callback then callback()
 
 fadeDMXLightTo = (value, duration, callback) ->
-  tween = new TWEEN.Tween({ val : currDMXVal})
-   .to({ val: value*255 }, duration)
-   .easing( TWEEN.Easing.Linear.None )
-   .onUpdate(->
-      currDMXVal = Math.floor @val
-      light.send [currDMXVal]
-   )
-   .onComplete(->
+  value = Math.floor value*255
+  interval = setInterval ->
+    d = (value - currDMXVal)
+    currDMXVal += d * 0.05
+    light.send [Math.floor(currDMXVal)]
+    if Math.abs(d) < 1
+      currDMXVal = value
+      clearInterval interval
       if callback then callback()
-   )
-   .start window.currentTime
+  , 30
 
 window.onmessage = (e) ->
   arg = e.data

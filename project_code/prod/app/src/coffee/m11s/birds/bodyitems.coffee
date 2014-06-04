@@ -206,6 +206,10 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       parts = @getParts ['rightLowerLeg', 'rightLowerArm']
       ang = -45
     p = parts.seedRandom 'addTree'
+    if p.hasTree
+      addTree()
+      return
+    p.hasTree = true
     tree = new mk.m11s.birds.Branches p.joints[1], p.joints[0], rng('addTree'),
       branchColor       : '#' + p.color.toString(16)
       maxBranches       : Math.floor(rng('addTree')*3) + 4

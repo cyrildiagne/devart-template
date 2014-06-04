@@ -19,8 +19,10 @@ setupPlayback = (filename) ->
   setupApp()
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
-    setSeed new Date().getTime() #seed
-    setMetamorphose 'birds'
+    setSeed seed
+    setMetamorphose m11
+    # setSeed new Date().getTime()
+    # setMetamorphose 'birds'
 
 setupLive = (m11) ->
   console.log 'Setting up live ' + m11
@@ -142,7 +144,8 @@ onSceneFinished = () ->
   setTimeout ->
     stop()
     clean ->
-      window.top.postMessage 'next_scene', '*'
+      record.end()
+      # window.top.postMessage 'next_scene', '*'
   , 4000
 
 start = () ->

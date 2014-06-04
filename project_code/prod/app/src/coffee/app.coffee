@@ -1,13 +1,13 @@
 iframe = document.getElementById "frame"
 
-# currScene = "1401061237730_018304_birds"
-currScene = "lockers"
+currScene = "1401902958614_251540_birds"
+# currScene = "birds"
 scenes = [currScene]
 
 window.onmessage = (e) ->
-  if e.data=="ready"
+  if e.data == "ready"
     iframe.contentWindow.postMessage currScene, '*'
-  else if e.data=="next_scene"
+  else if e.data == "next_scene"
     currScene = scenes[ Math.floor(Math.random()*scenes.length) ]
     iframe.contentWindow.location.reload()
   else

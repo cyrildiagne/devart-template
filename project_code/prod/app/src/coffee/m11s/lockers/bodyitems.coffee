@@ -41,7 +41,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
       velocity : new paper.Point 3+rng(rngk)*2, 0
       wingSpeed : 0.7
       pos : new paper.Point -400, (rng(rngk)-0.5) * 800 - 50
-    fly.view.scaling = rng(rngk)*1.2 + 0.3
+    fly.view.scaling = rng(rngk)*0.2 + 0.8
     fly.view.pivot = new paper.Point item.bounds.width*0.5,0
     @items.push fly
     @flys.push fly
@@ -57,7 +57,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
       d = fly.view.position.getDistance lock.view.position, true
       if d < @distMax
         diff = lock.item.scaling.y-fly.view.scaling.y
-        if diff < 0.7 and diff > -0.3
+        if diff < 0.8 and diff > -0.8
           return lock
     return null
 
@@ -113,7 +113,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @timeSinceKey+=dt
     if @flys.length < 5 and @timeSinceKey > @timeBeforeNextKey
       @timeSinceKey -= @timeBeforeNextKey
-      @timeBeforeNextKey = rng('LockersUpdate') * 3000 + 1000
+      @timeBeforeNextKey = rng('LockersUpdate') * 3000 + 2000
       @addKey()
     
     

@@ -4,7 +4,7 @@ class mk.m11s.lockers.Pile
 
     @view = new paper.Group()
     @view.transformContent = false
-    @view.position.x = -150
+    @view.position.x = 150
     @view.position.y = 300
 
     @view.z = -2000
@@ -20,7 +20,7 @@ class mk.m11s.lockers.Pile
 
   addGrain : ->
     g = new paper.Path.Circle
-      center : new paper.Point (rng('pile')-0.5)*30*@pile.scaling.x, -900
+      center : new paper.Point -(rng('pile')-0.5)*30*@pile.scaling.x, -900
       radius : 4
       fillColor : '#' + @color.toString 16
     @view.addChild g

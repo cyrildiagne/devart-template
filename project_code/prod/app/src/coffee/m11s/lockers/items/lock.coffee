@@ -2,9 +2,9 @@ class mk.m11s.lockers.Lock
 
   constructor: (@symbol, @part, @seed) ->
     @item = @symbol.place()
-    scale = rng(@seed)*0.5 + 0.3
+    scale = rng(@seed)*0.2 + 0.7
     if @part.name is "torso"
-      scale = rng(@seed)*0.8 + 0.8
+      scale = rng(@seed)*0.2 + 1.0
     @item.scale scale
 
     @view = new paper.Group()

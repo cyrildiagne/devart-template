@@ -6,7 +6,6 @@ class mk.skeleton.SkeletonSync
     @oscParser = null
     @data = null
 
-    @currentId = -1
     @hasNewData = false
 
     @bMinOneUser = false
@@ -53,7 +52,6 @@ class mk.skeleton.SkeletonSync
             if !@bMinOneUser
               @bMinOneUser = true
               if @onFirstUserIn then @onFirstUserIn()
-            @currentId = msg.params.shift()
             @data = msg.params
             @hasNewData = true
             if @onDataUpdated

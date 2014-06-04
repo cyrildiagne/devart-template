@@ -326,9 +326,8 @@ void CBodyBasics::ProcessBody(INT64 nTime, int nBodyCount, IBody** ppBodies)
             int width = rct.right;
             int height = rct.bottom;
 
-			int numTrackedBodies = 0;
+			m_oscSender.reset();
 
-			bool bSend = false;
             for (int i = 0; i < nBodyCount; ++i)
             {
                 IBody* pBody = ppBodies[i];
@@ -339,8 +338,6 @@ void CBodyBasics::ProcessBody(INT64 nTime, int nBodyCount, IBody** ppBodies)
 
                     if (SUCCEEDED(hr) && bTracked)
                     {
-						numTrackedBodies++;
-
                         Joint joints[JointType_Count]; 
                         D2D1_POINT_2F jointPoints[JointType_Count];
                         HandState leftHandState = HandState_Unknown;
@@ -357,14 +354,11 @@ void CBodyBasics::ProcessBody(INT64 nTime, int nBodyCount, IBody** ppBodies)
                                 jointPoints[j] = BodyToScreen(joints[j].Position, width, height);
                             }
 
-							//if (i == 1) {
+							if (SUCCEEDED(hr)) {
 								UINT64 trackingId;
-								hr = pBody->get_TrackingId(&trackingId);
-								if (SUCCEEDED(hr)) {
-									m_oscSender.addBody(trackingId, joints, jointPoints, width, height);
-									bSend = true;
-								}
-							//}
+								pBody->get_TrackingId(&trackingId);
+								m_oscSender.addBody(trackingId, joints, jointPoints, width, height);
+							}
 
                             DrawBody(joints, jointPoints);
 
@@ -375,11 +369,7 @@ void CBodyBasics::ProcessBody(INT64 nTime, int nBodyCount, IBody** ppBodies)
                 }
             }
 
-			m_oscSender.setBodyCount(numTrackedBodies);
-
-			if (bSend) {
-				m_oscSender.send();
-			}
+			m_oscSender.send();
 
             hr = m_pRenderTarget->EndDraw();
 

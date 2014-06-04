@@ -17,6 +17,7 @@ mk =
   sound : {}
   playback : {}
   utils : {}
+  physical : {}
 
 for m in metamorphoses
   mk.m11s[m] = {}

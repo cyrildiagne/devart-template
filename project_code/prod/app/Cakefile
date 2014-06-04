@@ -19,6 +19,8 @@ jade_options =
     'utils/osc_parser'
     'utils/artnet_client'
 
+    'physical/light'
+
     'skeleton/skeleton'
     'skeleton/skeleton_sync'
 

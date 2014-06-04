@@ -6,16 +6,16 @@ light    = null
 playback = null
 record   = null
 
+isLive = false
 accumulator = 0
 currMetamorphoseId = 0
 currentTime = 0
 timestamp = 0
 frameNum = 0
 
-currDMXVal = 0
-
 setupPlayback = (filename) ->
   console.log 'Setting up playback ' + filename
+  isLive = false
   setupApp()
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
@@ -26,10 +26,9 @@ setupPlayback = (filename) ->
 
 setupLive = (m11) ->
   console.log 'Setting up live ' + m11
-  setupDMXLight ->
-    currDMXVal = 255
-    light.send [255]
-    console.log 'dmx light set up'
+  isLive = true
+  light = new mk.physical.DMXLight()
+  light.setup()
   setupApp()
   seed = new Date().getTime()
   setSeed seed
@@ -99,7 +98,7 @@ onSceneReady = () ->
   if window.debug
     scene.setDebug true
 
-  if record
+  if isLive
 
     sync = new mk.skeleton.SkeletonSync skeleton, 7000
     sync.onFirstUserIn = onFirstUserIn
@@ -113,21 +112,17 @@ onSceneReady = () ->
   if playback || sync.bMinOneUser
     beginScene()
 
-  # curtainUp ->
-  #   console.log 'curtain is up'
   # if playback
-  #   goto 4500, false
-
-# sound design tree
+  #   goto 400, false
 
 beginScene = ->
   if scene.isStarted then return
   console.log '> begin scene'
-  if record
-    fadeDMXLightTo 0.2, 2000
-  curtainUp ->
-    start()
-    fadeScene 'on', 1000
+  if isLive
+    light.fadeTo 0.2, 2000
+  # curtainUp ->
+  start()
+  fadeScene 'on', 1000
 
 finishScene = ->
   if !scene.isStarted then return
@@ -137,8 +132,8 @@ finishScene = ->
 onSceneFinished = () ->
   console.log 'scene finished'
   curtainDown ->
-    if record
-      fadeDMXLightTo 1, 3000
+    if isLive
+      light.fadeTo 1, 3000
   fadeScene 'off', 1000
   scene.fadeOut()
   setTimeout ->
@@ -160,8 +155,9 @@ stop = () ->
   console.log '> stopped'
 
 clean = (callback) ->
-  sync.close ->
-    callback()
+  if isLive
+    sync.close ->
+      callback()
 
 goto = (frame, bStop = false, dt = 1/50) ->
   if frame < frameNum
@@ -223,7 +219,7 @@ update = (deltaTime) ->
 
   deltaTime *= 1000
 
-  if record
+  if isLive
     record.update deltaTime
     if sync.hasNewData
       skeleton.setData sync.data
@@ -239,8 +235,6 @@ update = (deltaTime) ->
     
     currentTime += dt
     frameNum++
-    # if frameNum is 500
-    #   stop()
     window.currentTime = currentTime
 
     TWEEN.update currentTime
@@ -250,23 +244,6 @@ update = (deltaTime) ->
     accumulator -= dt
 
 # MISCELLANEOUS
-
-setupDMXLight = (callback) ->
-  light = new ArtNetClient '192.168.3.3', 6454, ->
-    console.log 'DMX light ready'
-    if callback then callback()
-
-fadeDMXLightTo = (value, duration, callback) ->
-  value = Math.floor value*255
-  interval = setInterval ->
-    d = (value - currDMXVal)
-    currDMXVal += d * 0.05
-    light.send [Math.floor(currDMXVal)]
-    if Math.abs(d) < 1
-      currDMXVal = value
-      clearInterval interval
-      if callback then callback()
-  , 30
 
 window.onmessage = (e) ->
   arg = e.data

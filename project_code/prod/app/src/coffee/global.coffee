@@ -84,3 +84,9 @@ curtainUp = (callback1, callback2) ->
       setTimeout callback2, 3000
   , 2000
   return
+
+delay = (duration, callback) ->
+  tween = new TWEEN.Tween().to({}, duration)
+   .onComplete(->
+      callback()
+   ).start window.currentTime

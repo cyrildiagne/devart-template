@@ -1,8 +1,9 @@
 class mk.m11s.birds.House
   
-  constructor : (@sname, @part, @assets) ->
+  constructor : (@sname, @part, @assets, birdWingColor, @hands) ->
     @view = new paper.Group()#@symbol.place()
     @view.transformContent = false
+    @view.pivot = new paper.Point 0,0
     @view.z = 0
 
     @sday = @assets[sname+'.svg']
@@ -11,7 +12,19 @@ class mk.m11s.birds.House
     @view.addChild @sday.place()
 
     @view.scaling = 0.01
+    @view.visible = false
     # @view.scale 0.01
+
+    @bReleaseBirds = false
+    @distMax = 30*30
+    @isWiggling = false
+
+    @wiggle = 0
+    @wiggleVal = 0
+
+    asset = @assets['wildbird.svg']
+    @bird = new mk.m11s.birds.WildBird asset, @, birdWingColor
+    # @view.addChild @bird.view
 
     @seed = sname
     weights = mk.helpers.getRandomWeights @part.joints, @seed
@@ -24,9 +37,15 @@ class mk.m11s.birds.House
      .to({ scale: scale }, 1000)
      .delay(delay*(2650)+7000)
      .easing( TWEEN.Easing.Quadratic.Out )
+     .onStart(->
+        v.visible = true
+     )
      .onUpdate(->
         v.scaling = @scale
-     ).start window.currentTime
+     ).onComplete(=>
+        @bReleaseBirds = true
+     )
+     .start window.currentTime
 
   setNight :(delay=0) ->
     # @view.removeChildren()
@@ -46,5 +65,19 @@ class mk.m11s.birds.House
      )
      .start window.currentTime
 
-  update : ->
+  update : (dt) ->
+    p = @view.position
+    if @bReleaseBirds
+      for h in @hands
+        dist = (h.x-p.x) * (h.x-p.x) + (h.y-p.y) * (h.y-p.y)
+        if dist < @distMax
+          @wiggle = Math.min 45, @wiggle + 5
+          if !@bird.isFlying
+            @bird.flyAway()
+    if @wiggle > 2
+      @wiggle *= 0.98
+      @wiggleVal += 0.2
+      @view.rotation = Math.sin(@wiggleVal) * @wiggle
+
+    @bird.update dt
     @follower.update()

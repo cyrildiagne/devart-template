@@ -16,7 +16,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @treeItems = []
 
     @houses = []
-    @addHouses()
+    delay 2000, => @addHouses()
 
     @birds = []
 
@@ -45,7 +45,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @intervalTreeItem -= @timeBetweenNewTreeItem
         @newTreeItemTick()
     if @moon
-      @moon.position.x += (-@joints[NiTE.HEAD].x*0.5-@moon.position.x) * 0.0007 * dt
+      @moon.position.x += (-@joints[NiTE.HEAD].x*0.8-@moon.position.x) * 0.001 * dt
 
   onMusicEvent : (evId) ->
     switch evId
@@ -67,6 +67,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       when 3 # oiseaux in/out maisons
         @bGrowTrees = false
       when 4 # oiseaux in/out maisons
+        h.bReleaseBirds = false for h in @houses
         @setNightMode()
       when 5 # apparition lucioles
         @addLucioles()
@@ -107,7 +108,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
     m = @moon
     tween = new TWEEN.Tween({ y: -1000})
-     .to({ y: -270 }, 20000)
+     .to({ y: -350 }, 20000)
      .easing( TWEEN.Easing.Quadratic.Out )
      .onUpdate(->
         m.position.y = @y
@@ -115,7 +116,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
   removeMoon : ->
     m = @moon
-    tween = new TWEEN.Tween({ y: -270})
+    tween = new TWEEN.Tween({ y: @moon.position.y})
      .to({ y: -1000 }, 18000)
      .easing( TWEEN.Easing.Quadratic.In )
      .onUpdate(->
@@ -178,6 +179,8 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
     numHouse = 0
     rdmk = 'addHouses'
+    birdWingColor = '#' + @settings.palette.lightGreen.toString 16
+    hands = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
     for p in parts
       isTorso = p.name is 'torso'
       num = if isTorso then 6 else 2
@@ -185,7 +188,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       for i in [1..num]
         if rng(rdmk) > 0.5
           sname = symbs.seedRandom rdmk
-          house = new mk.m11s.birds.House sname, p, @assets.symbols.birds
+          house = new mk.m11s.birds.House sname, p, @assets.symbols.birds, birdWingColor, hands
           house.show scale, numHouse++
           @items.push house
           @houses.push house

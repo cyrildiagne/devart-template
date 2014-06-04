@@ -68,6 +68,7 @@ jade_options =
     'm11s/birds/items/bird'
     'm11s/birds/items/house'
     'm11s/birds/items/lucioles'
+    'm11s/birds/items/wildbird'
     'm11s/birds/bodyitems'
 
     'm11s/lockers/settings'

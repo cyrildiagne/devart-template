@@ -11,8 +11,8 @@ class mk.m11s.birds.House
 
     @view.addChild @sday.place()
 
-    @view.scaling = 0.01
-    @view.visible = false
+    # @view.scaling = 0.01
+    # @view.visible = false
     # @view.scale 0.01
 
     @bReleaseBirds = false
@@ -77,7 +77,7 @@ class mk.m11s.birds.House
     for h in @hands
       dist = (h.x-p.x) * (h.x-p.x) + (h.y-p.y) * (h.y-p.y)
       if dist < @distMax
-        @wiggle = Math.min 45, @wiggle + 5
+        @wiggle = Math.min 35, @wiggle + 5
         mk.Scene::sfx.Maison_1.play()
         if @bReleaseBirds and !@bird.isFlying
           @bird.flyAway()

@@ -1,6 +1,6 @@
 class mk.physical.DMXLight
 
-  setup = (callback) ->
+  setup : (callback) ->
     @currDMXVal = 0
     @light = new ArtNetClient '192.168.3.3', 6454, =>
       console.log 'DMX light ready'
@@ -8,7 +8,7 @@ class mk.physical.DMXLight
       @light.send [255]
       if callback then callback()
 
-  fadeTo = (value, duration, callback) ->
+  fadeTo : (value, duration, callback) ->
     value = Math.floor value*255
     interval = setInterval =>
       d = (value - @currDMXVal)

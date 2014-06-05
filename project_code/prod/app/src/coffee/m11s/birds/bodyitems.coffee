@@ -8,9 +8,9 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @timeBetweenNewTreeItem = 625 * 3
     @intervalTreeItem = 0
 
-    @bGrowTrees = false
-    @timeBetweenNewTree = 625 * 7 * 3
-    @intervalTree = 0
+    # @bGrowTrees = false
+    # @timeBetweenNewTree = 625 * 7 * 3
+    # @intervalTree = 0
 
     @bodyFlowers = []
     @treeItems = []
@@ -29,16 +29,13 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     # @intervalHouse = 0
     # @fadeToColor @settings.palette.blue
 
-    # make birds movement more amplified
-    # only 1 branch per segment
-
   update : (dt) ->
     super dt
-    if @bGrowTrees
-      @intervalTree+=dt
-      if @intervalTree >= @timeBetweenNewTree
-        @intervalTree -= @timeBetweenNewTree
-        @addTree()
+    # if @bGrowTrees
+    #   @intervalTree+=dt
+    #   if @intervalTree >= @timeBetweenNewTree
+    #     @intervalTree -= @timeBetweenNewTree
+    #     @addTree()
     if @bTreeGrowsItems 
       @intervalTreeItem+=dt
       if @intervalTreeItem >= @timeBetweenNewTreeItem
@@ -50,7 +47,9 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
   onMusicEvent : (evId) ->
     switch evId
       when 0 # apparition branches
-        @bGrowTrees = true
+        # @bGrowTrees = true
+        @addTree()
+        @addTree()
         @addTree()
       when 1 # apparition fleurs/feuilles
         @bTreeGrowsItems = true
@@ -65,7 +64,8 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
               @newTreeItemTick 'nest1.svg'
            ).start window.currentTime
       when 3 # oiseaux in/out maisons
-        @bGrowTrees = false
+        # @bGrowTrees = false
+        break
       when 4 # oiseaux in/out maisons
         h.bReleaseBirds = false for h in @houses
         @setNightMode()
@@ -179,7 +179,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
     numHouse = 0
     rdmk = 'addHouses'
-    birdWingColor = '#' + @settings.palette.lightGreen.toString 16
+    # birdWingColor = '#' + @settings.palette.cream.toString 16
     hands = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
     for p in parts
       isTorso = p.name is 'torso'
@@ -188,7 +188,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       for i in [1..num]
         if rng(rdmk) > 0.5
           sname = symbs.seedRandom rdmk
-          house = new mk.m11s.birds.House sname, p, @assets.symbols.birds, birdWingColor, hands
+          house = new mk.m11s.birds.House sname, p, hands
           house.show scale, numHouse++
           @items.push house
           @houses.push house

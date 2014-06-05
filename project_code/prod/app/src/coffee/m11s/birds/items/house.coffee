@@ -1,13 +1,13 @@
 class mk.m11s.birds.House
-  
-  constructor : (@sname, @part, @assets, birdWingColor, @hands) ->
+
+  constructor : (@sname, @part, @hands) ->
     @view = new paper.Group()#@symbol.place()
     @view.transformContent = false
     @view.pivot = new paper.Point 0,0
     @view.z = 0
 
-    @sday = @assets[sname+'.svg']
-    @snight = @assets[sname+'_night.svg']
+    @sday = mk.Scene::assets[sname+'.svg']
+    @snight = mk.Scene::assets[sname+'_night.svg']
 
     @view.addChild @sday.place()
 
@@ -18,12 +18,14 @@ class mk.m11s.birds.House
     @bReleaseBirds = false
     @distMax = 30*30
     @isWiggling = false
+    @isGrown = false
 
     @wiggle = 0
     @wiggleVal = 0
 
-    asset = @assets['wildbird.svg']
-    @bird = new mk.m11s.birds.WildBird asset, @, birdWingColor
+    asset = mk.Scene::assets['wildbird.svg']
+    wingColor = mk.Scene::settings.getHexColor('cream')
+    @bird = new mk.m11s.birds.WildBird asset, @, wingColor
     # @view.addChild @bird.view
 
     @seed = sname
@@ -42,8 +44,8 @@ class mk.m11s.birds.House
      )
      .onUpdate(->
         v.scaling = @scale
-     ).onComplete(=>
-        @bReleaseBirds = true
+     # ).onComplete(=>
+     #    @bReleaseBirds = true
      )
      .start window.currentTime
 
@@ -60,20 +62,26 @@ class mk.m11s.birds.House
      .onUpdate(->
         night.opacity = @opacity
      )
-     .onComplete(->
+     .onComplete(=>
+        @bReleaseBirds = true
         v.removeChildren 0,1
      )
      .start window.currentTime
 
   update : (dt) ->
+
+    if !@view.visible then return
+
     p = @view.position
-    if @bReleaseBirds
-      for h in @hands
-        dist = (h.x-p.x) * (h.x-p.x) + (h.y-p.y) * (h.y-p.y)
-        if dist < @distMax
-          @wiggle = Math.min 45, @wiggle + 5
-          if !@bird.isFlying
-            @bird.flyAway()
+  
+    for h in @hands
+      dist = (h.x-p.x) * (h.x-p.x) + (h.y-p.y) * (h.y-p.y)
+      if dist < @distMax
+        @wiggle = Math.min 45, @wiggle + 5
+        mk.Scene::sfx.Maison_1.play()
+        if @bReleaseBirds and !@bird.isFlying
+          @bird.flyAway()
+
     if @wiggle > 2
       @wiggle *= 0.98
       @wiggleVal += 0.2

@@ -1,5 +1,9 @@
 class mk.Scene 
 
+  sfx      : null
+  assets   : null
+  settings : null
+
   constructor : (@onSceneReady, @onSceneFinished) ->
     @assets = new mk.Assets
     @sounds = new mk.sound.Sounds
@@ -17,33 +21,44 @@ class mk.Scene
     @isLoading = true
 
     @settings = new (m11Class 'Settings')()
+    Scene::settings = @settings
 
+    console.log 'loading assets...'
     @assets.load type, @settings.assets, =>
-      @music.load @settings, (err) =>
-        if err
-          @music = null
-          console.log err
-      # @sounds.load type, @settings.loops, @settings.oneshots, =>
 
-        if @perso is null or @perso.type isnt type
-          if @perso
-            @perso.clean()
-            @perso.view.remove()  
-          @perso = new (m11Class 'Perso')()
+      Scene::assets = @assets.symbols[type]
 
-        @perso.setMetamorphose @settings, @assets, @sounds
-        # @start()
+      console.log 'loading sound effects...'
+      @sounds.load type, @settings.sfx, @settings.loops, =>
 
-        # setTimeout @onMesure, 375 * 7
-        # l.play() for k,l of @sounds.loops.tribal
-        # for k,l of @sounds.loops.tribal
-        #   if k != 'tactac'
-        #     l.volume 0
-        # @sounds.loops.tribal.deltafeu_b.volume 0
+        Scene::sfx = @sounds.sfx[type]
 
-        @isLoading = false
-        if @onSceneReady
-          onSceneReady()
+        console.log 'loading music...'
+        @music.load @settings, (err) =>
+
+          if err
+            @music = null
+            console.log err
+
+          if @perso is null or @perso.type isnt type
+            if @perso
+              @perso.clean()
+              @perso.view.remove()  
+            @perso = new (m11Class 'Perso')()
+
+          @perso.setMetamorphose @settings, @assets, @sounds
+          # @start()
+
+          # setTimeout @onMesure, 375 * 7
+          # l.play() for k,l of @sounds.loops.tribal
+          # for k,l of @sounds.loops.tribal
+          #   if k != 'tactac'
+          #     l.volume 0
+          # @sounds.loops.tribal.deltafeu_b.volume 0
+
+          @isLoading = false
+          if @onSceneReady
+            onSceneReady()
 
   endCallback : =>
     if @onSceneFinished

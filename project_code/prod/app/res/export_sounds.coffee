@@ -28,6 +28,13 @@ mkdirRecSync = (path) ->
 
 s_path = path.join 'stripes', 'track'
 
+args = process.argv.splice(2)
+if args.length != 2
+  console.log 'usage : export_sound [m11] [(sfx|track)]'
+  process.kill()
+
+s_path = path.join args[0], args[1]
+
 files = fs.readdirSync path.join(in_path,s_path)
 for f in files
   if f[0] is '.' then continue

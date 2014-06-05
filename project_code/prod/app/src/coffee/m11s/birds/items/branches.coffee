@@ -7,8 +7,8 @@ class mk.m11s.birds.Branches
     @maxBranches                = 7
     @minBranchLength            = 50
     @maxBranchLength            = 500
-    @growSpeed                  = 0.01
-    @timeBetweenBranches        = 625 * 2
+    @growSpeed                  = 0.005
+    @timeBetweenBranches        = 675 * 8
     @minDistanceBetweenBranches = 8
     @firstBranchAngles          = [-135, -45]
 

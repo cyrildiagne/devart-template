@@ -41,7 +41,7 @@ class mk.sound.Music
     else
       console.log '> Music already playing'
       
-    @track.mute()
+    # @track.mute()
 
   stop : ->
     @track.pause()

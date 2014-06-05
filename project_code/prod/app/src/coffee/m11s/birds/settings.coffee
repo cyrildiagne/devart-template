@@ -2,31 +2,31 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
 
   setupAssets : ->
     @assets = [
-      'assets/items/birds/flower1.svg'
-      'assets/items/birds/flower2.svg'
-      'assets/items/birds/nest1.svg'
-      'assets/items/birds/house1.svg'
-      'assets/items/birds/house2.svg'
-      'assets/items/birds/house3.svg'
-      'assets/items/birds/house_side1.svg'
-      'assets/items/birds/house_side2.svg'
-      'assets/items/birds/house_side3.svg'
-      'assets/items/birds/house1_night.svg'
-      'assets/items/birds/house2_night.svg'
-      'assets/items/birds/house3_night.svg'
-      'assets/items/birds/house_side1_night.svg'
-      'assets/items/birds/house_side2_night.svg'
-      'assets/items/birds/house_side3_night.svg'
-      'assets/items/birds/bird1.svg'
-      'assets/items/birds/bird2.svg'
-      'assets/items/birds/luciole.svg'
-      'assets/items/birds/wildbird.svg'
+      'flower1.svg'
+      'flower2.svg'
+      'nest1.svg'
+      'house1.svg'
+      'house2.svg'
+      'house3.svg'
+      'house_side1.svg'
+      'house_side2.svg'
+      'house_side3.svg'
+      'house1_night.svg'
+      'house2_night.svg'
+      'house3_night.svg'
+      'house_side1_night.svg'
+      'house_side2_night.svg'
+      'house_side3_night.svg'
+      'bird1.svg'
+      'bird2.svg'
+      'luciole.svg'
+      'wildbird.svg'
     ]
+    for i in [0...@assets.length]
+      @assets[i] = 'assets/items/birds/' + @assets[i]
 
   setupSounds : ->
-
     @track = 'assets/sounds/birds/track/trees_008.mp3'
-
     @musicEvents = [
       #apparition maisons
       21.321  # nappe
@@ -48,3 +48,9 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
       159.995 # break
       176.046 # fadeout
     ]
+    @sfx = [
+      'assets/sounds/birds/sfx/BrancheQuiPousse_1.mp3'
+      'assets/sounds/birds/sfx/Maison_1.mp3'
+      'assets/sounds/birds/sfx/OiseauBranche_1.mp3'
+    ]
+    @loops = []

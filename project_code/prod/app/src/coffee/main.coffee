@@ -112,8 +112,8 @@ onSceneReady = () ->
   if playback || sync.bMinOneUser
     beginScene()
 
-  # if playback
-  #   goto 400, false
+  if playback
+    goto 5000, false
 
 beginScene = ->
   if scene.isStarted then return

@@ -7,7 +7,7 @@ class mk.m11s.birds.Lucioles
     @leftHandLucioles = []
     @rightHandLucioles = []
     @leavingLucioles = []
-    @timeBetweenNewLucioles = 625 * 4.3
+    @timeBetweenNewLucioles = 625 * 4.3 * 2
     @timeSinceLastLuciole = 0
     @addLuciole @leftHand
     @bDoubleHanded = false

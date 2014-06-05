@@ -1,35 +1,35 @@
 class mk.sound.Sounds
   
   constructor: () ->
-    @loops = {}
-    @oneshots = {}
+    @loop = {}
+    @sfx = {}
     @curr = -1
     @type =  null
     @onCompleteCb = null
 
-  load: (@type, @loops_files, @oneshots_files, @onCompleteCb) ->
-    @files = @loops_files.concat @oneshots_files
-    if @loops[@type] or @files.length is 0
+  load: (@type, @sfx_files, @loops_files, @onCompleteCb) ->
+    @files = @loops_files.concat @sfx_files
+    if @sfx[@type] or @files.length is 0
       @onCompleteCb()
     else
-      @loops[@type] = {}
-      @oneshots[@type] = {}
+      @loop[@type] = {}
+      @sfx[@type] = {}
       @curr = 0
       @loadNext()
 
   loadNext: () ->
-
     url = @files[@curr]
     args = url.split('/')
     kind = args[args.length-2]
     name = args.last().split('.')[0]
     sound = new Howl
       urls : [ url ]
-      loop : kind is 'loop'
+      loop : kind is 'loops'
       onload : =>
+        if kind is 'sfx'
+          sound.volume 0.2
         console.log "#{name} loaded"
-        # console.log kind
-        @[kind+'s'][@type][name] = sound
+        @[kind][@type][name] = sound
         if ++@curr >= @files.length
           @onCompleteCb()
         else @loadNext()

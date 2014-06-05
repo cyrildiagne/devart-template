@@ -38,9 +38,11 @@ class mk.m11s.base.Morph
     torsoP.y += ((rightHipP.y+leftHipP.y)/2-torsoP.y) * s.torsoLow
     torsoP.x += ((rightHipP.x+leftHipP.x)/2-torsoP.x) * s.torsoLow
 
-    # smaller pelvis by moving hips toward each other horizontally
+    # smaller pelvis by moving hips toward each other horizontally & vertically
     leftHipP.x  += (rightHipP.x-leftHipP.x) * s.hipsCloser
     rightHipP.x += (leftHipP.x-rightHipP.x) * s.hipsCloser
+    leftHipP.y  += (torsoP.y-leftHipP.y) * s.hipsCloser
+    rightHipP.y += (torsoP.y-rightHipP.y) * s.hipsCloser
 
     # makes legs longer by lowering feet and knees
     leftFootP.y   += (-leftKneeP.y+leftFootP.y) * s.lowFeet

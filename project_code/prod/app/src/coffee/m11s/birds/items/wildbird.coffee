@@ -30,6 +30,7 @@ class mk.m11s.birds.WildBird extends mk.helpers.Flying
     @pos.x = @view.position.x = @house.view.position.x
     @pos.y = @view.position.y = @house.view.position.y
     @numUpdatesSinceDeparture = 0
+    mk.Scene::sfx.OiseauBranche_1.play()
 
   update: (dt) ->
     if @isFlying

@@ -239,6 +239,7 @@ update = (deltaTime) ->
 
     TWEEN.update currentTime
     skeleton.update dt*0.01
+    skeleton.update dt*0.008
     scene.setPersoPose skeleton
     scene.update dt, currentTime
     accumulator -= dt

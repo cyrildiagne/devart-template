@@ -11,7 +11,6 @@ _ground view_
 ![image](../project_images/20140602_user_journey/01.png)
 _perspective view_
 
-![image](../project_images/20140602_user_journey/03.png)
-_user flow_
+
 
 

@@ -7,6 +7,7 @@ class mk.m11s.base.Perso
     @parts  = []
     @morph  = null
     @items  = null
+    @numItems = 0
 
   setMetamorphose : (@settings, @assets, @sounds) ->
     @clean()
@@ -32,6 +33,7 @@ class mk.m11s.base.Perso
 
   setupItems : () ->
     @items = new (m11Class 'BodyItems') @settings, @assets, @sounds, @parts, @joints
+    @numItems = @items.items.length
     for item in @items.items
       @view.addChild item.view
 
@@ -63,6 +65,9 @@ class mk.m11s.base.Perso
 
   update : (delta) ->
     if @items
+      for item in @items.items
+        if item.view.parent isnt @view
+          @view.addChild item.view
       @items.update delta
 
   getJoints: (types) ->
@@ -92,6 +97,10 @@ class mk.m11s.base.Perso
     
     pelvis = @getPart('pelvis')
     torso = @getPart('torso')
+    # lua = @getPart('leftUpperArm')
+    # lua.updateZ lua.z - 150
+    # rua = @getPart('rightUpperArm')
+    # rua.updateZ rua.z - 150
     leftUpperLeg = @getPart('leftUpperLeg')
     rightUpperLeg = @getPart('rightUpperLeg')
     @getPart('head').updateZ torso.z + 2 # head always 'just' on top of body

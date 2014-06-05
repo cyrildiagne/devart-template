@@ -128,12 +128,12 @@ task 'build', 'Build single application file from source files', ->
     uri = path.join 'bin/js',file
     fs.removeSync uri
 
-  for i in [0...appFiles.length]
-    appFiles[i] = 'src/coffee/' + appFiles[i] + '.coffee'
+  for i in [0...jade_options.includes.length]
+    jade_options.includes[i] = 'src/coffee/' + jade_options.includes[i] + '.coffee'
 
   exec 'coffee -c -o bin/js src/coffee/app.coffee'
 
-  coffeebar appFiles,
+  coffeebar jade_options.includes,
     output : path.join 'bin/js', 'all.min.js'
     minify : true
     bare : true

@@ -49,7 +49,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
 
   addDrawers: ->
     DrawerClass = m11Class 'Drawer'
-    ds = ['drawer1.svg', 'drawer2.svg']
+    ds = ['drawer1', 'drawer2']
     parts = @getParts ['torso', 'pelvis', 'leftUpperLeg', 'rightUpperLeg']
     parts.unshift parts.splice(1,1)[0]
     dl = 0
@@ -103,11 +103,11 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
   addFlying: (drawer) ->
     if @flys.length is 0
       obj = 
-        symbol : @assets.symbols.tiroirs['hat.svg']
+        symbol : @assets.symbols.tiroirs['hat']
         pivot : new paper.Point 0, 0
     else if @flys.length is 1
       obj = 
-        symbol : @assets.symbols.tiroirs['necktie1.svg']
+        symbol : @assets.symbols.tiroirs['necktie1']
         pivot : new paper.Point 0, -28
     else
       @addScarf drawer

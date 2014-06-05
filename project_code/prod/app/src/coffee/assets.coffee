@@ -20,7 +20,7 @@ class mk.Assets
     paper.project.importSVG @files[@curr], (item) =>
 
       sym = new paper.Symbol item
-      name = @files[@curr].split('/').last()
+      name = @files[@curr].split('/').last().split('.')[0]
       @symbols[@type][name] = sym
       
       # console.log "#{name} loaded"

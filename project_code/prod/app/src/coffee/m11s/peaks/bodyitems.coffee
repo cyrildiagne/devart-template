@@ -6,7 +6,7 @@ class mk.m11s.peaks.BodyItems extends mk.m11s.base.BodyItems
     @addFlowers()
 
   addBodyPeaks: () ->
-    symbs = ['peak1.svg', 'peak2.svg']
+    symbs = ['peak1', 'peak2']
     parts = @getPartsExcluding ['head']
     rngk = 'addBodyPeaks'
     for p in parts
@@ -19,13 +19,13 @@ class mk.m11s.peaks.BodyItems extends mk.m11s.base.BodyItems
           @items.push item
     
   addHeadPeak: () ->
-    symbol = @assets.symbols.peaks['head.svg']
+    symbol = @assets.symbols.peaks['head']
     item = new mk.helpers.SimpleJointItem symbol, @joints[NiTE.HEAD]
     item.view.scale 1.5
     @items.push item
 
   addFlowers: () ->
-    symbs = ['flower1.svg', 'flower2.svg', 'flower3.svg']
+    symbs = ['flower1', 'flower2', 'flower3']
     parts = @getParts ['leftLowerLeg', 'rightLowerArm', 'leftUpperArm', 'leftLowerArm', 'rightUpperArm', 'rightLowerArm' ]
     rngk = 'addBodyPeaks'
     for p in parts

@@ -61,7 +61,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         for duration in times
           tween = new TWEEN.Tween().to({}, duration)
            .onComplete(=>
-              @newTreeItemTick 'nest1.svg'
+              @newTreeItemTick 'nest1'
            ).start window.currentTime
       when 3 # oiseaux in/out maisons
         # @bGrowTrees = false
@@ -148,15 +148,15 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
   addLucioles : ()->
     leftHand = @joints[NiTE.LEFT_HAND]
     rightHand = @joints[NiTE.RIGHT_HAND]
-    @lucioles = new mk.m11s.birds.Lucioles @assets.symbols.birds['luciole.svg'], leftHand, rightHand
+    @lucioles = new mk.m11s.birds.Lucioles @assets.symbols.birds['luciole'], leftHand, rightHand
     @items.push @lucioles
 
   addBird: (tree)->
-    symbs = ['bird1.svg', 'bird2.svg']
+    symbs = ['bird1', 'bird2']
     rdmk = 'addBird'
     sname = symbs.seedRandom rdmk
     symbol = @assets.symbols.birds[sname].place()
-    color = if sname is 'bird2.svg' then 'lightRed' else 'blue'
+    color = if sname is 'bird2' then 'lightRed' else 'blue'
     color = '#' + @settings.palette[color].toString 16
     bird = new mk.m11s.birds.Bird symbol, @items.length, color
     if !tree
@@ -226,7 +226,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     rdmk = 'addBodyFlowers'
     for i in [0...3]
       p = (@getPartsExcluding ['head', 'pelvis', 'torso']).seedRandom rdmk
-      symbolName = ['flower1.svg', 'flower2.svg'].seedRandom rdmk
+      symbolName = ['flower1', 'flower2'].seedRandom rdmk
       symbol = @assets.symbols.birds[symbolName]
       item = new mk.helpers.SimplePartItem symbol, p, 'Flower'
       item.view.scale 0.001
@@ -281,12 +281,12 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     if symbolName is undefined && tree.trackPoints.length >= tree.branches.length / 2
       return
     console.log '> doing it'
-    symbolName = symbolName || ['flower1.svg', 'flower2.svg'].seedRandom rdmk
+    symbolName = symbolName || ['flower1', 'flower2'].seedRandom rdmk
     symbol = @assets.symbols.birds[symbolName]
     view = symbol.place()
     view.scale 0.01
     view.transformContent = false
-    if symbolName isnt 'nest1.svg'
+    if symbolName isnt 'nest1'
       view.rotation = rng(rdmk) * 360
     else
       @addBird tree

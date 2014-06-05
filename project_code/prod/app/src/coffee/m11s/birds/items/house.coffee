@@ -6,8 +6,8 @@ class mk.m11s.birds.House
     @view.pivot = new paper.Point 0,0
     @view.z = 0
 
-    @sday = mk.Scene::assets[sname+'.svg']
-    @snight = mk.Scene::assets[sname+'_night.svg']
+    @sday = mk.Scene::assets[sname]
+    @snight = mk.Scene::assets[sname+'_night']
 
     @view.addChild @sday.place()
 
@@ -23,7 +23,7 @@ class mk.m11s.birds.House
     @wiggle = 0
     @wiggleVal = 0
 
-    asset = mk.Scene::assets['wildbird.svg']
+    asset = mk.Scene::assets['wildbird']
     wingColor = mk.Scene::settings.getHexColor('cream')
     @bird = new mk.m11s.birds.WildBird asset, @, wingColor
     # @view.addChild @bird.view

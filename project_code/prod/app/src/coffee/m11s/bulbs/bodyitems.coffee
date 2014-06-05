@@ -1,7 +1,7 @@
 class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems: ->
-    mk.m11s.bulbs.BulbSocket.symbol = @assets.symbols.bulbs['bulb_socket.svg']
+    mk.m11s.bulbs.BulbSocket.symbol = @assets.symbols.bulbs['bulb_socket']
     @colorOff = @settings.palette.lightBlue
     @colorOn = @settings.palette.lightRed
     @bulbs = []

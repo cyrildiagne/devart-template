@@ -11,7 +11,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
       #   l.volume 0
     
   addHead: ->
-    symbol = @assets.symbols.tribal['head.svg']
+    symbol = @assets.symbols.tribal['head']
     MaskClass = m11Class 'Mask'
     item = new MaskClass symbol, @joints[NiTE.HEAD]
     @items.push item

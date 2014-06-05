@@ -40,7 +40,7 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       67.216 # piano
     # objets sortent des tiroirs
       74.227 # piano + grave)
-      84.005 # guitare
+      84.005 - 0.5 # guitare
     # apparition des objets volants
       93.288 # guitare + grave)
       102.956 # guitare + aigue)

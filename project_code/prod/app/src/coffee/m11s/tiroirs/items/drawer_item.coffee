@@ -35,7 +35,7 @@ class mk.m11s.tiroirs.DrawerItem
     it = @item
     if @tween then @tween.stop()
     @tween = new TWEEN.Tween({y:@h})
-     .to({y:-@h}, 3000)
+     .to({y:-@h}, 2000)
      .onUpdate(->
         it.position.y = @y
      ).start window.currentTime

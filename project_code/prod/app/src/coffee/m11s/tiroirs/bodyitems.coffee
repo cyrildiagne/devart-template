@@ -36,7 +36,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @physics.addPersoPartRect @getPart('leftUpperArm')
     @physics.addPersoPartRect @getPart('rightUpperArm')
 
-    @mode = 0
+    @mode = -1
     @buttons = null
     # @addButtons()
 
@@ -46,6 +46,40 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
 
   onMusicEvent : (evId) ->
     console.log evId
+
+  onMusicEvent : (evId) ->
+    switch evId
+      when 0 
+        @mode = 0
+        @hintOnOpenedDrawer()
+      when 2
+        @closeOpenDrawers()
+        @mode = -1
+      when 3
+        @mode = 1
+        @hintOnOpenedDrawer 1
+      when 7
+        @cleanFlyings()
+        @mode = 2
+        @addButtons()
+        break
+
+  hintOnOpenedDrawer: (max=99) ->
+    bOneAppeared = false
+    num = 0
+    for d in @drawers
+      if d.isOpen
+        bOneAppeared = true
+        @drawerOpenedCallback d
+        num++
+        if num >= max then break
+    if !bOneAppeared
+      @drawers[0].toggle()
+
+  closeOpenDrawers: ->
+    for d in @drawers
+      if d.isOpen
+        d.toggle()
 
   addDrawers: ->
     DrawerClass = m11Class 'Drawer'
@@ -63,7 +97,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         opts = @drawerPos[p.name]
         id = Math.floor(rng('addDrawer')*opts.length)
         opt = opts.splice(id, 1)[0]
-        dl += if dl is 1500 then 8000 else 1500
+        dl += if dl is 5000 then 12000 else 5000
         do (p, opt, dl) =>
           delay dl, =>
             drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, opt
@@ -98,7 +132,21 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
           @addFlying dr
       when 2
         for i in [0...4]
-          @buttons.buttonsToAdd.push {x:dpos.x, y:dpos.y-10}
+          @buttons.buttonsToAdd.push {x:dr.view.position.x, y:dr.view.position.y-10}
+
+  cleanFlyings : ->
+    for fly in @flys
+      fly.stop()
+      if fly.item
+        fly.item.remove()
+      fly.view.remove()
+      @items.splice @items.indexOf(fly.view),1
+
+    @scarf1.view.remove()
+    @items.splice @items.indexOf(@scarf1.view),1
+    @scarf2.view.remove()
+    @items.splice @items.indexOf(@scarf2.view),1
+    @flys.splice 0, @flys.length
 
   addFlying: (drawer) ->
     if @flys.length is 0
@@ -120,6 +168,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       color2 : '#' + @settings.palette.beige.toString 16
       pos : new paper.Point 0,0
       # dest : new paper.Point 0, -400
+    fly.view.z = 2000
     
     @flys.push fly
     @items.push fly
@@ -144,13 +193,14 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       color1 : '#' + @settings.palette.cream.toString 16
       color2 : '#' + @settings.palette.beige.toString 16
       pos : new paper.Point 0,0
-    fly.view.z = 0.5
+    fly.view.z = 1998 #0.5
     @flys.push fly
     @items.push fly
     
     s1 = @scarf1 = new (m11Class 'Scarf') new paper.Point(),
       color     : '#' + @settings.palette.blue.toString(16)
       stiffness : 0.85
+    s1.view.z = 1997
     @items.push @scarf1
 
     j = @joints[NiTE.LEFT_HAND]
@@ -158,7 +208,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       color     : '#' + @settings.palette.lightBlue.toString(16)
       stiffness : 0.9
       numPoints : 6
-    @scarf2.view.z = 1
+    s2.view.z = 1999
     @items.push @scarf2
 
     fly.stop()

@@ -1,6 +1,6 @@
 class mk.m11s.tiroirs.Drawer
 
-  constructor: (@symbol, @part, @settings, opt) ->
+  constructor: (@symbol, @part, opt) ->
     @rngk = 'Drawer'+@part
 
     @view = new paper.Group()
@@ -12,11 +12,14 @@ class mk.m11s.tiroirs.Drawer
     @side = 1
     @left = @right = @front = @back = @bottom = null
     @setup()
+    @show opt.scale, 0
 
-    @view.scale opt.scale
+    @scale = opt.scale
 
     @follower = new mk.helpers.PartFillFollower @view, @part, opt.weights, opt.z + 100
+    @drawerItem = null
 
+    @openCallback = null
     @maxOpenness = 60
 
     @openness = 0
@@ -37,6 +40,35 @@ class mk.m11s.tiroirs.Drawer
     @setupSides c1[1]
     @setupFront c1[0], c2[0]
 
+  show : (scale, delay) ->
+    v = @view
+    rdm = rng(@rdmk+'show')
+    v.visible = false
+    tween = new TWEEN.Tween({ scale: 0.01 })
+     .to({ scale: scale }, 1000)
+     # .delay(delay*(2650))
+     .easing( TWEEN.Easing.Quadratic.Out )
+     .onStart( -> v.visible = true )
+     .onUpdate(-> v.scaling = @scale )
+     .onComplete(=>
+     #    @bReleaseBirds = true
+     )
+     .start window.currentTime
+
+  growItem : ->
+    rep = false
+    if !@drawerItem
+      sym = ['cane', 'belt', 'ladder', 'umbrella'].seedRandom 'growItem'
+      symbol = mk.Scene::assets[sym]
+      @drawerItem = new mk.m11s.tiroirs.DrawerItem symbol, @
+      rep = true
+    @drawerItem.show()
+    return rep
+
+  shrinkItem : ->
+    if @drawerItem
+      @drawerItem.hide()
+
   setupFront : (color, handleColor) ->
     @front = new paper.Group
     @front.pivot = new paper.Point 55,30
@@ -45,13 +77,13 @@ class mk.m11s.tiroirs.Drawer
     @frontP = new paper.Path.Rectangle
       point : [0, 0]
       size  : [110, 60]
-      fillColor : '#' + @settings.palette[color].toString 16
+      fillColor : mk.Scene::settings.getHexColor(color)
     @front.addChild @frontP
 
     @handle = new paper.Path.Circle
       center : [50, 30]
       radius : 8
-      fillColor : '#' + @settings.palette[handleColor].toString 16
+      fillColor : mk.Scene::settings.getHexColor(handleColor)
     @front.addChild @handle
 
     @view.addChild @front
@@ -60,24 +92,24 @@ class mk.m11s.tiroirs.Drawer
     @back = new paper.Path.Rectangle
       point : [-55, -30]
       size  : [110, 60]
-      fillColor : '#' + @settings.palette[color].toString 16
+      fillColor : mk.Scene::settings.getHexColor(color)
     @view.addChild @back
 
   setupBottom : (color) ->
     @bottom = new paper.Path
     @bottom.add new paper.Point() for i in [0...4]
-    @bottom.fillColor = '#' + @settings.palette[color].toString 16
+    @bottom.fillColor = mk.Scene::settings.getHexColor(color)
     @view.addChild @bottom
 
   setupSides : (color) ->
     @left = new paper.Path
     @left.add new paper.Point() for i in [0...4]
-    @left.fillColor = '#' + @settings.palette[color].toString 16
+    @left.fillColor = mk.Scene::settings.getHexColor(color)
     @view.addChild @left
 
     @right = new paper.Path
     @right.add new paper.Point() for i in [0...4]
-    @right.fillColor = '#' + @settings.palette[color].toString 16
+    @right.fillColor = mk.Scene::settings.getHexColor(color)
     @view.addChild @right
 
   toggle : ->
@@ -87,7 +119,10 @@ class mk.m11s.tiroirs.Drawer
     else @dOpenness = 1
     @isOpen = !@isOpen
     @isChanging = true
-    return true
+    if @isOpen and @openCallback
+      @openCallback @
+    else if !@isOpen and @closeCallback
+      @closeCallback @
 
   updateOpenness : ->
     @left.segments[0].point = @front.bounds.topLeft
@@ -102,7 +137,7 @@ class mk.m11s.tiroirs.Drawer
 
   update : (dt) ->
     @follower.update()
-    @openness += (@dOpenness-@openness) * 0.005 * dt
+    @openness += (@dOpenness-@openness) * 0.0035 * dt
     if @isChanging
       if Math.abs(@dOpenness-@openness) < 0.1
         @isChanging = false
@@ -110,3 +145,6 @@ class mk.m11s.tiroirs.Drawer
     @front.position.y = @openness * @maxOpenness * 0.5
     
     @updateOpenness()
+
+    if @drawerItem
+      @drawerItem.update dt

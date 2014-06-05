@@ -7,6 +7,10 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       'assets/items/tiroirs/button1.svg'
       'assets/items/tiroirs/button2.svg'
       'assets/items/tiroirs/button3.svg'
+      'assets/items/tiroirs/cane.svg'
+      'assets/items/tiroirs/ladder.svg'
+      'assets/items/tiroirs/belt.svg'
+      'assets/items/tiroirs/umbrella.svg'
     ]
     
 
@@ -47,3 +51,6 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       179.979  # end 
     # tiroirs grandissent puis sortent
     ]
+
+    @sfx   = []
+    @loops = []

@@ -36,6 +36,7 @@ jade_options =
     'm11s/base/perso'
 
     'm11s/tiroirs/settings'
+    'm11s/tiroirs/items/drawer_item'
     'm11s/tiroirs/items/flying'
     'm11s/tiroirs/items/drawer'
     'm11s/tiroirs/items/hat'

@@ -26,7 +26,9 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
        { weights : [0.8, 0.2], scale : 0.2, z: 5 } 
       ]
     @drawers = []
-    @addDrawers()
+    delay 4000, => @addDrawers()
+    # @addDrawers()
+    @drawersWithItems = []
 
     @physics = new mk.helpers.Physics()
     @physics.addPersoPartRect @getPart('leftLowerArm')
@@ -34,6 +36,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @physics.addPersoPartRect @getPart('leftUpperArm')
     @physics.addPersoPartRect @getPart('rightUpperArm')
 
+    @mode = 0
     @buttons = null
     # @addButtons()
 
@@ -48,6 +51,8 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     DrawerClass = m11Class 'Drawer'
     ds = ['drawer1.svg', 'drawer2.svg']
     parts = @getParts ['torso', 'pelvis', 'leftUpperLeg', 'rightUpperLeg']
+    parts.unshift parts.splice(1,1)[0]
+    dl = 0
     for p in parts
       max = 2
       switch p.name
@@ -58,13 +63,42 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         opts = @drawerPos[p.name]
         id = Math.floor(rng('addDrawer')*opts.length)
         opt = opts.splice(id, 1)[0]
-        drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, @settings, opt
-        @items.push drawer
-        @drawers.push drawer
+        dl += if dl is 1500 then 8000 else 1500
+        do (p, opt, dl) =>
+          delay dl, =>
+            drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, opt
+            drawer.openCallback = @drawerOpenedCallback
+            drawer.closeCallback = @drawerClosingCallback
+            @items.push drawer
+            @drawers.push drawer
     return
 
   addButtons: ->
     @buttons = new mk.m11s.tiroirs.Buttons @physics, @assets.symbols.tiroirs
+
+  drawerClosingCallback : (dr) =>
+    switch @mode
+      when 0
+        dr.shrinkItem()
+        idx = @drawersWithItems.indexOf dr
+        if idx > -1
+          @drawersWithItems.splice idx,1
+
+  drawerOpenedCallback : (dr) =>
+    switch @mode
+      when 0
+        if dr.growItem()
+          @items.push dr.drawerItem
+        @drawersWithItems.push dr
+        if @drawersWithItems.length > 3
+          oldDr = @drawersWithItems.shift()
+          oldDr.toggle()
+      when 1
+        if @flys.length < 3
+          @addFlying dr
+      when 2
+        for i in [0...4]
+          @buttons.buttonsToAdd.push {x:dpos.x, y:dpos.y-10}
 
   addFlying: (drawer) ->
     if @flys.length is 0
@@ -184,13 +218,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         dpos = dr.view.position
         dist = (j.x-dpos.x) * (j.x-dpos.x) + (j.y-dpos.y) * (j.y-dpos.y)
         if dist < distMax
-          if dr.toggle()
-            if dr.isOpen
-              if @buttons
-                for i in [0...4]
-                  @buttons.buttonsToAdd.push {x:dpos.x, y:dpos.y-10}
-              else if @flys.length < 3
-                @addFlying dr
+          dr.toggle()
     return
   
   update: (dt) ->

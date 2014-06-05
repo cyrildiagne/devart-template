@@ -27,7 +27,7 @@ class mk.sound.Sounds
       loop : kind is 'loops'
       onload : =>
         if kind is 'sfx'
-          sound.volume 0.2
+          sound.volume 0.4
         console.log "#{name} loaded"
         @[kind][@type][name] = sound
         if ++@curr >= @files.length

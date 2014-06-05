@@ -30,7 +30,7 @@ class mk.m11s.birds.House
 
     @seed = sname
     weights = mk.helpers.getRandomWeights @part.joints, @seed
-    @follower = new mk.helpers.PartFillFollower @view, @part, weights, rng(@seed) * 100 + 100
+    @follower = new mk.helpers.PartFillFollower @view, @part, weights, 3000#rng(@seed) * 100 + 100
 
   show : (scale, delay) ->
     v = @view

@@ -1,7 +1,7 @@
 iframe = document.getElementById "frame"
 
-currScene = "1401902958614_251540_birds"
-# currScene = "birds"
+# currScene = "1401902958614_251540_birds"
+currScene = "birds"
 scenes = [currScene]
 
 window.onmessage = (e) ->

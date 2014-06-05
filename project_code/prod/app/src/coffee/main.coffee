@@ -113,16 +113,16 @@ onSceneReady = () ->
     beginScene()
 
   if playback
-    goto 5000, false
+    goto 300, false
 
 beginScene = ->
   if scene.isStarted then return
   console.log '> begin scene'
   if isLive
     light.fadeTo 0.2, 2000
-  # curtainUp ->
-  start()
-  fadeScene 'on', 1000
+  curtainUp ->
+    start()
+    fadeScene 'on', 1000
 
 finishScene = ->
   if !scene.isStarted then return
@@ -139,8 +139,8 @@ onSceneFinished = () ->
   setTimeout ->
     stop()
     clean ->
-      record.end()
-      # window.top.postMessage 'next_scene', '*'
+      # record.end()
+      window.top.postMessage 'next_scene', '*'
   , 4000
 
 start = () ->

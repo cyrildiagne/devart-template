@@ -175,7 +175,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
   addHouses: ->
     symbs = ['house1', 'house2', 'house3', 'house_side1', 'house_side2', 'house_side3']
-    parts = @getPartsExcluding ['head', 'pelvis']
+    parts = @getPartsExcluding ['head', 'pelvis', 'leftLowerArm', 'rightLowerArm']
 
     numHouse = 0
     rdmk = 'addHouses'
@@ -210,7 +210,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       ang = -45
     p = parts.seedRandom 'addTree'
     if p.hasTree
-      addTree()
+      @addTree()
       return
     p.hasTree = true
     tree = new mk.m11s.birds.Branches p.joints[1], p.joints[0], rng('addTree'),

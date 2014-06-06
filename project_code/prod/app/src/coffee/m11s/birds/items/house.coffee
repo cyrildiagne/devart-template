@@ -12,7 +12,7 @@ class mk.m11s.birds.House
     @view.addChild @sday.place()
 
     # @view.scaling = 0.01
-    # @view.visible = false
+    @view.visible = false
     # @view.scale 0.01
 
     @bReleaseBirds = false

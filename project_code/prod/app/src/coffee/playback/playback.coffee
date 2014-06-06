@@ -16,7 +16,7 @@ class mk.playback.Playback
       if r.status is 200
         @data = new Float32Array r.response
         @numFrames = @data.length / (3*15)
-        console.log 'PLAYBACK > ' + @filepath + ' loaded (' + @numFrames + ' frames)'
+        console.log 'PLAYBACK > file loaded (' + @numFrames + ' frames)'
         @update 0
 
         arr = @filepath.split '_'

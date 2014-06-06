@@ -28,7 +28,7 @@ class mk.sound.Sounds
       onload : =>
         if kind is 'sfx'
           sound.volume 0.4
-        console.log "#{name} loaded"
+        # console.log "#{name} loaded"
         @[kind][@type][name] = sound
         if ++@curr >= @files.length
           @onCompleteCb()

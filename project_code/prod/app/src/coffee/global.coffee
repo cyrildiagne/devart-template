@@ -38,7 +38,6 @@ window.currentTime = 0
 setSeed = (seed) ->
   window.seed = seed
   window.rngs = {}  
-  console.log 'set seed ' + seed
 
 window.rng = (key) ->
   rng_ = window.rngs[key] || window.rngs[key] = new Math.seedrandom(window.seed+key)
@@ -60,28 +59,28 @@ fadeScene = (mode, duration=1000, callback) ->
   if callback
     fadeSceneTimeout = setTimeout callback, duration
 
-curtainDown = (callback1, callback2) ->
+curtainDown = (fade, callback) ->
   curtain = document.getElementById 'curtain'
   curtain.className = 'down'
   setTimeout ->
-    if callback1
-      callback1()
-    curtain.className = 'down off'
-    if callback2
-      setTimeout callback2, 2000
-    return
-  , 3000
+    if callback
+      callback()
+    if fade
+      curtain.className = 'down off'
+  , 2000
   return
 
-curtainUp = (callback1, callback2) ->
+curtainUp = (fade, callback) ->
   curtain = document.getElementById 'curtain'
   curtain.className = 'down'
-  setTimeout ->
-    if callback1
-      callback1()
+  if fade
     curtain.className = ''
-    if callback2
-      setTimeout callback2, 3000
+    callback()
+  else 
+  setTimeout ->
+    curtain.className = ''
+    if callback
+      callback()
   , 2000
   return
 

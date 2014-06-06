@@ -89,6 +89,22 @@ body
       top 20px
       background-color white
 
+.arrow
+  width 30px
+  height 59px
+  background url('../assets/ui/arrow_left.png')
+  position absolute
+  top 50%
+  margin-top -30px
+  left 30px
+  cursor pointer
+  &.right
+    background url('../assets/ui/arrow_right.png')
+    left auto
+    right 30px
+  &:hover
+    opacity 0.5
+
 w = 80px
 .quad
   position absolute

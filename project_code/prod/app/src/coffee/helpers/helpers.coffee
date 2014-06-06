@@ -39,10 +39,10 @@ class mk.helpers.PartEdgeFollower
 
 
 class mk.helpers.SimpleJointItem
-  constructor : (@symbol, @joint) ->
+  constructor : (@symbol, @joint, @zOffset) ->
     @view = @symbol.place()
     @view.z = 0
-    @follower = new mk.helpers.JointFollower @view, @joint
+    @follower = new mk.helpers.JointFollower @view, @joint, @zOffset
   update: ->
     @follower.update()
 

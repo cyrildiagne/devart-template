@@ -20,7 +20,7 @@ class mk.m11s.thorns.BodyItems extends mk.m11s.base.BodyItems
     
   addHeadPeak: () ->
     symbol = @assets.symbols.thorns['head']
-    item = new mk.helpers.SimpleJointItem symbol, @joints[NiTE.HEAD]
+    item = new mk.helpers.SimpleJointItem symbol, @joints[NiTE.HEAD], 200
     item.view.scale 1.5
     @items.push item
 

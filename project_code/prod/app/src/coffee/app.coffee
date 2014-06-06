@@ -26,7 +26,8 @@ window.onmessage = (e) ->
     if isLive
       currSceneId = Math.floor(Math.random()*scenes.length)
     else
-      if currSceneId++ > scenes.length then currSceneId = 0
+      # next()
+      # if currSceneId++ > scenes.length then currSceneId = 0
     isSceneLaunched = false
     iframe.contentWindow.location.reload()
   else
@@ -48,6 +49,14 @@ getIndex = (callback) ->
     else console.log 'error'
   r.open 'GET', 'saved/index'
   r.send()
+
+next = ->
+  currSceneId++
+  if currSceneId >= scenes.length then currSceneId = 0
+
+prev = ->
+  currSceneId--
+  if currSceneId < 0 then currSceneId = scenes.length-1
 
 launchCurrentScene = ->
   currScene = scenes[currSceneId]
@@ -72,23 +81,43 @@ setupTimeline = ->
     timeline.appendChild s
   timeline.addEventListener 'mousemove', mouseMoveTimeline
   timeline.addEventListener 'mousedown', mouseDownTimeline
+  setTimeout -> mouseMoveTimeline {x:window.innerWidth*0.5}, 1000
   document.body.appendChild timeline
+
+setupArrows = ->
+  for i in [0...2]
+    arrow = document.createElement 'div'
+    arrow.className = 'arrow'
+    document.body.appendChild arrow
+    arrow.addEventListener 'click', arrowClicked
+  arrow.className = arrow.className + ' right'
+
+arrowClicked = (e) ->
+  e.preventDefault()
+  if e.target.className is 'arrow' then prev() else next()
+  sceneChange()
 
 mouseDownTimeline = (e) ->
   idx = Array.prototype.indexOf.call(timeline.children, e.target)
   currSceneId = idx - 1
-  cs = document.defaultView.getComputedStyle e.target,null
+  sceneChange()
+
+sceneChange = ->
+  bt = timeline.children[currSceneId]
+  # console.log currSceneId+1 + ' ' + timeline.children.length
+  cs = document.defaultView.getComputedStyle bt,null
   color = cs.getPropertyValue 'background-color'
   
-  e.target.className = e.target.className + ' on'
+  bt.className = bt.className + ' on'
   if currSceneBt
     cname = currSceneBt.className.replace(/\bon\b/,'')
     currSceneBt.className = cname
-  currSceneBt = e.target
-  if !isSceneFinishing
+  currSceneBt = bt
+  if isSceneLaunched and !isSceneFinishing
     statusDom.innerHTML = ""
     iframe.contentWindow.postMessage 'stop','*'
     isSceneFinishing = true
+
 
 mouseMoveTimeline = (e) ->
   pct = (e.x-20) / (window.innerWidth-40)
@@ -105,6 +134,8 @@ if isLive
 else
   getIndex (data) ->
     scenes = data
-    currSceneId = scenes.length-1
     setupTimeline()
+    setupArrows()
+    currSceneId = Math.floor scenes.length * 0.5
+    sceneChange()
     if isReady and !isSceneLaunched then launchCurrentScene()

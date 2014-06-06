@@ -1,6 +1,6 @@
 # HEAD
 
-class mk.m11s.peaks.Head extends mk.m11s.base.Head
+class mk.m11s.thorns.Head extends mk.m11s.base.Head
 
   constructor: (@name, @joints, @color, numPoints=4, addFirstJointView=true) ->
     @view = new paper.Group()

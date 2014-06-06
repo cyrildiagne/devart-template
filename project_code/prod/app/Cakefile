@@ -49,9 +49,9 @@ jade_options =
     'm11s/bulbs/items/rope'
     'm11s/bulbs/bodyitems'
 
-    'm11s/peaks/settings'
-    'm11s/peaks/bodyitems'
-    'm11s/peaks/part'
+    'm11s/thorns/settings'
+    'm11s/thorns/bodyitems'
+    'm11s/thorns/part'
 
     'm11s/tribal/settings'
     'm11s/tribal/bodyitems'

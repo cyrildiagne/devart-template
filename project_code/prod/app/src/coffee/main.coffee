@@ -126,8 +126,8 @@ beginScene = ->
   curtainUp isLive, ->
     start()
 
-    if playback
-      goto 4500, false
+    # if playback
+    #   goto 1500, false
     # fadeScene 'on', 1000
 
 finishScene = ->

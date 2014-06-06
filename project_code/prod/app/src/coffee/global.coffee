@@ -1,7 +1,7 @@
 metamorphoses = [
   'tiroirs'
   'stripes'
-  'peaks'
+  'thorns'
   'bulbs'
   'lockers'
   'tribal'

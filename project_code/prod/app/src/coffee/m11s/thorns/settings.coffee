@@ -1,13 +1,13 @@
-class mk.m11s.peaks.Settings extends mk.m11s.base.Settings
+class mk.m11s.thorns.Settings extends mk.m11s.base.Settings
   
   setupAssets : ->
     @assets = [
-      'assets/items/peaks/flower1.svg'
-      'assets/items/peaks/flower2.svg'
-      'assets/items/peaks/flower3.svg'
-      'assets/items/peaks/head.svg'
-      'assets/items/peaks/peak1.svg'
-      'assets/items/peaks/peak2.svg'
+      'assets/items/thorns/flower1.svg'
+      'assets/items/thorns/flower2.svg'
+      'assets/items/thorns/flower3.svg'
+      'assets/items/thorns/head.svg'
+      'assets/items/thorns/peak1.svg'
+      'assets/items/thorns/peak2.svg'
     ]
 
   setupColors : ->

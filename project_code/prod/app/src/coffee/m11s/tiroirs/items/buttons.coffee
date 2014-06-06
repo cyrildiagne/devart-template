@@ -12,7 +12,7 @@ class mk.m11s.tiroirs.Buttons
     @maxButtons = 12
 
   addButton : (p) ->
-    bs = ['button1.svg', 'button2.svg', 'button3.svg']
+    bs = ['button1', 'button2', 'button3']
     symbol = @assets[bs.seedRandom 'addbt']
     button = symbol.place()
     radius = (rng('button')*0.3 + 0.7) * 15

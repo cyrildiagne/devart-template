@@ -32,6 +32,7 @@ class mk.Scene
       @sounds.load type, @settings.sfx, @settings.loops, =>
 
         Scene::sfx = @sounds.sfx[type]
+        Scene::sfx.play = (s) -> @[s].play() if !Scene::settings.mute
 
         console.log 'loading music...'
         @music.load @settings, (err) =>
@@ -71,10 +72,18 @@ class mk.Scene
     @perso.setPoseFromSkeleton skeleton
 
   update : (dt, currentTime) ->
-    if @music
-      @music.update dt, currentTime
+    
+    @music.update dt, currentTime
     @perso.update dt
     @delta += dt
+
+  mute : ->
+    @settings.mute = true
+    @music.mute()
+
+  unmute : ->
+    @settings.mute = false    
+    @music.unmute()
 
   stop : ->
     @isStarted = false

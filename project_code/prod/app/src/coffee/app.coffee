@@ -1,130 +1,141 @@
-iframe = document.getElementById "frame"
-
-# currScene = "1401902958614_251540_birds"
-currScene = "birds"
-scenes = [currScene]
+iframe      = null
+quadwarp    = null
+timeline    = null
+scenes      = null
+currSceneId = -1
+isLive      = false
+isReady     = false
+isSceneLoading = false
+isSceneLaunched = false
+isSceneFinishing = false
+currSceneBt = null
+statusDom = null
 
 window.onmessage = (e) ->
   if e.data == "ready"
-    iframe.contentWindow.postMessage currScene, '*'
+    isReady = true
+    isSceneFinishing = false
+    console.log "ready"
+    if scenes and !isSceneLaunched then launchCurrentScene()
+  else if e.data == "scene_loaded"
+    console.log 'APP > scene loaded'
+    setSceneDate()
+    isSceneLoading = false
   else if e.data == "next_scene"
-    currScene = scenes[ Math.floor(Math.random()*scenes.length) ]
+    console.log 'APP > wants next scene'
+    if isLive
+      currSceneId = Math.floor(Math.random()*scenes.length)
+    else
+      # next()
+      # if currSceneId++ > scenes.length then currSceneId = 0
+    isSceneLaunched = false
     iframe.contentWindow.location.reload()
   else
     console.log 'app received unknown message : ' + e.data
 
+getIndex = (callback) ->
+  r = new XMLHttpRequest()
+  r.onload = () =>
+    if r.status is 200
+      data = r.responseText.split '\n'
+      for i in [0...data.length]
+        infos = data[i].split '_'
+        data[i] = 
+          tag   : data[i]
+          date  : new Date(parseInt(infos[0]))
+          seed  : infos[1]
+          scene : infos[2]
+      callback data
+    else console.log 'error'
+  r.open 'GET', 'saved/index'
+  r.send()
 
+next = ->
+  currSceneId++
+  if currSceneId >= scenes.length then currSceneId = 0
 
+prev = ->
+  currSceneId--
+  if currSceneId < 0 then currSceneId = scenes.length-1
 
+launchCurrentScene = ->
+  currScene = scenes[currSceneId]
+  iframe.contentWindow.postMessage (currScene.tag || currScene), '*'
+  isSceneLoading = true
+  isSceneLaunched = true
+  statusDom.innerHTML = "LOADING..."
 
-current = null
-pts = []
-dst = []
-src = []
+setSceneDate = ->
+  d = scenes[currSceneId].date
+  time = d.getHours() + ':' + d.getMinutes()
+  date = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear()
+  statusDom.innerHTML = time + ' | ' + date
 
-update = ->
-  updatePtsView()
-  perspectiveTransform()
+setupTimeline = ->
+  timeline = document.createElement 'div'
+  timeline.id = 'timeline'
+  for i in [0...scenes.length]
+    scene = scenes[i]
+    s = document.createElement 'div'
+    s.className = scene.scene
+    timeline.appendChild s
+  timeline.addEventListener 'mousemove', mouseMoveTimeline
+  timeline.addEventListener 'mousedown', mouseDownTimeline
+  setTimeout -> mouseMoveTimeline {x:window.innerWidth*0.5}, 1000
+  document.body.appendChild timeline
 
-perspectiveTransform = ->
+setupArrows = ->
+  for i in [0...2]
+    arrow = document.createElement 'div'
+    arrow.className = 'arrow'
+    document.body.appendChild arrow
+    arrow.addEventListener 'click', arrowClicked
+  arrow.className = arrow.className + ' right'
 
-  a = [[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]
-  b = [0,0,0,0,0,0,0,0]
+arrowClicked = (e) ->
+  e.preventDefault()
+  if e.target.className is 'arrow' then prev() else next()
+  sceneChange()
 
-  for i in [0...4]
-    a[i] = []
-    a[i][0]   = a[i+4][3] = src[i].x
-    a[i][1]   = a[i+4][4] = src[i].y
-    a[i][2]   = a[i+4][5] = 1
-    a[i][3]   = a[i][4]   = a[i][5] =
-    a[i+4][0] = a[i+4][1] = a[i+4][2] = 0
-    a[i][6]   = -src[i].x*dst[i].x
-    a[i][7]   = -src[i].y*dst[i].x
-    a[i+4][6] = -src[i].x*dst[i].y
-    a[i+4][7] = -src[i].y*dst[i].y
-   
-    b[i] = dst[i].x
-    b[i+4] = dst[i].y
-    
-    bM = []
+mouseDownTimeline = (e) ->
+  idx = Array.prototype.indexOf.call(timeline.children, e.target)
+  currSceneId = idx - 1
+  sceneChange()
 
-  for i in [0...b.length]
-    bM[i] = [b[i]]
+sceneChange = ->
+  bt = timeline.children[currSceneId]
+  # console.log currSceneId+1 + ' ' + timeline.children.length
+  cs = document.defaultView.getComputedStyle bt,null
+  color = cs.getPropertyValue 'background-color'
   
-  # Matrix Libraries from a Java port of JAMA: A Java Matrix Package, http://math.nist.gov/javanumerics/jama/
-  # Developed by Dr Peter Coxhead: http://www.cs.bham.ac.uk/~pxc/
-  # Available here: http://www.cs.bham.ac.uk/~pxc/js/
-  A = Matrix.create(a)
-  B = Matrix.create(bM)
-  X = Matrix.solve(A,B)
-  
-  # Create the resultant transformation 3x3 matrix in a 4x4 matrix for WebKitCSSMatrix 
-  matrix = new WebKitCSSMatrix()
-  matrix.m11 = X.mat[0][0]
-  matrix.m12 = X.mat[3][0]
-  matrix.m13 = 0
-  matrix.m14 = X.mat[6][0]
-  
-  matrix.m21 = X.mat[1][0]
-  matrix.m22 = X.mat[4][0]
-  matrix.m23 = 0
-  matrix.m24 = X.mat[7][0]
-  
-  matrix.m31 = 0
-  matrix.m32 = 0
-  matrix.m33 = 1
-  matrix.m34 = 0
-  
-  matrix.m41 = X.mat[2][0]
-  matrix.m42 = X.mat[5][0]
-  matrix.m43 = 0
-  matrix.m44 = 1
-  
-  # Finally apply it
-  iframe.style.webkitTransform = matrix
+  bt.className = bt.className + ' on'
+  if currSceneBt
+    cname = currSceneBt.className.replace(/\bon\b/,'')
+    currSceneBt.className = cname
+  currSceneBt = bt
+  if isSceneLaunched and !isSceneFinishing
+    statusDom.innerHTML = ""
+    iframe.contentWindow.postMessage 'stop','*'
+    isSceneFinishing = true
 
-initPts = ->
-  dst.length = 4
-  src.length = 4
-  for i in [0...4]
-    dst[i] = {x:0, y:0}
-    src[i] = {x:0, y:0}
-  src[1].x = src[2].x = dst[1].x = dst[2].x = window.innerWidth
-  src[2].y = src[3].y = dst[2].y = dst[3].y = window.innerHeight
 
-initPtsView = ->
-  for id in ['topLeft', 'topRight', 'bottomRight', 'bottomLeft']
-    point = document.getElementById id
-    point.addEventListener 'mousedown', onPointMouseDown
-    point.id = pts.length
-    pts.push point
+mouseMoveTimeline = (e) ->
+  pct = (e.x-20) / (window.innerWidth-40)
+  pos = - pct*(timeline.offsetWidth-window.innerWidth)
+  timeline.style.WebkitTransform = 'translate('+pos+'px, 0)'
 
-updatePtsView = ->
-  for pt in pts
-    pt.style.left = dst[pt.id].x + 'px'
-    pt.style.top  = dst[pt.id].y + 'px'
+iframe = document.getElementById "frame"
+statusDom = document.getElementById 'date'
 
-onPointMouseDown = (e) ->
-  current = e.currentTarget
-  window.addEventListener 'mouseup', onMouseUp
-  window.addEventListener 'mousemove', onMouseMove
-
-onMouseMove = (e) ->
-  dst[current.id].x = e.x
-  dst[current.id].y = e.y
-  update()
-
-onMouseUp = (e) ->
-  current = null
-  window.removeEventListener 'mouseup', onMouseUp
-  window.removeEventListener 'mousemove', onMouseMove
-
-onWindowResize = ->
-  initPts()
-  update()
-
-initPts()
-initPtsView()
-window.addEventListener 'resize', onWindowResize
-
-update()
+if isLive
+  quadwarp = new QuadWarp iframe
+  scenes = ['tiroirs']
+  currSceneId = 0
+else
+  getIndex (data) ->
+    scenes = data
+    setupTimeline()
+    setupArrows()
+    currSceneId = Math.floor scenes.length * 0.5
+    sceneChange()
+    if isReady and !isSceneLaunched then launchCurrentScene()

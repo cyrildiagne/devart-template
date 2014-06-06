@@ -7,13 +7,16 @@ class mk.sound.Sounds
     @type =  null
     @onCompleteCb = null
 
-  load: (@type, @sfx_files, @loops_files, @onCompleteCb) ->
+  load: (@type, @sfx_files = [], @loops_files = [], @onCompleteCb) ->
     @files = @loops_files.concat @sfx_files
-    if @sfx[@type] or @files.length is 0
+    if @sfx[@type]
       @onCompleteCb()
     else
       @loop[@type] = {}
       @sfx[@type] = {}
+      if @files.length is 0
+        @onCompleteCb()
+        return
       @curr = 0
       @loadNext()
 
@@ -28,7 +31,7 @@ class mk.sound.Sounds
       onload : =>
         if kind is 'sfx'
           sound.volume 0.4
-        console.log "#{name} loaded"
+        # console.log "#{name} loaded"
         @[kind][@type][name] = sound
         if ++@curr >= @files.length
           @onCompleteCb()

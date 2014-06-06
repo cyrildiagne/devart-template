@@ -5,7 +5,9 @@ sync     = null
 light    = null
 playback = null
 record   = null
+canvas = null
 
+isLoading = false
 isLive = false
 accumulator = 0
 currMetamorphoseId = 0
@@ -16,17 +18,18 @@ frameNum = 0
 setupPlayback = (filename) ->
   console.log 'Setting up playback ' + filename
   isLive = false
+  isLoading = true
   setupApp()
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
-    setSeed seed
+    # setSeed seed
+    setSeed new Date().getTime()
     setMetamorphose m11
-    # setSeed new Date().getTime()
-    # setMetamorphose 'birds'
 
 setupLive = (m11) ->
   console.log 'Setting up live ' + m11
   isLive = true
+  isLoading = true
   light = new mk.physical.DMXLight()
   light.setup()
   setupApp()
@@ -53,6 +56,7 @@ setupPaper = ->
   canvas = window.canvas = document.getElementById 'paperjs-canvas'
   canvas.setAttribute 'data-paper-hidpi', ''
   canvas.setAttribute 'data-paper-resize', ''
+  canvas.style.display = 'block'
   document.body.appendChild canvas
 
   paper.setup canvas
@@ -92,49 +96,52 @@ toggleDebug = () ->
   scene.setDebug window.debug
 
 onSceneReady = () ->
-  console.log 'onSceneReady'
+  console.log '> scene ready'
   view.addChild scene.perso.view
-  
+
   if window.debug
     scene.setDebug true
 
   if isLive
-
     sync = new mk.skeleton.SkeletonSync skeleton, 7000
     sync.onFirstUserIn = onFirstUserIn
     sync.onLastUserOut = onLastUserOut
     sync.connect false #true
-
     record.begin 
       timestamp : window.seed
       m11  : window.metamorphose
 
+  isLoading = false
+
   if playback || sync.bMinOneUser
     beginScene()
 
-  if playback
-    goto 300, false
+  window.top.postMessage 'scene_loaded', '*'
 
 beginScene = ->
   if scene.isStarted then return
   console.log '> begin scene'
   if isLive
     light.fadeTo 0.2, 2000
-  curtainUp ->
+  curtainUp isLive, ->
     start()
-    fadeScene 'on', 1000
+
+    # if playback
+    #   goto 1500, false
+    # fadeScene 'on', 1000
 
 finishScene = ->
-  if !scene.isStarted then return
+  # if !scene.isStarted then return
+  if isLoading then return
   console.log '> finish scene'
   onSceneFinished()
 
 onSceneFinished = () ->
-  console.log 'scene finished'
-  curtainDown ->
+  console.log '> scene finished'
+  curtainDown isLive, ->
     if isLive
       light.fadeTo 1, 3000
-  fadeScene 'off', 1000
+  # fadeScene 'off', 1000
   scene.fadeOut()
   setTimeout ->
     stop()
@@ -144,12 +151,14 @@ onSceneFinished = () ->
   , 4000
 
 start = () ->
+  if isLoading then return
   if !paper.view.onFrame
     paper.view.onFrame = onFrame
   scene.start()
   console.log '> started'
 
 stop = () ->
+  if isLoading then return
   paper.view.onFrame = undefined  
   scene.stop()
   console.log '> stopped'
@@ -158,14 +167,17 @@ clean = (callback) ->
   if isLive
     sync.close ->
       callback()
+  else callback()
 
 goto = (frame, bStop = false, dt = 1/50) ->
   if frame < frameNum
     console.log "Can't go backward yet.."
     return
   scene.music.stop()
+  scene.mute()
   update dt for i in [frameNum...frame]
   scene.music.play()
+  scene.unmute()
   if bStop
     stop()
 
@@ -238,7 +250,7 @@ update = (deltaTime) ->
     window.currentTime = currentTime
 
     TWEEN.update currentTime
-    skeleton.update dt*0.01
+    skeleton.update dt*0.008
     scene.setPersoPose skeleton
     scene.update dt, currentTime
     accumulator -= dt
@@ -249,6 +261,9 @@ window.onmessage = (e) ->
   arg = e.data
   if arg.split("_").length > 1
     setupPlayback arg
+  else if arg == 'stop'
+    console.log 'stop'
+    finishScene()
   else if arg != 'ready'
     setupLive arg
 

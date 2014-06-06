@@ -36,6 +36,7 @@ jade_options =
     'm11s/base/perso'
 
     'm11s/tiroirs/settings'
+    'm11s/tiroirs/items/drawer_item'
     'm11s/tiroirs/items/flying'
     'm11s/tiroirs/items/drawer'
     'm11s/tiroirs/items/hat'
@@ -48,9 +49,9 @@ jade_options =
     'm11s/bulbs/items/rope'
     'm11s/bulbs/bodyitems'
 
-    'm11s/peaks/settings'
-    'm11s/peaks/bodyitems'
-    'm11s/peaks/part'
+    'm11s/thorns/settings'
+    'm11s/thorns/bodyitems'
+    'm11s/thorns/part'
 
     'm11s/tribal/settings'
     'm11s/tribal/bodyitems'
@@ -87,12 +88,13 @@ jade_options =
     'main'
   ]
 
-# jade_path   = path.join 'src','jade','index.jade'
-# jade_options = 
-#   rootDir : './'
-#   includes : [
-#     'app'
-#   ]
+jade_path2   = path.join 'src','jade','index.jade'
+jade_options2 = 
+  rootDir : './'
+  includes : [
+    'app/quadwarp'
+    'app'
+  ]
 
 watch = (cmd_name, options) ->
   cmd = which.sync cmd_name  
@@ -112,6 +114,7 @@ task 'dev', 'start dev env', ->
   watch 'coffee', ['-w', '-c', '-b', '-o', js_path, coffee_path]
   watch 'stylus', ['-w', stylus_path, '-o', css_path]
   watch 'jade',   ['-w', jade_path, '-P', '-o', 'bin', '-O', JSON.stringify jade_options]
+  watch 'jade',   ['-w', jade_path2, '-P', '-o', 'bin', '-O', JSON.stringify jade_options2]
   simple_server()
 
 task 'build', 'Build single application file from source files', ->

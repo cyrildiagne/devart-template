@@ -13,7 +13,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @timeBeforeNextKey = 0
 
   addLockers: ->
-    symbs = ['locker1.svg', 'locker2.svg', 'locker3.svg']
+    symbs = ['locker1', 'locker2', 'locker3']
     parts = @getPartsExcluding ['head']
     rngk = 'addLockers'
     for p in parts
@@ -29,7 +29,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
 
   addKey: ->
     rngk = 'addKey'
-    asset = ['key1.svg', 'key2.svg'].seedRandom rngk
+    asset = ['key1', 'key2'].seedRandom rngk
     symbol = @assets.symbols.lockers[asset]
     item = symbol.place()
     item.pivot = new paper.Point 0, 0
@@ -47,7 +47,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @flys.push fly
 
   addPile: ->
-    sym = @assets.symbols.lockers['pile.svg']
+    sym = @assets.symbols.lockers['pile']
     @pile = new mk.m11s.lockers.Pile sym, @settings.palette.lightRed
     @items.push @pile
 

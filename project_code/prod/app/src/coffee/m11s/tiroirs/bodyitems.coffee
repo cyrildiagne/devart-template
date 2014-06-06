@@ -26,7 +26,9 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
        { weights : [0.8, 0.2], scale : 0.2, z: 5 } 
       ]
     @drawers = []
-    @addDrawers()
+    delay 4000, => @addDrawers()
+    # @addDrawers()
+    @drawersWithItems = []
 
     @physics = new mk.helpers.Physics()
     @physics.addPersoPartRect @getPart('leftLowerArm')
@@ -34,6 +36,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @physics.addPersoPartRect @getPart('leftUpperArm')
     @physics.addPersoPartRect @getPart('rightUpperArm')
 
+    @mode = -1
     @buttons = null
     # @addButtons()
 
@@ -44,10 +47,46 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
   onMusicEvent : (evId) ->
     console.log evId
 
+  onMusicEvent : (evId) ->
+    switch evId
+      when 0 
+        @mode = 0
+        @hintOnOpenedDrawer()
+      when 2
+        @closeOpenDrawers()
+        @mode = -1
+      when 3
+        @mode = 1
+        @hintOnOpenedDrawer 1
+      when 7
+        @cleanFlyings()
+        @mode = 2
+        @addButtons()
+        break
+
+  hintOnOpenedDrawer: (max=99) ->
+    bOneAppeared = false
+    num = 0
+    for d in @drawers
+      if d.isOpen
+        bOneAppeared = true
+        @drawerOpenedCallback d
+        num++
+        if num >= max then break
+    if !bOneAppeared
+      @drawers[0].toggle()
+
+  closeOpenDrawers: ->
+    for d in @drawers
+      if d.isOpen
+        d.toggle()
+
   addDrawers: ->
     DrawerClass = m11Class 'Drawer'
-    ds = ['drawer1.svg', 'drawer2.svg']
+    ds = ['drawer1', 'drawer2']
     parts = @getParts ['torso', 'pelvis', 'leftUpperLeg', 'rightUpperLeg']
+    parts.unshift parts.splice(1,1)[0]
+    dl = 0
     for p in parts
       max = 2
       switch p.name
@@ -58,22 +97,65 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         opts = @drawerPos[p.name]
         id = Math.floor(rng('addDrawer')*opts.length)
         opt = opts.splice(id, 1)[0]
-        drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, @settings, opt
-        @items.push drawer
-        @drawers.push drawer
+        dl += if dl is 5000 then 12000 else 5000
+        do (p, opt, dl) =>
+          delay dl, =>
+            drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, opt
+            drawer.openCallback = @drawerOpenedCallback
+            drawer.closeCallback = @drawerClosingCallback
+            @items.push drawer
+            @drawers.push drawer
     return
 
   addButtons: ->
     @buttons = new mk.m11s.tiroirs.Buttons @physics, @assets.symbols.tiroirs
 
+  drawerClosingCallback : (dr) =>
+    switch @mode
+      when 0
+        dr.shrinkItem()
+        idx = @drawersWithItems.indexOf dr
+        if idx > -1
+          @drawersWithItems.splice idx,1
+
+  drawerOpenedCallback : (dr) =>
+    switch @mode
+      when 0
+        if dr.growItem()
+          @items.push dr.drawerItem
+        @drawersWithItems.push dr
+        if @drawersWithItems.length > 3
+          oldDr = @drawersWithItems.shift()
+          oldDr.toggle()
+      when 1
+        if @flys.length < 3
+          @addFlying dr
+      when 2
+        for i in [0...4]
+          @buttons.buttonsToAdd.push {x:dr.view.position.x, y:dr.view.position.y-10}
+
+  cleanFlyings : ->
+    for fly in @flys
+      fly.stop()
+      if fly.item
+        fly.item.remove()
+      fly.view.remove()
+      @items.splice @items.indexOf(fly.view),1
+
+    @scarf1.view.remove()
+    @items.splice @items.indexOf(@scarf1.view),1
+    @scarf2.view.remove()
+    @items.splice @items.indexOf(@scarf2.view),1
+    @flys.splice 0, @flys.length
+
   addFlying: (drawer) ->
     if @flys.length is 0
       obj = 
-        symbol : @assets.symbols.tiroirs['hat.svg']
+        symbol : @assets.symbols.tiroirs['hat']
         pivot : new paper.Point 0, 0
     else if @flys.length is 1
       obj = 
-        symbol : @assets.symbols.tiroirs['necktie1.svg']
+        symbol : @assets.symbols.tiroirs['necktie1']
         pivot : new paper.Point 0, -28
     else
       @addScarf drawer
@@ -86,6 +168,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       color2 : '#' + @settings.palette.beige.toString 16
       pos : new paper.Point 0,0
       # dest : new paper.Point 0, -400
+    fly.view.z = 2000
     
     @flys.push fly
     @items.push fly
@@ -110,13 +193,14 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       color1 : '#' + @settings.palette.cream.toString 16
       color2 : '#' + @settings.palette.beige.toString 16
       pos : new paper.Point 0,0
-    fly.view.z = 0.5
+    fly.view.z = 1998 #0.5
     @flys.push fly
     @items.push fly
     
     s1 = @scarf1 = new (m11Class 'Scarf') new paper.Point(),
       color     : '#' + @settings.palette.blue.toString(16)
       stiffness : 0.85
+    s1.view.z = 1997
     @items.push @scarf1
 
     j = @joints[NiTE.LEFT_HAND]
@@ -124,7 +208,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       color     : '#' + @settings.palette.lightBlue.toString(16)
       stiffness : 0.9
       numPoints : 6
-    @scarf2.view.z = 1
+    s2.view.z = 1999
     @items.push @scarf2
 
     fly.stop()
@@ -184,13 +268,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         dpos = dr.view.position
         dist = (j.x-dpos.x) * (j.x-dpos.x) + (j.y-dpos.y) * (j.y-dpos.y)
         if dist < distMax
-          if dr.toggle()
-            if dr.isOpen
-              if @buttons
-                for i in [0...4]
-                  @buttons.buttonsToAdd.push {x:dpos.x, y:dpos.y-10}
-              else if @flys.length < 3
-                @addFlying dr
+          dr.toggle()
     return
   
   update: (dt) ->

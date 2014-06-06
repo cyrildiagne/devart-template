@@ -6,12 +6,12 @@ class mk.m11s.birds.House
     @view.pivot = new paper.Point 0,0
     @view.z = 0
 
-    @sday = mk.Scene::assets[sname+'.svg']
-    @snight = mk.Scene::assets[sname+'_night.svg']
+    @sday = mk.Scene::assets[sname]
+    @snight = mk.Scene::assets[sname+'_night']
 
     @view.addChild @sday.place()
 
-    @view.scaling = 0.01
+    # @view.scaling = 0.01
     @view.visible = false
     # @view.scale 0.01
 
@@ -22,15 +22,16 @@ class mk.m11s.birds.House
 
     @wiggle = 0
     @wiggleVal = 0
+    @wiggleSfx = null
 
-    asset = mk.Scene::assets['wildbird.svg']
+    asset = mk.Scene::assets['wildbird']
     wingColor = mk.Scene::settings.getHexColor('cream')
     @bird = new mk.m11s.birds.WildBird asset, @, wingColor
     # @view.addChild @bird.view
 
     @seed = sname
     weights = mk.helpers.getRandomWeights @part.joints, @seed
-    @follower = new mk.helpers.PartFillFollower @view, @part, weights, 3000#rng(@seed) * 100 + 100
+    @follower = new mk.helpers.PartFillFollower @view, @part, weights, rng(@seed) * 100 + 100
 
   show : (scale, delay) ->
     v = @view
@@ -77,8 +78,10 @@ class mk.m11s.birds.House
     for h in @hands
       dist = (h.x-p.x) * (h.x-p.x) + (h.y-p.y) * (h.y-p.y)
       if dist < @distMax
-        @wiggle = Math.min 45, @wiggle + 5
-        mk.Scene::sfx.Maison_1.play()
+        if (@wiggleSfx and @wiggleSfx.pos() is 0) or !@wiggleSfx
+          @wiggleSfx = mk.Scene::sfx.play 'Maison_1'
+
+        @wiggle = Math.min 35, @wiggle + 5
         if @bReleaseBirds and !@bird.isFlying
           @bird.flyAway()
 

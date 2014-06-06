@@ -52,5 +52,6 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
       'assets/sounds/birds/sfx/BrancheQuiPousse_1.mp3'
       'assets/sounds/birds/sfx/Maison_1.mp3'
       'assets/sounds/birds/sfx/OiseauBranche_1.mp3'
+      'assets/sounds/birds/sfx/OiseauBranche_2.mp3'
     ]
     @loops = []

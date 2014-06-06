@@ -31,11 +31,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
   update : (dt) ->
     super dt
-    # if @bGrowTrees
-    #   @intervalTree+=dt
-    #   if @intervalTree >= @timeBetweenNewTree
-    #     @intervalTree -= @timeBetweenNewTree
-    #     @addTree()
+    b.update(dt) for b in @birds
     if @bTreeGrowsItems 
       @intervalTreeItem+=dt
       if @intervalTreeItem >= @timeBetweenNewTreeItem
@@ -162,16 +158,17 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     if !tree
       tree = @trees.seedRandom 'addBird'
     bird.flyToBranch tree.addTrackPoint()
-    @items.push bird
+    # @items.push bird
     @birds.push bird
 
   sendBirdsToHouses : ->
     for b in @birds
       house = @houses.seedRandom 'sbth'
-      b.flyToHouse house, ->
+      b.flyToHouse house, =>
         # ...
         # @birds.splice @birds.indexOf(b),1
         # console.log @birds.length
+        # @items.splice @items.indexOf(b),1
 
   addHouses: ->
     symbs = ['house1', 'house2', 'house3', 'house_side1', 'house_side2', 'house_side3']
@@ -253,15 +250,16 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         tween = new TWEEN.Tween({scale:1}).to({scale:0}, 500)
          .delay(delay)
          .onUpdate(->
-          item.scaling = @scale
+            item.view.scaling = @scale
          )
          .onComplete(->
-          item.view.remove()
-          items.splice items.indexOf(item), 1
+            item.view.remove()
+            items.splice items.indexOf(item), 1
          ).start window.currentTime
 
   removeTreeItems : ->
     delay = 0
+    items = @items
     for item in @treeItems
       delay+=300
       do (item) ->
@@ -271,6 +269,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
           item.scaling = @scale
          )
          .onComplete(->
+          # items.splice items.indexOf(item),1
           item.remove()
          ).start window.currentTime
 
@@ -280,7 +279,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     tree = @trees.seedRandom rdmk
     if symbolName is undefined && tree.trackPoints.length >= tree.branches.length / 2
       return
-    console.log '> doing it'
+    # console.log '> doing it'
     symbolName = symbolName || ['flower1', 'flower2'].seedRandom rdmk
     symbol = @assets.symbols.birds[symbolName]
     view = symbol.place()

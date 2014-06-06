@@ -53,26 +53,40 @@ body
 
 #timeline
   display block
-  height 30px
+  height 60px
   position absolute
   bottom 0px
   list-style-type none
   margin 0
+  padding-top 20px
   padding 0
   white-space nowrap
   > div
     display inline-block
+    position relative
     width 20px
-    height 30px
-    margin-top 10px
+    height 40px
+    top 40px
     cursor pointer
     &:hover
       opacity 0.5
-    &.birds
+      top 30px
+    &.bulbs
       background-color #50757d
     &.tiroirs
       background-color #5f2633
+    &.birds
+      background-color #79795f
+    &.tribal
+      background-color #2a2a2d
+    &.lockers
+      background-color #897173
+    &.thorns
+      background-color #832945
+    &.stripes
+      background-color #3a5b60
     &.on
+      top 20px
       background-color white
 
 w = 80px
@@ -104,7 +118,7 @@ w = 80px
   position absolute
   z-index 999
   background-color curtainColor
-  transition height 3s cubic-bezier(0.875, 0.155, 0.535, 0.985), opacity 2s, background-color 1s
+  transition height 1.5s cubic-bezier(0.875, 0.155, 0.535, 0.985), opacity 2s, background-color 1s
   &.down
     height 100%
   &.off

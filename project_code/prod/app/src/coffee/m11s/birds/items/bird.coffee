@@ -17,6 +17,7 @@ class mk.m11s.birds.Bird extends mk.helpers.Flying
       wingSpeed : @speed
       pos : new paper.Point -600, (rng(rngk)-0.5) * 800 - 50
       v1length : 180
+    @view.z = 3000+rng(rngk)*2
     @speed *= 0.002
     @bFlyingToBranch = false
     @bFlyingToHouse = false
@@ -29,7 +30,7 @@ class mk.m11s.birds.Bird extends mk.helpers.Flying
   flyToHouse : (@house, @goneHomeCallback) ->
     @bFlyingToHouse = true
     @bFlyingToBranch = false
-    @speed *= 3
+    @speed *= 2.5
 
   land : () ->
     if @isFlying

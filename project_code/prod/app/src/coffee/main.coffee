@@ -103,24 +103,20 @@ onSceneReady = () ->
     scene.setDebug true
 
   if isLive
-
     sync = new mk.skeleton.SkeletonSync skeleton, 7000
     sync.onFirstUserIn = onFirstUserIn
     sync.onLastUserOut = onLastUserOut
     sync.connect false #true
-
     record.begin 
       timestamp : window.seed
       m11  : window.metamorphose
 
+  isLoading = false
+
   if playback || sync.bMinOneUser
     beginScene()
 
-  isLoading = false
   window.top.postMessage 'scene_loaded', '*'
-
-  # if playback
-  #   goto 7000, false
 
 beginScene = ->
   if scene.isStarted then return
@@ -129,6 +125,9 @@ beginScene = ->
     light.fadeTo 0.2, 2000
   curtainUp isLive, ->
     start()
+
+    if playback
+      goto 4500, false
     # fadeScene 'on', 1000
 
 finishScene = ->
@@ -175,8 +174,10 @@ goto = (frame, bStop = false, dt = 1/50) ->
     console.log "Can't go backward yet.."
     return
   scene.music.stop()
+  scene.mute()
   update dt for i in [frameNum...frame]
   scene.music.play()
+  scene.unmute()
   if bStop
     stop()
 

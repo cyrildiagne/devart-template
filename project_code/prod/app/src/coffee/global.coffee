@@ -67,7 +67,7 @@ curtainDown = (fade, callback) ->
       callback()
     if fade
       curtain.className = 'down off'
-  , 2000
+  , 1000
   return
 
 curtainUp = (fade, callback) ->
@@ -81,7 +81,7 @@ curtainUp = (fade, callback) ->
     curtain.className = ''
     if callback
       callback()
-  , 2000
+  , 1000
   return
 
 delay = (duration, callback) ->

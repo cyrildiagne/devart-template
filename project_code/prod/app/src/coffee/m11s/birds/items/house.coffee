@@ -22,6 +22,7 @@ class mk.m11s.birds.House
 
     @wiggle = 0
     @wiggleVal = 0
+    @wiggleSfx = null
 
     asset = mk.Scene::assets['wildbird']
     wingColor = mk.Scene::settings.getHexColor('cream')
@@ -30,7 +31,7 @@ class mk.m11s.birds.House
 
     @seed = sname
     weights = mk.helpers.getRandomWeights @part.joints, @seed
-    @follower = new mk.helpers.PartFillFollower @view, @part, weights, 3000#rng(@seed) * 100 + 100
+    @follower = new mk.helpers.PartFillFollower @view, @part, weights, rng(@seed) * 100 + 100
 
   show : (scale, delay) ->
     v = @view
@@ -77,8 +78,10 @@ class mk.m11s.birds.House
     for h in @hands
       dist = (h.x-p.x) * (h.x-p.x) + (h.y-p.y) * (h.y-p.y)
       if dist < @distMax
+        if (@wiggleSfx and @wiggleSfx.pos() is 0) or !@wiggleSfx
+          @wiggleSfx = mk.Scene::sfx.play 'Maison_1'
+
         @wiggle = Math.min 35, @wiggle + 5
-        mk.Scene::sfx.Maison_1.play()
         if @bReleaseBirds and !@bird.isFlying
           @bird.flyAway()
 

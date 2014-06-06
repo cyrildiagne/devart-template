@@ -9,7 +9,7 @@ class mk.m11s.tribal.Mask extends mk.helpers.SimpleJointItem
   update: () ->
     @follower.update()
     @view.position.y -= @view.bounds.height*0.35
-    @view.z = @joint.z + 100
+    @view.z = @joint.z + 200
 
     p = @view.globalToLocal window.mouse
     

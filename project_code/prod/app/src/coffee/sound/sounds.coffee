@@ -7,7 +7,7 @@ class mk.sound.Sounds
     @type =  null
     @onCompleteCb = null
 
-  load: (@type, @sfx_files, @loops_files, @onCompleteCb) ->
+  load: (@type, @sfx_files = [], @loops_files = [], @onCompleteCb) ->
     @files = @loops_files.concat @sfx_files
     if @sfx[@type] or @files.length is 0
       @onCompleteCb()

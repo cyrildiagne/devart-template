@@ -9,6 +9,7 @@ isSceneLoading = false
 isSceneLaunched = false
 isSceneFinishing = false
 currSceneBt = null
+statusDom = null
 
 window.onmessage = (e) ->
   if e.data == "ready"
@@ -18,6 +19,7 @@ window.onmessage = (e) ->
     if scenes and !isSceneLaunched then launchCurrentScene()
   else if e.data == "scene_loaded"
     console.log 'APP > scene loaded'
+    setSceneDate()
     isSceneLoading = false
   else if e.data == "next_scene"
     console.log 'APP > wants next scene'
@@ -50,16 +52,15 @@ getIndex = (callback) ->
 launchCurrentScene = ->
   currScene = scenes[currSceneId]
   iframe.contentWindow.postMessage (currScene.tag || currScene), '*'
-  setSceneDate()
   isSceneLoading = true
   isSceneLaunched = true
+  statusDom.innerHTML = "LOADING..."
 
 setSceneDate = ->
-  dateDom = document.getElementById 'date'
   d = scenes[currSceneId].date
   time = d.getHours() + ':' + d.getMinutes()
   date = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear()
-  dateDom.innerHTML = time + ' | ' + date
+  statusDom.innerHTML = time + ' | ' + date
 
 setupTimeline = ->
   timeline = document.createElement 'div'
@@ -75,7 +76,7 @@ setupTimeline = ->
 
 mouseDownTimeline = (e) ->
   idx = Array.prototype.indexOf.call(timeline.children, e.target)
-  currSceneId = idx
+  currSceneId = idx - 1
   cs = document.defaultView.getComputedStyle e.target,null
   color = cs.getPropertyValue 'background-color'
   
@@ -85,6 +86,7 @@ mouseDownTimeline = (e) ->
     currSceneBt.className = cname
   currSceneBt = e.target
   if !isSceneFinishing
+    statusDom.innerHTML = ""
     iframe.contentWindow.postMessage 'stop','*'
     isSceneFinishing = true
 
@@ -94,6 +96,7 @@ mouseMoveTimeline = (e) ->
   timeline.style.WebkitTransform = 'translate('+pos+'px, 0)'
 
 iframe = document.getElementById "frame"
+statusDom = document.getElementById 'date'
 
 if isLive
   quadwarp = new QuadWarp iframe

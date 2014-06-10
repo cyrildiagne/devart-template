@@ -124,7 +124,7 @@ task 'build', 'Build single application file from source files', ->
   jade = which.sync 'jade'
   opt = {}
   opt.build = true
-  exec 'jade -P -o bin -O '+JSON.stringify(opt)+' src/jade/main.jade', (err, stdout, stderr) ->
+  exec 'jade -P -o export -O '+JSON.stringify(opt)+' src/jade/main.jade', (err, stdout, stderr) ->
     if err then console.log 'exec error: ' + err
     else console.log('stdout: ' + stdout)
 
@@ -136,6 +136,7 @@ task 'build', 'Build single application file from source files', ->
   for file in files
     uri = path.join 'export/js',file
     fs.removeSync uri
+  fs.copySync 'bin/js/app','export/js/app'
 
   for i in [0...jade_options.includes.length]
     jade_options.includes[i] = 'src/coffee/' + jade_options.includes[i] + '.coffee'

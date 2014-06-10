@@ -28,14 +28,14 @@ class mk.helpers.PartFillFollower
 
 class mk.helpers.PartEdgeFollower
   constructor : (@view, @j1, @j2, @pct, @zOffset) ->
-    @zOffset = @zOffset || -Math.random() * 100 - 200
+    @zOffset = @zOffset || 0
     # console.log @zOffset
   update : ->
     x = @j1.x * @pct + @j2.x * (1-@pct)
     y = @j1.y * @pct + @j2.y * (1-@pct)
     @view.position.x = x
     @view.position.y = y
-    @view.z = @j1.z * @pct + @j2.x * (1-@pct) + @zOffset
+    @view.z = @j1.z * @pct + @j2.z * (1-@pct) + @zOffset
 
 
 class mk.helpers.SimpleJointItem

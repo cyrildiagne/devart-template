@@ -3,6 +3,7 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
   setupAssets : ->
     @assets = [
       'assets/items/tribal/head.svg'
+      'assets/items/tribal/shadow.svg'
     ]
 
    setupSounds : ->
@@ -10,22 +11,13 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
     @track = 'assets/sounds/tribal/track/tribal_025.mp3'
 
     @musicEvents = [
-    # tiroirs apparaissent
-      26.409 # rythmique - 
-    # objets verticaux sortent
-      67.216 # piano
-    # objets sortent des tiroirs
-      74.227 # piano + grave)
-      84.005 # guitare
-    # apparition des objets volants
-      93.288 # guitare + grave)
-      102.956 # guitare + aigue)
-      103.166 # nappe
-      142.320 # break
-    # boutons + feuilles sortent des tiroirs
-      170.464 # nappe + aigue
-      179.979  # end 
-    # tiroirs grandissent puis sortent
+      5.235 # rythmique
+      15.754 # basses + sythe
+      25.380 # synthe aigu
+      42.015 # nappe
+      83.942 # instru
+      105.759 # violon
+      147.033 # end
     ]
 
   # setupSounds: ->

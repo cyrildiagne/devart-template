@@ -35,7 +35,7 @@ class mk.m11s.tribal.Fire
 
   constructor:(@colors) ->
     @view = new paper.Group()
-    @view.z = 0
+    @view.z = 9999
     @view.transformContent = false
     @view.scale(0.5)
     @view.pivot = new paper.Point(0, 0)
@@ -65,7 +65,7 @@ class mk.m11s.tribal.Fire
     #   saturation : 0.75
     #   brightness : 1
     color = '#'+@colors.seedRandom(rngk).toString(16)
-        
+    
     flame = new mk.m11s.tribal.Flame 0, 10, flameWidth, flameHeight, flameSpeed, color
     flame.path.transformContent = false
     flame.path.pivot = new paper.Point(0,0)

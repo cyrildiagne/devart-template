@@ -1,22 +1,23 @@
 class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
 
-  setupItems: ->
+  setupItems : ->
     @addHead()
     @addFeathers()
     @addFire()
+    @addShadow()
     # for k,l of @sounds.loops.tribal
       # if k != 'basse_b' && k != 'deltafeu_b'
       # l.play()
       # if(k != 'tactac')
       #   l.volume 0
     
-  addHead: ->
+  addHead : ->
     symbol = @assets.symbols.tribal['head']
     MaskClass = m11Class 'Mask'
     item = new MaskClass symbol, @joints[NiTE.HEAD]
     @items.push item
 
-  addFeathers: ->
+  addFeathers : ->
     part = @getPart 'leftLowerArm'
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 8, 0.7
     @items.push item
@@ -37,7 +38,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     item = new (m11Class 'FeatherGroup') @settings, part.joints[1], part.joints[0], 2, 0
     @items.push item
 
-  addFire: ->
+  addFire : ->
     colors = [
       # @settings.palette.cream
       @settings.palette.lightRed
@@ -45,10 +46,17 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     ]
     @fire = new (m11Class 'Fire') colors
     @fire.view.position.x = -200
-    @fire.view.position.y = 300
+    @fire.view.position.y = 550
     @items.push @fire
 
-  update: (dt) ->
+  addShadow : ->
+    head = @joints[NiTE.HEAD]
+    leftFoot = @joints[NiTE.LEFT_FOOT]
+    rightFoot = @joints[NiTE.RIGHT_FOOT]
+    @shadow = new (m11Class 'Shadow') head, leftFoot, rightFoot
+    @items.push @shadow
+
+  update : (dt) ->
     super dt
     
     lh = @joints[NiTE.LEFT_HAND]

@@ -57,6 +57,7 @@ jade_options =
     'm11s/tribal/bodyitems'
     'm11s/tribal/items/feather'
     'm11s/tribal/items/mask'
+    'm11s/tribal/items/shadow'
     'm11s/tribal/items/fire'
     'm11s/tribal/part'
 
@@ -93,6 +94,7 @@ jade_options2 =
   rootDir : './'
   includes : [
     'app/quadwarp'
+    'app/cloudstorage'
     'app'
   ]
 
@@ -126,18 +128,22 @@ task 'build', 'Build single application file from source files', ->
     if err then console.log 'exec error: ' + err
     else console.log('stdout: ' + stdout)
 
-  files = fs.readdirSync 'bin/js'
+  fs.removeSync 'export'
+  fs.copySync 'bin','export'
+  fs.removeSync 'export/replays'
+
+  files = fs.readdirSync 'export/js'
   for file in files
-    uri = path.join 'bin/js',file
+    uri = path.join 'export/js',file
     fs.removeSync uri
 
   for i in [0...jade_options.includes.length]
     jade_options.includes[i] = 'src/coffee/' + jade_options.includes[i] + '.coffee'
 
-  exec 'coffee -c -o bin/js src/coffee/app.coffee'
+  exec 'coffee -c -o export/js src/coffee/app.coffee'
 
   coffeebar jade_options.includes,
-    output : path.join 'bin/js', 'all.min.js'
+    output : path.join 'export/js', 'all.min.js'
     minify : true
     bare : true
     silent : false

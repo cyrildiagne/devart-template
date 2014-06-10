@@ -2,7 +2,7 @@ class mk.m11s.tribal.Mask extends mk.helpers.SimpleJointItem
 
   constructor: (@symbol, @joint) ->
     super @symbol, @joint
-    @view.scale 0.8
+    # @view.scale 0.8
     @isHandOver = false
     @initY = 0
 

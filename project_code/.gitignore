@@ -6,6 +6,8 @@ prod/tracking/K4W-BodyOSC/bin/*.pdb
 *.vcxproj.user
 *.vcxproj.user
 
+prod/tokenserver/node_modules/*
+
 prod/app/export
 prod/app/bin/js/*
 prod/app/bin/saved/*

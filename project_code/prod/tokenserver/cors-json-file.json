@@ -1,0 +1,1 @@
+[{"origin": ["http://localhost:3000", "chrome-extension://*", "http://devartmrkalia.com"], "responseHeader": ["x-meta-goog-custom", "x-goog-acl", "x-goog-api-version", "authorization", "content-type"], "method": ["GET", "HEAD", "PUT", "DELETE", "OPTIONS"], "maxAgeSeconds": 3600}]

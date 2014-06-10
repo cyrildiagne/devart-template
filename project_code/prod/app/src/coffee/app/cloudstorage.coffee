@@ -71,7 +71,7 @@ class CloudStorage
   constructor : () ->
     @gapi = new GAPI()
 
-  upload : (filename, data) ->
+  upload : (filename, data, callback) ->
 
     @gapi.getToken (err, token) -> 
       if (err)
@@ -90,5 +90,5 @@ class CloudStorage
       req.setRequestHeader(k,v) for k, v of headers
       req.onload = (e)->
         if req.status is 200
-          console.log 'file successfully uploaded'
+          if callback then callback()
       req.send data

@@ -29,7 +29,7 @@ mixin template(bodyClass)
       block
       +libs()
       if(build)
-        script(src= rootDir + 'js/all.min.js')
+        script(src= rootDir + 'js/'+build+'.min.js')
       else 
         +scripts()
 

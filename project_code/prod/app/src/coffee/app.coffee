@@ -18,14 +18,22 @@ $status = null
 
 $sound = null
 
-bucketName = 'mr-kalia-replays'
-maxReplays = '150'
-# indexURL = 'https://www.googleapis.com/storage/v1/b/'+bucketName+'/o?maxResults='+maxReplays+'&fields=nextPageToken,items(name,size)'
-indexURL = 'replays/index.json'
-  
+initApp = ->
+  iframe = $("#frame")[0]
+  if isLive
+    quadwarp = new QuadWarp iframe
+    scenes = ['tiroirs']
+    currSceneId = 0
+  else
+    getIndex (data) ->
+      scenes = data
+      setupUI()
+      currSceneId = 2#scenes.length-1
+      updateTimelineView()
+      launchCurrentScene()
 
 getIndex = (callback) ->
-  console.log 'APP > retrieving index ' + indexURL
+  console.log 'APP > retrieving index ' + Config::indexURL
   r = new XMLHttpRequest()
   r.onload = () =>
     if r.status is 200
@@ -42,7 +50,7 @@ getIndex = (callback) ->
             scene : infos[2]
       callback data
     else console.log 'error'
-  r.open 'GET', indexURL
+  r.open 'GET', Config::indexURL
   setTimeout ->
     r.send()
   , 100
@@ -110,7 +118,7 @@ setSceneDate = ->
   d = scenes[currSceneId].date
   time = d.getHours() + ':' + d.getMinutes()
   date = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear()
-  $status.html time + ' | ' + date
+  $status.html 'PERF N°'+currSceneId + ' - ' + time + ' | ' + date
 
 mouseDownTimeline = (e) ->
   if currentMode is SCENE_RUNNING
@@ -144,8 +152,11 @@ window.onmessage = (e) ->
   switch args[0]
     when 'init'
       console.log 'APP > scene inited'
-      if currentMode is SCENE_CHANGING
+      if scenes is null
+        initApp()
+      else if currentMode is SCENE_CHANGING
         launchCurrentScene()
+      currentMode = SCENE_INIT
     when 'loading'
       if args.length is 1
         console.log 'APP > scene loading'
@@ -155,7 +166,7 @@ window.onmessage = (e) ->
         updateLoading(args[1])
     when 'loaded'
       console.log 'APP > scene loaded'
-      $status.html 'performer is entering stage'
+      $status.html 'setting up performance'
     when 'started'
       console.log 'APP > scene started'
       $('#ui').removeClass 'inactive'
@@ -164,9 +175,11 @@ window.onmessage = (e) ->
     when 'finishing'
       console.log 'APP > scene finishing'
       $('#ui').addClass 'inactive'
+      $status.html 'closing performance'
       currentMode = SCENE_CHANGING
     when 'finished'
       console.log 'APP > scene finished'
+      $status.html 'cleaning up the stage'
       if isLive
         currSceneId = Math.floor(Math.random()*scenes.length)
       iframe.contentWindow.location.reload()
@@ -176,23 +189,3 @@ window.onmessage = (e) ->
       $sound.removeClass 'off'
     else
       console.log 'app received unknown message : ' + e.data
-
-
-
-# ---- SETUP -----
-
-
-$ ->
-  iframe = $("#frame")[0]
-  
-  if isLive
-    quadwarp = new QuadWarp iframe
-    scenes = ['tiroirs']
-    currSceneId = 0
-  else
-    getIndex (data) ->
-      scenes = data
-      setupUI()
-      currSceneId = scenes.length-1
-      updateTimelineView()
-      launchCurrentScene()

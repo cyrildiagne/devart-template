@@ -4,15 +4,18 @@ path       = require 'path'
 coffeebar  = require 'coffeebar'
 {spawn, exec} = require 'child_process'
 
-bin_path    = 'bin'
+bin_path    = 'temp'
 coffee_path = path.join 'src','coffee'
 stylus_path = path.join 'src','stylus'
 
-jade_path   = path.join 'src','jade','main.jade'
-jade_options = 
+jade_path = {}
+jade_options = {}
+
+jade_path.main = path.join 'src','jade','main.jade'
+jade_options.main =
   rootDir : './'
   includes : [
-    'global'
+    'config/global'
 
     'utils/js_utils'
     'utils/geom_utils'
@@ -84,13 +87,14 @@ jade_options =
     'sound/music'
     'sound/sounds'
 
-    'assets'
-    'scene'
+    'core/assets'
+    'core/scene'
+
     'main'
   ]
 
-jade_path2   = path.join 'src','jade','index.jade'
-jade_options2 = 
+jade_path.app   = path.join 'src','jade','app.jade'
+jade_options.app = 
   rootDir : './'
   includes : [
     'app/quadwarp'
@@ -106,45 +110,58 @@ watch = (cmd_name, options) ->
   console.log 'Watching ' + cmd_name + ' files'
 
 simple_server = ->
-  server = spawn 'coffee', ['simple_server.coffee']
+  server = spawn 'coffee', ['simple_server.coffee', '3000', bin_path]
   server.stdout.pipe process.stdout
   server.stderr.pipe process.stderr
 
 task 'dev', 'start dev env', ->
+
+  fs.removeSync bin_path
+  fs.mkdirSync  bin_path
+
+  fs.copySync 'vendor', bin_path+'/vendor'
+  fs.copySync 'assets', bin_path+'/assets'
+  fs.copySync 'res/replays', bin_path+'/replays'
+
   js_path = path.join bin_path,'js'
   css_path = path.join bin_path,'css'
+  fs.ensureDir css_path
   watch 'coffee', ['-w', '-c', '-b', '-o', js_path, coffee_path]
   watch 'stylus', ['-w', stylus_path, '-o', css_path]
-  watch 'jade',   ['-w', jade_path, '-P', '-o', 'bin', '-O', JSON.stringify jade_options]
-  watch 'jade',   ['-w', jade_path2, '-P', '-o', 'bin', '-O', JSON.stringify jade_options2]
+  for config in ['app', 'main']
+    jade_options[config].includes.unshift 'config/config_debug'
+    watch 'jade',   ['-w', jade_path[config], '-P', '-o', bin_path, '-O', JSON.stringify jade_options[config]]
   simple_server()
 
 task 'build', 'Build single application file from source files', ->
+  
+  config = 'app'
 
-  jade = which.sync 'jade'
-  opt = {}
-  opt.build = true
-  exec 'jade -P -o export -O '+JSON.stringify(opt)+' src/jade/main.jade', (err, stdout, stderr) ->
+  outputDir = 'bin'
+  fs.removeSync outputDir
+  fs.mkdirSync  outputDir
+
+  fs.ensureDir outputDir+'/css'
+  exec 'stylus -c -o '+outputDir+'/css ' + 'src/stylus/main.styl', (err, stdout, stderr) ->
     if err then console.log 'exec error: ' + err
     else console.log('stdout: ' + stdout)
 
-  fs.removeSync 'export'
-  fs.copySync 'bin','export'
-  fs.removeSync 'export/replays'
+  for config in ['app', 'main']
 
-  files = fs.readdirSync 'export/js'
-  for file in files
-    uri = path.join 'export/js',file
-    fs.removeSync uri
-  fs.copySync 'bin/js/app','export/js/app'
+    opt = {build : config}
+    exec 'jade -P -o '+outputDir+' -O {"build":\'"'+opt.build+'"\'} src/jade/'+opt.build+'.jade', (err, stdout, stderr) ->
+      if err then console.log 'exec error: ' + err
+      else console.log('stdout: ' + stdout)
 
-  for i in [0...jade_options.includes.length]
-    jade_options.includes[i] = 'src/coffee/' + jade_options.includes[i] + '.coffee'
+    jade_options[config].includes.unshift 'config/config_release'
+    for i in [0...jade_options[config].includes.length]
+      jade_options[config].includes[i] = 'src/coffee/' + jade_options[config].includes[i] + '.coffee'
 
-  exec 'coffee -c -o export/js src/coffee/app.coffee'
+    coffeebar jade_options[config].includes,
+      output : path.join outputDir, 'js', opt.build+'.min.js'
+      minify : true
+      bare : true
+      silent : false
 
-  coffeebar jade_options.includes,
-    output : path.join 'export/js', 'all.min.js'
-    minify : true
-    bare : true
-    silent : false
+  fs.copySync 'vendor', outputDir+'/vendor'
+  fs.copySync 'assets', outputDir+'/assets'

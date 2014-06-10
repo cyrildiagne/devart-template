@@ -1,0 +1,16 @@
+include base
+
+- page.title = "Les Métamorphoses de Mr. Kalia"
+- page.styles = ['main']
+- page.libs = ['jquery.min', 'Matrix', 'jwt-token']
+
++template()
+  iframe( id="frame", src="main.html" )
+  #ui.inactive
+    #info
+      h1#title Les Métamorphoses de Mr Kalia
+      h2#date
+    #sound
+    #timeline
+    .arrow.left
+    .arrow.right

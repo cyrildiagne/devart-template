@@ -9,12 +9,10 @@ prod/tracking/K4W-BodyOSC/bin/*.pdb
 prod/tokenserver/node_modules/*
 
 prod/app/export
-prod/app/bin/js/*
-prod/app/bin/saved/*
-prod/app/bin/replays/*
+prod/app/bin
+prod/app/temp
 prod/app/res/sounds/*
-prod/app/bin/css/*
-prod/app/bin/*.html
+prod/app/res/replays/*
 !prod/app/bin/js/vendor
 
 prod/tokenserver/secret.coffee

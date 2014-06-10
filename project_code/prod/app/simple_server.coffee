@@ -3,11 +3,11 @@ url  = require 'url'
 path = require 'path'
 fs   = require 'fs'
 port = process.argv[2] || 3000
+rootURL = process.argv[3] || 'bin'
 
 server = http.createServer (request, response) ->
 
   uri = url.parse(request.url).pathname
-  rootURL = 'bin/'
   filename = path.join process.cwd(), rootURL, uri
 
   contentTypesByExtension =
@@ -22,7 +22,7 @@ server = http.createServer (request, response) ->
       response.end()
       return
     
-    if fs.statSync(filename).isDirectory() then filename += '/index.html'
+    if fs.statSync(filename).isDirectory() then filename += 'index.html'
     
     fs.readFile filename, "binary", (err, file) ->
       if err

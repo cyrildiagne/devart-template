@@ -16,3 +16,5 @@ prod/app/res/sounds/*
 prod/app/bin/css/*
 prod/app/bin/*.html
 !prod/app/bin/js/vendor
+
+prod/tokenserver/secret.coffee

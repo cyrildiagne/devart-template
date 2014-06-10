@@ -165,3 +165,5 @@ task 'build', 'Build single application file from source files', ->
 
   fs.copySync 'vendor', outputDir+'/vendor'
   fs.copySync 'assets', outputDir+'/assets'
+
+  fs.renameSync outputDir+'/app.html', outputDir+'/index.html'

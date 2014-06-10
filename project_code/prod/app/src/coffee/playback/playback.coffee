@@ -10,7 +10,7 @@ class mk.playback.Playback
   load : (@filepath, callback) ->
 
     r = new XMLHttpRequest()
-    r.open 'GET', 'saved/' + @filepath
+    r.open 'GET', 'http://mr-kalia-replays.storage.googleapis.com/' + @filepath
     r.responseType = "arraybuffer"
     r.onload = () =>
       if r.status is 200

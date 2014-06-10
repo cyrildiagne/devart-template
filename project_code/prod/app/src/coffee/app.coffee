@@ -11,6 +11,9 @@ isSceneFinishing = false
 currSceneBt = null
 statusDom = null
 
+bucketName = 'mr-kalia-replays'
+maxReplays = '150'
+
 window.onmessage = (e) ->
   if e.data == "ready"
     isReady = true
@@ -30,24 +33,27 @@ window.onmessage = (e) ->
       # if currSceneId++ > scenes.length then currSceneId = 0
     isSceneLaunched = false
     iframe.contentWindow.location.reload()
-  else
-    console.log 'app received unknown message : ' + e.data
+  # else
+    # console.log 'app received unknown message : ' + e.data
 
 getIndex = (callback) ->
   r = new XMLHttpRequest()
   r.onload = () =>
     if r.status is 200
-      data = r.responseText.split '\n'
-      for i in [0...data.length]
-        infos = data[i].split '_'
-        data[i] = 
-          tag   : data[i]
-          date  : new Date(parseInt(infos[0]))
-          seed  : infos[1]
-          scene : infos[2]
+      items = JSON.parse(r.responseText).items
+      data = []
+      for i in [0...items.length]
+        infos = items[i].name.split '_'
+        if infos.length is 3
+          data.push
+            tag   : items[i].name
+            size  : items[i].size
+            date  : new Date(parseInt(infos[0]))
+            seed  : infos[1]
+            scene : infos[2]
       callback data
     else console.log 'error'
-  r.open 'GET', 'saved/index'
+  r.open 'GET', 'https://www.googleapis.com/storage/v1/b/'+bucketName+'/o?maxResults='+maxReplays+'&fields=nextPageToken,items(name,size)'
   r.send()
 
 next = ->
@@ -79,9 +85,13 @@ setupTimeline = ->
     s = document.createElement 'div'
     s.className = scene.scene
     timeline.appendChild s
-  timeline.addEventListener 'mousemove', mouseMoveTimeline
-  timeline.addEventListener 'mousedown', mouseDownTimeline
-  setTimeout -> mouseMoveTimeline {x:window.innerWidth*0.5}, 1000
+  
+  setTimeout ->
+    timeline.addEventListener 'mousedown', mouseDownTimeline
+    mouseMoveTimeline {x:window.innerWidth*0.5}
+    if window.innerWidth < timeline.innerWidth
+      timeline.addEventListener 'mousemove', mouseMoveTimeline
+  , 1000
   document.body.appendChild timeline
 
 setupArrows = ->
@@ -99,12 +109,11 @@ arrowClicked = (e) ->
 
 mouseDownTimeline = (e) ->
   idx = Array.prototype.indexOf.call(timeline.children, e.target)
-  currSceneId = idx - 1
+  currSceneId = idx
   sceneChange()
 
 sceneChange = ->
   bt = timeline.children[currSceneId]
-  # console.log currSceneId+1 + ' ' + timeline.children.length
   cs = document.defaultView.getComputedStyle bt,null
   color = cs.getPropertyValue 'background-color'
   
@@ -117,7 +126,6 @@ sceneChange = ->
     statusDom.innerHTML = ""
     iframe.contentWindow.postMessage 'stop','*'
     isSceneFinishing = true
-
 
 mouseMoveTimeline = (e) ->
   pct = (e.x-20) / (window.innerWidth-40)
@@ -136,6 +144,12 @@ else
     scenes = data
     setupTimeline()
     setupArrows()
-    currSceneId = Math.floor scenes.length * 0.5
+    currSceneId = 0#Math.floor scenes.length * 0.5
     sceneChange()
     if isReady and !isSceneLaunched then launchCurrentScene()
+
+# data = new Uint8Array(5120)
+# for i in [0...data.length]
+#   data[i] = i % 255
+# gcs = new CloudStorage()
+# gcs.upload 'test.bin', data

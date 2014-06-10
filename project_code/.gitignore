@@ -6,8 +6,10 @@ prod/tracking/K4W-BodyOSC/bin/*.pdb
 *.vcxproj.user
 *.vcxproj.user
 
+prod/app/export
 prod/app/bin/js/*
 prod/app/bin/saved/*
+prod/app/bin/replays/*
 prod/app/res/sounds/*
 prod/app/bin/css/*
 prod/app/bin/*.html

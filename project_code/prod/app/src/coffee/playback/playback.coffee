@@ -6,11 +6,15 @@ class mk.playback.Playback
     @numFrames = 0
     @nextFrameDeltaTime = 0
     @currDeltaTime = 0
+    @path = 'http://mr-kalia-replays.storage.googleapis.com/'
+    @path = 'replays/'
 
   load : (@filepath, callback) ->
 
+    dispatch 'loading:performance data'
+    console.log 'PLAYBACK > loading ' + @path + @filepath
     r = new XMLHttpRequest()
-    r.open 'GET', 'http://mr-kalia-replays.storage.googleapis.com/' + @filepath
+    r.open 'GET', @path + @filepath
     r.responseType = "arraybuffer"
     r.onload = () =>
       if r.status is 200

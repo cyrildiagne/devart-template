@@ -23,7 +23,6 @@ setupPlayback = (filename) ->
   # .className = filename.split('_')[3]
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
-    # setSeed seed
     setSeed new Date().getTime()
     setMetamorphose m11
 
@@ -128,7 +127,8 @@ beginScene = ->
     start()
 
     dispatch 'started'
-    # goto 300, false
+    # if Config::DEBUG
+    #   goto 390, false
     # fadeScene 'on', 1000
 
 finishScene = ->
@@ -163,7 +163,7 @@ stop = () ->
   if isLoading then return
   paper.view.onFrame = undefined  
   scene.stop()
-  console.log '> stopped'
+  console.log '> stopped at frame ' + frameNum
 
 clean = (callback) ->
   if isLive

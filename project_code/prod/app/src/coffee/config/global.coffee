@@ -36,6 +36,7 @@ window.rngs = {}
 window.currentTime = 0
 
 setSeed = (seed) ->
+  console.log 'set seed ' + seed
   window.seed = seed
   window.rngs = {}  
 
@@ -71,6 +72,7 @@ curtainDown = (fade, callback) ->
   return
 
 curtainUp = (fade, callback) ->
+  delay = if Config::DEBUG then 0 else 1000
   curtain = document.getElementById 'curtain'
   curtain.className = 'down'
   if fade
@@ -81,11 +83,11 @@ curtainUp = (fade, callback) ->
       curtain.className = ''
       if callback
         callback()
-    , 1000
-    # , 0
+    # , 1000
+    , delay
   return
 
-delay = (duration, callback) ->
+delayed = (duration, callback) ->
   tween = new TWEEN.Tween().to({}, duration)
    .onComplete(->
       callback()

@@ -15,8 +15,8 @@ SCENE_ENDING    = 'scene_ending'
 $currSceneBt = null
 $timeline = null
 $status = null
-
 $sound = null
+uiHideTimeout = -1
 
 initApp = ->
   iframe = $("#frame")[0]
@@ -91,6 +91,13 @@ setupUI = ->
   setupArrows()
   $(window).on 'resize', ->
     mouseMoveTimeline {x:window.innerWidth*0.5}
+  # $(window).mousemove ->
+  #   if currentMode is SCENE_RUNNING
+  #     $('#ui').removeClass 'inactive'
+  #     clearTimeout uiHideTimeout
+  #     uiHideTimeout = setTimeout ->
+  #       $('#ui').addClass 'inactive'
+  #     , 2000
 
 setupMuteButton = ->
   $sound = $('#sound')
@@ -117,8 +124,12 @@ setupArrows = ->
 setSceneDate = ->
   d = scenes[currSceneId].date
   time = d.getHours() + ':' + d.getMinutes()
-  date = d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear()
-  $status.html 'PERF N°'+currSceneId + ' - ' + time + ' | ' + date
+  day = d.getDate()
+  if day < 10 then day = '0'+day
+  m = d.getMonth()
+  if m < 10 then m = '0'+m
+  date = day + '/' + m + '/' + d.getFullYear()
+  $status.html 'PERF. N°'+currSceneId + ' - ' + time + ' | ' + date
 
 mouseDownTimeline = (e) ->
   if currentMode is SCENE_RUNNING

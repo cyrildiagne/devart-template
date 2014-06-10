@@ -8,6 +8,7 @@ class mk.m11s.base.Perso
     @morph  = null
     @items  = null
     @numItems = 0
+    @sort = @paperSort
 
   setMetamorphose : (@settings, @assets, @sounds) ->
     @clean()
@@ -69,6 +70,7 @@ class mk.m11s.base.Perso
         if item.view.parent isnt @view
           @view.addChild item.view
       @items.update delta
+    # @sort()
 
   getJoints: (types) ->
     res = []
@@ -97,18 +99,32 @@ class mk.m11s.base.Perso
     
     pelvis = @getPart('pelvis')
     torso = @getPart('torso')
-    # lua = @getPart('leftUpperArm')
-    # lua.updateZ lua.z - 150
-    # rua = @getPart('rightUpperArm')
-    # rua.updateZ rua.z - 150
     leftUpperLeg = @getPart('leftUpperLeg')
     rightUpperLeg = @getPart('rightUpperLeg')
     @getPart('head').updateZ torso.z + 2 # head always 'just' on top of body
     pelvis.updateZ torso.z + 1 # pelvis always 'just' on top of body
     leftUpperLeg.updateZ  pelvis.z - 1
     rightUpperLeg.updateZ  pelvis.z - 1
+    @sort()
+
+  paperSort : ->
+    # console.time("paperSort")
+    arr = @view.children.slice 0
+    arr.sort (a, b) ->
+      return if a.z > b.z then 1 else -1
+    for i in [0...arr.length-1]
+      if !arr[i+1].isAbove(arr[i])
+        arr[i+1].insertAbove arr[i]
+    # console.timeEnd("paperSort")
+
+
+  # 10x faster than @paperSort but breaks up rendering if items are being removed
+  fastSort : ->
+    # console.time("fastSort")
     @view.children.sort (a, b) ->
       return if a.z > b.z then 1 else -1
+    # console.timeEnd("fastSort")
+
 
   onMusicEvent: (eventId) ->
     @items.onMusicEvent eventId

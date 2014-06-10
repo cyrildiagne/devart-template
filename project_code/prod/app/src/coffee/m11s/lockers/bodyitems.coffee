@@ -6,10 +6,13 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @addLockers()
     @addPile()
 
+    @keyId = 0
+    @lockId = 0
+
     @distMax = 30
     @distMax *= @distMax
 
-    @timeSinceKey = 0
+    @timeSinceKey = -4000
     @timeBeforeNextKey = 0
 
   addLockers: ->
@@ -17,7 +20,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     parts = @getPartsExcluding ['head']
     rngk = 'addLockers'
     for p in parts
-      for i in [1..3]
+      for i in [1..5]
         chance = 0.5
         if p.name is "torso"
           chance = 1
@@ -43,6 +46,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
       pos : new paper.Point -400, (rng(rngk)-0.5) * 800 - 50
     fly.view.scaling = rng(rngk)*0.2 + 0.8
     fly.view.pivot = new paper.Point item.bounds.width*0.5,0
+    fly.view.z = 9999
     @items.push fly
     @flys.push fly
 
@@ -78,40 +82,33 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
 
   update: (dt) ->
     super dt
-    stopArr = []
 
-    for fly in @flys
+    for i in [@flys.length-1..0] by -1
+      fly = @flys[i]
       lock = @getKeyInLock fly
       if lock
-        stopArr.push fly
         fly.view.position = new paper.Point 0, -10 * lock.item.scaling.y
-        fly.view.remove()
-        lock.view.addChild fly.view
         lock.available = false
         @turnKeyAnimation fly.view
         lock.breakFree()
         @pile.addSome()
-      else if fly.view.position.x > 500
-        stopArr.push fly
+      if lock || fly.view.position.x > 500
         fly.view.remove()
+        fly.stop()
+        @items.splice @items.indexOf(fly),1
+        @flys.splice i,1
+        if lock
+          lock.view.addChild fly.view
 
-    for f in stopArr
-      f.stop()
-      @flys.splice @flys.indexOf(f),1
-      @items.splice @items.indexOf(f),1
-
-    rmLocks = []
-    for l in @locks
+    for i in [@locks.length-1..0] by -1
+      l = @locks[i]
       if l.out
         l.clean()
-        rmLocks.push l
-    for l in rmLocks
-      i = @items.indexOf(l)
-      @locks.splice @locks.indexOf(l),1
-      @items.splice @items.indexOf(l),1
+        @items.splice @items.indexOf(l),1
+        @locks.splice i,1
 
     @timeSinceKey+=dt
-    if @flys.length < 5 and @timeSinceKey > @timeBeforeNextKey
+    if @flys.length < 10 and @timeSinceKey > @timeBeforeNextKey
       @timeSinceKey -= @timeBeforeNextKey
       @timeBeforeNextKey = rng('LockersUpdate') * 3000 + 2000
       @addKey()

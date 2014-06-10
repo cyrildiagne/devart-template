@@ -16,7 +16,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @treeItems = []
 
     @houses = []
-    delay 2000, => @addHouses()
+    delayed 2000, => @addHouses()
 
     @birds = []
 

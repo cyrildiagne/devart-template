@@ -26,7 +26,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
        { weights : [0.8, 0.2], scale : 0.2, z: 5 } 
       ]
     @drawers = []
-    delay 4000, => @addDrawers()
+    delayed 4000, => @addDrawers()
     # @addDrawers()
     @drawersWithItems = []
 
@@ -99,7 +99,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         opt = opts.splice(id, 1)[0]
         dl += if dl is 5000 then 12000 else 5000
         do (p, opt, dl) =>
-          delay dl, =>
+          delayed dl, =>
             drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, opt
             drawer.openCallback = @drawerOpenedCallback
             drawer.closeCallback = @drawerClosingCallback

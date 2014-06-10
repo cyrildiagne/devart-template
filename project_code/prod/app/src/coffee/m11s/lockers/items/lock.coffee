@@ -2,16 +2,16 @@ class mk.m11s.lockers.Lock
 
   constructor: (@symbol, @part, @seed) ->
     @item = @symbol.place()
-    scale = rng(@seed)*0.2 + 0.7
+    scale = rng(@seed)*0.3 + 0.7
     if @part.name is "torso"
-      scale = rng(@seed)*0.2 + 1.0
+      scale = rng(@seed)*0.3 + 1.0
     @item.scale scale
 
     @view = new paper.Group()
     @view.pivot = new paper.Point 0, 0
     @view.transformContent = false
     @view.addChild @item
-    @view.z = 0
+    @view.z = 2000
     weights = mk.helpers.getRandomWeights @part.joints, @seed
     @follower = new mk.helpers.PartFillFollower @view, @part, weights, rng(@seed) * 100 + 200
 
@@ -20,8 +20,8 @@ class mk.m11s.lockers.Lock
     @out = false
 
   clean: ->
-    @view.removeChildren()
-    # @view.remove()
+    # @view.removeChildren()
+    @view.remove()
 
   breakFree: ->
     view = @view
@@ -33,9 +33,10 @@ class mk.m11s.lockers.Lock
     @follower = null
 
   update: (dt) ->
+    if @out then return
     if @flying
       @view.position.y += @velY * dt
-      if @view.position.y < -500
+      if @view.position.y < -window.viewport.height*0.5
         @out = true
         return
       @view.position.x += @velX * dt

@@ -72,7 +72,6 @@ class mk.Scene
     @perso.setPoseFromSkeleton skeleton
 
   update : (dt, currentTime) ->
-    
     @music.update dt, currentTime
     @perso.update dt
     @delta += dt

@@ -25,7 +25,7 @@ class mk.sound.Music
         console.log "> Music error loading #{url}"
       onend : =>
         @stop()
-        console.log '> Music finished'
+        # console.log '> Music finished'
         if @endCallback
           @endCallback()
       onplay : @onPlay
@@ -42,13 +42,13 @@ class mk.sound.Music
       @isPlaying = true
     else
       console.log '> Music already playing'
-      
-    # @track.mute()
+    
+    # @track.mute() if Config::DEBUG
 
   stop : ->
     @track.pause()
     @isPlaying = false
-    console.log '> Music paused'
+    # console.log '> Music paused'
 
   update : (dt, currentTime) ->
     if @isFinished
@@ -76,7 +76,7 @@ class mk.sound.Music
       if time > pos
         @currEvent = i
         @nextEventTime = time
-        console.log '> Music setting next event at ' + @nextEventTime + 's'
+        # console.log '> Music setting next event at ' + @nextEventTime + 's'
         break
     if @nextEventTime < pos
       @isFinished = true
@@ -85,7 +85,7 @@ class mk.sound.Music
     if !@bSettingPos then return
     if @track.pos() > @nextEventTime
       @setNextEvent()
-    log = '> Music playing :' + '\n'
-    log += 'playhead is at : ' + @track.pos().toFixed(3) + 's (anim is at ' + @animTime + 's)\n'
-    log += 'next event is at : ' + @nextEventTime + 's'
-    console.log log
+    # log = '> Music playing :' + '\n'
+    # log += 'playhead is at : ' + @track.pos().toFixed(3) + 's (anim is at ' + @animTime + 's)\n'
+    # log += 'next event is at : ' + @nextEventTime + 's'
+    # console.log log

@@ -35,6 +35,8 @@ class mk.sound.Music
       @track.play()
       @bSettingPos = true
       @track.pos @animTime
+      if @settings.mute
+        @track.mute()
       # @track.pos 106.671 + 0.3
       @bSettingPos = false
       @isPlaying = true

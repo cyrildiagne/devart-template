@@ -77,11 +77,12 @@ curtainUp = (fade, callback) ->
     curtain.className = ''
     callback()
   else 
-  setTimeout ->
-    curtain.className = ''
-    if callback
-      callback()
-  , 1000
+    setTimeout ->
+      curtain.className = ''
+      if callback
+        callback()
+    , 1000
+    # , 0
   return
 
 delay = (duration, callback) ->
@@ -89,3 +90,6 @@ delay = (duration, callback) ->
    .onComplete(->
       callback()
    ).start window.currentTime
+
+dispatch = (cmd) ->
+  window.top.postMessage cmd, '*'

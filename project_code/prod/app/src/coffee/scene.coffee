@@ -23,18 +23,18 @@ class mk.Scene
     @settings = new (m11Class 'Settings')()
     Scene::settings = @settings
 
-    console.log 'loading assets...'
+    dispatch 'loading:graphics'
     @assets.load type, @settings.assets, =>
 
       Scene::assets = @assets.symbols[type]
 
-      console.log 'loading sound effects...'
+      dispatch 'loading:sound effects'
       @sounds.load type, @settings.sfx, @settings.loops, =>
 
         Scene::sfx = @sounds.sfx[type]
         Scene::sfx.play = (s) -> @[s].play() if !Scene::settings.mute
 
-        console.log 'loading music...'
+        dispatch 'loading:music'
         @music.load @settings, (err) =>
 
           if err
@@ -80,10 +80,17 @@ class mk.Scene
   mute : ->
     @settings.mute = true
     @music.mute()
+    dispatch 'mute'
 
   unmute : ->
     @settings.mute = false    
     @music.unmute()
+    dispatch 'unmute'
+
+  toggleMute : ->
+    if @settings.mute
+      @unmute()
+    else @mute()
 
   stop : ->
     @isStarted = false

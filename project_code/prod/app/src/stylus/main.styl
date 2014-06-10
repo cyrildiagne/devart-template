@@ -1,5 +1,14 @@
 Tsar = 'tstar_twregular'
-curtainColor = #50757d
+
+bulbsColor   = #50757d
+tiroirsColor = #5f2633
+birdsColor   = #79795f
+tribalColor  = #2a2a2d
+lockersColor = #897173
+thornsColor  = #832945
+stripesColor = #3a5b60
+
+curtainColor = tiroirsColor
 
 @font-face 
   font-family Tsar
@@ -33,6 +42,56 @@ iframe
 body
   background-color black
   -webkit-perspective 1000px
+  &.live
+    #ui
+      display none
+
+#paperjs-canvas
+  width 100%
+  height 100%
+  background-color black//#1b253d
+  display none
+  transition opacity 0.5s ease-out
+  &.off
+    opacity 0
+  &.on
+    opacity 1
+  .nofocus &
+    opacity 0.5
+
+#curtain
+  width 100%
+  height 0
+  position absolute
+  z-index 999
+  background-color curtainColor
+  transition height 1.5s cubic-bezier(0.875, 0.155, 0.535, 0.985), opacity 2s, background-color 1s
+  &.down
+    height 100%
+  &.off
+    opacity 0
+
+#curtain, #timeline > div
+  &.bulbs
+    background-color bulbsColor
+  &.tiroirs
+    background-color tiroirsColor
+  &.birds
+    background-color birdsColor
+  &.tribal
+    background-color tribalColor
+  &.lockers
+    background-color lockersColor
+  &.thorns
+    background-color thornsColor
+  &.stripes
+    background-color stripesColor
+
+#ui
+  
+  &.inactive
+    pointer-events : none
+
   #info
     position absolute
     left 50px
@@ -47,63 +106,77 @@ body
       font-size 15px
       color #dbdbdb
       margin-top 8px
-  &.live
-    #info
-      display none
 
-#timeline
-  display block
-  height 60px
-  position absolute
-  bottom 0px
-  list-style-type none
-  margin 0
-  padding-top 20px
-  padding 0
-  white-space nowrap
-  > div
-    display inline-block
-    position relative
-    width 20px
-    height 40px
-    top 40px
+  #timeline
+    display block
+    height 60px
+    position absolute
+    bottom 0px
+    list-style-type none
+    margin 0
+    padding-top 20px
+    padding 0
+    white-space nowrap
+    transition bottom 1s ease-out
+    transition-delay 1s
+    > div
+      display inline-block
+      position relative
+      width 20px
+      height 40px
+      top 40px
+      cursor pointer
+      transition top 0.3s ease-out, background-color 0.3s ease-out
+      &:hover
+        opacity 0.5
+        top 30px
+      &.on
+        top 20px
+        background-color white
+
+  &.inactive #timeline
+    bottom -60px
+
+  .arrow
+    width 30px
+    height 59px
+    position absolute
+    top 50%
+    margin-top -30px
     cursor pointer
+    transition left 0.5s ease-out, right 0.5s ease-out
+    transition-delay 0.5s, 0.5s
+    &.left
+      background url('../assets/ui/arrow_left.png')
+      left 50px
+    &.right
+      background url('../assets/ui/arrow_right.png')
+      right 50px
     &:hover
       opacity 0.5
-      top 30px
-    &.bulbs
-      background-color #50757d
-    &.tiroirs
-      background-color #5f2633
-    &.birds
-      background-color #79795f
-    &.tribal
-      background-color #2a2a2d
-    &.lockers
-      background-color #897173
-    &.thorns
-      background-color #832945
-    &.stripes
-      background-color #3a5b60
-    &.on
-      top 20px
-      background-color white
 
-.arrow
-  width 30px
-  height 59px
-  background url('../assets/ui/arrow_left.png')
-  position absolute
-  top 50%
-  margin-top -30px
-  left 30px
-  cursor pointer
-  &.right
-    background url('../assets/ui/arrow_right.png')
-    left auto
-    right 30px
-  &:hover
-    opacity 0.5
+  &.inactive .arrow
+    &.left
+      left -30px
+    &.right
+      right -30px
+
+
+  #sound
+    width 26px
+    height 23px
+    position absolute
+    right 65px
+    top 65px
+    transition top 0.5s ease-out
+    background url('../assets/ui/sound.png')
+    cursor pointer
+    &.off
+      width 15px
+
+  &.inactive #sound
+    top -23px
+
 
 w = 80px
 .quad
@@ -117,32 +190,3 @@ w = 80px
   border-radius (w/2)
   &:hover
     background-color rgba(0,0,255, 0.6)
-
-#paperjs-canvas
-  width 100%
-  height 100%
-  background-color black//#1b253d
-  display none
-  &.off
-    opacity 0
-  &.on
-    opacity 1
-
-#curtain
-  width 100%
-  height 0
-  position absolute
-  z-index 999
-  background-color curtainColor
-  transition height 1.5s cubic-bezier(0.875, 0.155, 0.535, 0.985), opacity 2s, background-color 1s
-  &.down
-    height 100%
-  &.off
-    opacity 0
-
-p.instruction
-  font-size   0.8em
-  position    absolute
-  z-index     2
-  left        1em
-  white-space pre

@@ -16,10 +16,11 @@ timestamp = 0
 frameNum = 0
 
 setupPlayback = (filename) ->
-  console.log 'Setting up playback ' + filename
+  dispatch 'loading'
   isLive = false
   isLoading = true
   setupApp()
+  # .className = filename.split('_')[3]
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
     # setSeed seed
@@ -27,7 +28,7 @@ setupPlayback = (filename) ->
     setMetamorphose m11
 
 setupLive = (m11) ->
-  console.log 'Setting up live ' + m11
+  dispatch 'loading'
   isLive = true
   isLoading = true
   light = new mk.physical.DMXLight()
@@ -96,7 +97,7 @@ toggleDebug = () ->
   scene.setDebug window.debug
 
 onSceneReady = () ->
-  console.log '> scene ready'
+  console.log '> scene loaded'
   view.addChild scene.perso.view
 
   if window.debug
@@ -116,7 +117,7 @@ onSceneReady = () ->
   if playback || sync.bMinOneUser
     beginScene()
 
-  window.top.postMessage 'scene_loaded', '*'
+  dispatch 'loaded'
 
 beginScene = ->
   if scene.isStarted then return
@@ -126,8 +127,8 @@ beginScene = ->
   curtainUp isLive, ->
     start()
 
-    # if playback
-    #   goto 1500, false
+    dispatch 'started'
+    # goto 300, false
     # fadeScene 'on', 1000
 
 finishScene = ->
@@ -137,7 +138,8 @@ finishScene = ->
   onSceneFinished()
 
 onSceneFinished = () ->
-  console.log '> scene finished'
+  console.log '> scene finishing'
+  dispatch 'finishing'
   curtainDown isLive, ->
     if isLive
       light.fadeTo 1, 3000
@@ -147,7 +149,7 @@ onSceneFinished = () ->
     stop()
     clean ->
       # record.end()
-      window.top.postMessage 'next_scene', '*'
+      dispatch 'finished'
   , 4000
 
 start = () ->
@@ -204,9 +206,11 @@ windowResized = (ev) ->
   view.position.y = v.height * 0.5
 
 windowFocus = (ev) ->
+  document.body.className = ""
   start()
 
 windowLostFocus = (ev) ->
+  document.body.className = "nofocus"
   stop()
 
 onKeyDown = (ev) ->
@@ -258,13 +262,17 @@ update = (deltaTime) ->
 # MISCELLANEOUS
 
 window.onmessage = (e) ->
-  arg = e.data
-  if arg.split("_").length > 1
-    setupPlayback arg
-  else if arg == 'stop'
-    console.log 'stop'
-    finishScene()
-  else if arg != 'ready'
-    setupLive arg
+  args = e.data.split(' ')
+  cmd = args[0]
+  switch cmd
+    when 'stop'
+      console.log 'stop'
+      finishScene()
+    when 'launch'
+      if args[1].split('_').length is 3
+        setupPlayback args[1]
+      else setupLive args[1]
+    when 'toggle_mute'
+      scene.toggleMute()
 
-window.top.postMessage 'ready', '*'
+dispatch 'init'

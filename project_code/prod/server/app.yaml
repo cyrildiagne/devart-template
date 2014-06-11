@@ -1,0 +1,37 @@
+application: mr-kalia
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: public/favicon.ico
+  upload: public/favicon\.ico
+
+- url: /assets
+  static_dir: public/assets
+
+- url: /css
+  static_dir: public/css
+
+- url: /js
+  static_dir: public/js
+
+- url: /vendor
+  static_dir: public/vendor
+
+- url: /
+  static_files: public/index.html
+  upload: public/index.html
+
+- url: /main.html
+  static_files: public/main.html
+  upload: public/main.html
+
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"

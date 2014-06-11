@@ -1,10 +1,11 @@
 class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems: () ->
-    delayed 1000, => @addHeadBook()
+    @book = null
     @cage = null
     @boat = null
     @waves = []
+    delayed 1000, => @addHeadBook()
     
   addHeadBook: () ->
     hands = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
@@ -14,11 +15,14 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
   onPageTurn : (hand) =>
     if !@cage
       @addCage hand
-    else if !@boat
-      @addBoat()
     else
-      for i in [0...12]
-        @addWave()
+      if rng('pageturn') > 0.5
+        @book.flyAway()
+      if !@boat
+        @addBoat()
+      else
+        for i in [0...12]
+          @addWave()
 
   addCage : (hand) ->
     symbol = mk.Scene::assets['cage']
@@ -45,7 +49,6 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
       update : -> #...
 
     side = if rng('boat') > 0.5 then 1 else -1
-    console.log side
 
     @boat.view.addChild mk.Scene::assets['boat'].place()
     @boat.view.position.x = -(window.viewport.width+@boat.view.bounds.width)*0.5 * side
@@ -71,7 +74,6 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
     @items.push @boat
 
   addWave : ->
-    console.log 'addwave'
     wave = new mk.m11s.books.Wave =>
       wave.view.remove()
       @waves.splice @waves.indexOf(wave),1

@@ -21,8 +21,8 @@ class mk.m11s.books.Wave
 
     @view.clipped = true
 
-    @view.position.x = (rng('wave')-0.5) * 300 - window.viewport.width*0.8
-    @view.position.y = 200 + (rng('wave')-0.5) * 400
+    @view.position.x = (rng('wave')-0.5) * 300 - window.viewport.width * 0.9
+    @view.position.y = 250 + (rng('wave')-0.5) * 200
     @view.z = -2000 + @view.position.y
     @view.scale 0.5+rng('wave')*4
 

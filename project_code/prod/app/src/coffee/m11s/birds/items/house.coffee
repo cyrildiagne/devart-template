@@ -38,7 +38,7 @@ class mk.m11s.birds.House
     rdm = rng(@rdmk+'show') * 15
     tween = new TWEEN.Tween({ scale: 0.01 })
      .to({ scale: scale }, 1000)
-     .delay(delay*(2650)+7000)
+     .delay(delay*(2650))#+7000)
      .easing( TWEEN.Easing.Quadratic.Out )
      .onStart(->
         v.visible = true

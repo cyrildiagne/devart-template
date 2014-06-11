@@ -73,7 +73,8 @@ curtainDown = (fade, callback) ->
   return
 
 curtainUp = (fade, callback) ->
-  delay = if Config::DEBUG then 0 else 1000
+  delay = 1000
+  # delay = if Config::DEBUG then 0 else 1000
   curtain = document.getElementById 'curtain'
   curtain.className = 'down'
   if fade

@@ -127,8 +127,8 @@ beginScene = ->
     start()
 
     dispatch 'started'
-    if Config::DEBUG
-      goto 1280, false
+    # if Config::DEBUG
+    #   goto 110, false
     # fadeScene 'on', 1000
 
 finishScene = ->
@@ -179,7 +179,7 @@ goto = (frame, bStop = false, dt = 1/50) ->
   scene.mute()
   update dt for i in [frameNum...frame]
   scene.music.play()
-  scene.unmute()
+  # scene.unmute()
   if bStop
     stop()
 

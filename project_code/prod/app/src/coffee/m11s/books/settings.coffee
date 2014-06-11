@@ -5,6 +5,7 @@ class mk.m11s.books.Settings extends mk.m11s.base.Settings
       'cage'
       'book_closed'
       'book_open'
+      'boat'
     ]
     for i in [0...@assets.length]
       @assets[i] = 'assets/items/books/' + @assets[i] + '.svg'

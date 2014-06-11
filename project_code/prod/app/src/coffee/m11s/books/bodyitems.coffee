@@ -12,6 +12,7 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
   onPageTurn : (hand) =>
     if !@cage
       @addCage hand
+    else @addBoat()
 
   addCage : (hand) ->
     symbol = mk.Scene::assets['cage']
@@ -30,3 +31,19 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
         v.scaling = @scale
      )
      .start window.currentTime
+
+  addBoat : ->
+    return
+    boat = 
+      z : -3000
+      view : new paper.Group()
+      update : -> #...
+    boat.view.addChild mk.Scene::assets['boat'].place()
+    boat.view.position.x = -500
+    tween = new TWEEN.Tween(boat.view.position)
+     .to({ x: 500 }, 4000)
+     .onComplete(=>
+        boat.view.remove()
+        @items.splice @items.indexOf(boat,1),1
+     ).start window.currentTime
+     @items.push boat

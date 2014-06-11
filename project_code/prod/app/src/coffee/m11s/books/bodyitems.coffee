@@ -1,8 +1,10 @@
 class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems: () ->
-    @addHeadBook()
+    delayed 1000, => @addHeadBook()
     @cage = null
+    @boat = null
+    @waves = []
     
   addHeadBook: () ->
     hands = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
@@ -12,7 +14,11 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
   onPageTurn : (hand) =>
     if !@cage
       @addCage hand
-    else @addBoat()
+    else if !@boat
+      @addBoat()
+    else
+      for i in [0...12]
+        @addWave()
 
   addCage : (hand) ->
     symbol = mk.Scene::assets['cage']
@@ -33,17 +39,42 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
      .start window.currentTime
 
   addBoat : ->
-    return
-    boat = 
-      z : -3000
+
+    @boat = 
       view : new paper.Group()
       update : -> #...
-    boat.view.addChild mk.Scene::assets['boat'].place()
-    boat.view.position.x = -500
-    tween = new TWEEN.Tween(boat.view.position)
-     .to({ x: 500 }, 4000)
-     .onComplete(=>
-        boat.view.remove()
-        @items.splice @items.indexOf(boat,1),1
-     ).start window.currentTime
-     @items.push boat
+
+    side = if rng('boat') > 0.5 then 1 else -1
+    console.log side
+
+    @boat.view.addChild mk.Scene::assets['boat'].place()
+    @boat.view.position.x = -(window.viewport.width+@boat.view.bounds.width)*0.5 * side
+    @boat.view.scale(side, 1)
+    @boat.view.z = -2000
+    @boat.view.transformContent = false
+
+    dt = 0
+
+    tween = new TWEEN.Tween(@boat.view.position)
+    .to({ x: (window.viewport.width+@boat.view.bounds.width)*0.5*side }, 10000)
+    .onUpdate(=>
+      dt++
+      @boat.view.rotation = Math.sin(dt*0.04) * 5 * side
+      @boat.view.position.y = -Math.cos(dt*0.04) * 10
+    )
+    .onComplete(=>
+      @boat.view.remove()
+      @items.splice @items.indexOf(@boat,1),1
+      @boat = null
+    ).start window.currentTime
+
+    @items.push @boat
+
+  addWave : ->
+    console.log 'addwave'
+    wave = new mk.m11s.books.Wave =>
+      wave.view.remove()
+      @waves.splice @waves.indexOf(wave),1
+      @items.splice @items.indexOf(wave),1
+    @waves.push wave
+    @items.push wave

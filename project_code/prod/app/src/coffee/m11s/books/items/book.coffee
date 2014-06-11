@@ -103,7 +103,7 @@ class mk.m11s.books.Book
     @pages[1].isGarde = true
 
     @currPage = 0
-    @turnPageLock = 50
+    @turnPageLock = 100
     
     @view.z = 0
     @view.transformContent = false
@@ -121,8 +121,8 @@ class mk.m11s.books.Book
           console.log @pages[j].isGarde
           @pages[j].isTurning = true
           @turnPageLock = 0
+          if @turnPageCallback then @turnPageCallback h
           break
-      if @turnPageCallback then @turnPageCallback h
     else
       @coverTop.isTurning = true
 

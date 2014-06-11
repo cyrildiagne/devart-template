@@ -89,6 +89,27 @@ class mk.helpers.JointVelocityTracker
     return @velocities[i]
 
 
+class mk.helpers.Rotate3d
+  constructor: (@item) ->
+    @view = new paper.Group()
+    @view.transformContent = false
+    @item.pivot = new paper.Point @item.bounds.width*0.5, 0
+    @view.addChild @item
+    @h1 = true
+  update : ->
+    if @h1
+      @view.matrix.a -= 0.03
+      @view.matrix.c -= 0.015
+      if @view.matrix.a < 0.03
+        @h1 = false
+    else 
+      @view.matrix.a -= 0.03
+      @view.matrix.c += 0.015
+      if @view.matrix.a < -0.9
+        @view.matrix.a = 1
+        @view.matrix.c = 0
+        @h1 = true
+
 mk.helpers.getRandomWeights = (joints, seed) ->
   weights = []
   sum = 0

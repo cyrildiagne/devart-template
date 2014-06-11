@@ -127,8 +127,8 @@ beginScene = ->
     start()
 
     dispatch 'started'
-    # if Config::DEBUG
-    #   goto 390, false
+    if Config::DEBUG
+      goto 380, false
     # fadeScene 'on', 1000
 
 finishScene = ->

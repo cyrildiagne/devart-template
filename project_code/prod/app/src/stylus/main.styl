@@ -7,6 +7,7 @@ tribalColor  = #2a2a2d
 lockersColor = #897173
 thornsColor  = #832945
 stripesColor = #3a5b60
+booksColor   = #898976
 
 curtainColor = tiroirsColor
 
@@ -67,7 +68,7 @@ body
   z-index 999
   background curtainColor //url('../assets/ui/curtain_texture.png')
   // border-bottom 10px solid rgba(255,255,255,0.1)
-  transition height 1.5s cubic-bezier(0.875, 0.155, 0.535, 0.985), opacity 2s, background-color 1s
+  // transition height 1.5s cubic-bezier(0.875, 0.155, 0.535, 0.985), opacity 2s, background-color 1s
   &.down
     height 100%
   &.off
@@ -88,6 +89,8 @@ body
     background-color thornsColor
   &.stripes
     background-color stripesColor
+  &.books
+    background-color booksColor
 
 #ui
   

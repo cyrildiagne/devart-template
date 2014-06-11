@@ -28,7 +28,7 @@ initApp = ->
     getIndex (data) ->
       scenes = data
       setupUI()
-      currSceneId = 2#scenes.length-1
+      currSceneId = scenes.length-1
       updateTimelineView()
       launchCurrentScene()
 

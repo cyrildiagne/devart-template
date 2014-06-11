@@ -4,7 +4,7 @@ path = require 'path'
 {spawn, exec} = require 'child_process'
 
 in_path = 'sounds'
-out_path = path.join '..', 'bin', 'assets', 'sounds'
+out_path = path.join '..', 'assets', 'sounds'
 
 convert = (input, output) ->
   cmd = which.sync 'lame'

@@ -81,6 +81,10 @@ jade_options.main =
     'm11s/lockers/items/pile'
     'm11s/lockers/bodyitems'
 
+    'm11s/books/settings'
+    'm11s/books/items/book'
+    'm11s/books/bodyitems'
+
     'playback/playback'
     'playback/record'
 

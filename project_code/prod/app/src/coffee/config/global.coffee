@@ -6,6 +6,7 @@ metamorphoses = [
   'lockers'
   'tribal'
   'birds'
+  'books'
 ]
 
 # packages

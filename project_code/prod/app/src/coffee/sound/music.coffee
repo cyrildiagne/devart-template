@@ -42,8 +42,6 @@ class mk.sound.Music
       @isPlaying = true
     else
       console.log '> Music already playing'
-    
-    # @track.mute() if Config::DEBUG
 
   stop : ->
     @track.pause()

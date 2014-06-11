@@ -172,3 +172,12 @@ task 'build', 'Build single application file from source files', ->
   fs.copySync 'assets', outputDir+'/assets'
 
   fs.renameSync outputDir+'/app.html', outputDir+'/index.html'
+
+task 'publish', 'Publish bin directory to app engine instance', ->
+  serverPath = '../server'
+  fs.removeSync serverPath + '/public'
+  fs.copySync 'bin', serverPath + '/public'
+  prcss = spawn 'appcfg.py', ['--email=diagne.cyril@gmail.com', '--oauth2', 'update', serverPath+'/']
+  prcss.stdout.pipe process.stdout
+  prcss.stderr.pipe process.stderr
+

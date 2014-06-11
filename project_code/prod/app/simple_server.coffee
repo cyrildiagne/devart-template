@@ -22,7 +22,7 @@ server = http.createServer (request, response) ->
       response.end()
       return
     
-    if fs.statSync(filename).isDirectory() then filename += 'index.html'
+    if fs.statSync(filename).isDirectory() then filename += 'app.html'
     
     fs.readFile filename, "binary", (err, file) ->
       if err

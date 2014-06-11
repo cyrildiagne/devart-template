@@ -127,8 +127,6 @@ beginScene = ->
     start()
 
     dispatch 'started'
-    # if Config::DEBUG
-    #   goto 110, false
     # fadeScene 'on', 1000
 
 finishScene = ->
@@ -171,17 +169,15 @@ clean = (callback) ->
       callback()
   else callback()
 
-goto = (frame, bStop = false, dt = 1/50) ->
-  if frame < frameNum
-    console.log "Can't go backward yet.."
-    return
+goto = (frame, dt = 1/50) ->
   scene.music.stop()
   scene.mute()
-  update dt for i in [frameNum...frame]
+  if frame < frameNum
+    console.log 'cant go backward..'
+  else
+    update dt for i in [frameNum...frame]
   scene.music.play()
-  # scene.unmute()
-  if bStop
-    stop()
+  scene.unmute()
 
 onPlaybackComplete = () ->
   # ...
@@ -265,8 +261,16 @@ window.onmessage = (e) ->
   args = e.data.split(' ')
   cmd = args[0]
   switch cmd
-    when 'stop'
-      console.log 'stop'
+    when 'goto'
+      goto args[1]
+    when 'pause'
+      stop()
+    when 'mute'
+      scene.mute()
+    when 'unmute'
+      scene.unmute()
+    when 'finish'
+      console.log 'finish'
       finishScene()
     when 'launch'
       if args[1].split('_').length is 3

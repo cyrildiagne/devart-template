@@ -28,9 +28,19 @@ initApp = ->
     getIndex (data) ->
       scenes = data
       setupUI()
+      setupHashNav()
       currSceneId = scenes.length-1
       updateTimelineView()
       launchCurrentScene()
+
+getHashParam = (key)->
+   query = window.location.hash.substring 1
+   vars = query.split '&'
+   for i in [0...vars.length]
+    pair = vars[i].split("=")
+    if pair[0] is key
+      return pair[1] || true
+   return false
 
 getIndex = (callback) ->
   console.log 'APP > retrieving index ' + Config::indexURL
@@ -56,7 +66,6 @@ getIndex = (callback) ->
   , 100
 
 next = ->
-  console.log currentMode
   if currentMode is SCENE_RUNNING
     if ++currSceneId >= scenes.length then currSceneId = 0
     changeScene()
@@ -74,7 +83,7 @@ set = (idx) ->
 changeScene = ->
   updateTimelineView()
   $status.html ''
-  sendCommand 'stop','*'
+  sendCommand 'finish','*'
 
 launchCurrentScene = ->
   currScene = scenes[currSceneId]
@@ -83,6 +92,16 @@ launchCurrentScene = ->
 
 # ---- UI -----
 
+setupHashNav = ->
+  $(window).on 'hashchange', hashChanged
+
+hashChanged = ->
+  goto = getHashParam 'goto'
+  if goto then sendCommand 'goto '+goto,'*'
+  pause = getHashParam 'pause'
+  if pause then sendCommand 'pause'
+  mute = getHashParam 'mute'
+  if mute then sendCommand 'mute'
 
 setupUI = ->
   $status = $('#date')
@@ -183,6 +202,7 @@ window.onmessage = (e) ->
       $('#ui').removeClass 'inactive'
       currentMode = SCENE_RUNNING
       setSceneDate()
+      hashChanged()
     when 'finishing'
       console.log 'APP > scene finishing'
       $('#ui').addClass 'inactive'

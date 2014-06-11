@@ -3,7 +3,7 @@ class mk.m11s.bulbs.Rope
   constructor: (@joints, @colors) ->
     @nbItems              = 12
     @ropeLength           = 500
-    @relaxationIterations = 20
+    @relaxationIterations = 10
     @pixelsPerMeter       = 200
     @gravity              = 9.81
     @handleId             = @nbItems-2
@@ -29,7 +29,7 @@ class mk.m11s.bulbs.Rope
         radius: 10
     @view.addChild @handle
     
-    origin = new paper.Point(-150, -600)
+    origin = new paper.Point(-150, -window.viewport.height*0.5)
     for i in [0...@nbItems]
         x = origin.x + i * @ropeLength / @nbItems * 0.1
         y = origin.y

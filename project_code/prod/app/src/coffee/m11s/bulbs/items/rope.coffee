@@ -51,7 +51,7 @@ class mk.m11s.bulbs.Rope
     back  = new TWEEN.Tween(item).delay(delay).to({y:initY}, 1000)
     back.onStart => 
       @ropeLength = 500 + (rng('ropeyoyo')-0.3) * 200
-      newX = (rng('ropeyoyo')-0.5) * window.viewport.width
+      newX = (rng('ropeyoyo')-0.4) * window.viewport.width
       i = 0
       for it in @items
         it.x = it.prev_x = newX + i * @ropeLength / @nbItems * 0.1

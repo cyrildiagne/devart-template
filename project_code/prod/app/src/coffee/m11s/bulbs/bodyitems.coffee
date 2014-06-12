@@ -8,12 +8,16 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @addBodyBulbs()
     @addHeadBulb()
 
+    @rope = null
+
     @mode = 0
-    @MODE_RED_BLINK = 1
+    @MODE_RAYS = 1
+    @MODE_RAYS = 1
     @MODE_CONNECT = 2
-    @MODE_RAYS = 3
+    @MODE_LIFT = 3
     @NUM_MODES = 3
-    # delayed 6000, => @addRope()
+    @bLockLight = false
+    @lifModeIsDown = false
 
   clean: ->
     super()
@@ -28,29 +32,60 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
   update: (dt) ->
     super dt
     switch @mode
-      when @MODE_RED_BLINK 
-        b.updateRedBlink(dt) for b in @bulbs
       when @MODE_CONNECT
         for b in @bulbs
           b.updateConnections(dt)
           b.connectToNearbyBulbs(@bulbs) 
-          # b.connectToRandomBulbs(@bulbs)
       when @MODE_RAYS 
         b.updateRedBlink(dt) for b in @bulbs
   
   setupMode: ->
     switch @mode
+      when @MODE_CONNECT
+        p.view.visible = false for p in @parts
       when @MODE_RAYS
         b.setupRay() for b in @bulbs
+      when @MODE_LIFT
+        @onLightsOn(false)
+        @bLockLight = true
+        @lift (@lifModeIsDown=!@lifModeIsDown)
+        
 
   cleanMode: ->
     switch @mode
-      when @MODE_RED_BLINK 
-        b.stopRedBlink() for b in @bulbs
       when @MODE_CONNECT
+        p.view.visible = true for p in @parts
         b.removeConnections() for b in @bulbs
+        B = mk.m11s.bulbs.Bulb
+        if B::maxConnection is 0 then B::maxConnection += 2
+        else B::maxConnection*=2
       when @MODE_RAYS
         b.removeRay() for b in @bulbs
+        mk.m11s.bulbs.Bulb::maxRays += 1
+
+  lift: (up=true) ->
+    canvas = document.getElementById('paperjs-canvas')
+    dst = window.viewport.height
+    if !up then dst *= -1
+
+    back = new TWEEN.Tween({y:dst})
+    .to({y:0}, 2000)
+    .easing( TWEEN.Easing.Quadratic.Out )
+    .onUpdate(->
+      canvas.style.top = @y+'px'
+    )
+    .onComplete(=>
+      @bLockLight = false
+      @onLightsOff()
+    )
+
+    tween = new TWEEN.Tween({y:0})
+    .to({y:-dst}, 1000)
+    .chain(back)
+    .easing( TWEEN.Easing.Quadratic.In )
+    .onUpdate(->
+      canvas.style.top = @y+'px'
+    ).start window.currentTime
 
   addBodyBulbs: ->
     parts = @getPartsExcluding ['head', 'torso', 'pelvis']
@@ -72,29 +107,28 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @bulbs.push bulb
 
   addRope: ->
-    rope = new mk.m11s.bulbs.Rope @getJoints([NiTE.LEFT_HAND, NiTE.RIGHT_HAND]), @settings.palette
-    rope.onLightsOff = @onLightsOn
-    rope.onLightsOn = @onLightsOff
-    @items.push rope
+    @rope = new mk.m11s.bulbs.Rope @getJoints([NiTE.LEFT_HAND, NiTE.RIGHT_HAND]), @settings.palette
+    @rope.onLightsOff = @onLightsOn
+    @rope.onLightsOn = @onLightsOff
+    @items.push @rope
 
-  onLightsOn: =>
+  onLightsOn:(changeMode=true)=>
+    if @bLockLight then return
+
     setBackgroundColor '#fff'
-    # @getPart('torso').setColor 0xffffff
-    # @getPart('pelvis').setColor 0xffffff
     b.lightsOn() for b in @bulbs
 
-    @cleanMode()
-    # m = @mode
-    # while @mode is m
-    #   @mode = 1 + Math.floor(Math.random()*(@NUM_MODES))
-    @mode = @MODE_CONNECT
-    @setupMode()
-    # console.log 'mode is ' + @mode
+    if changeMode
+      @cleanMode()
+      @mode++
+      if @mode > @NUM_MODES
+        @mode = 1
+      @setupMode()
+      @rope.yoyo()
 
   onLightsOff: =>
-    setBackgroundColor 'black'#'#172828'
-    # @getPart('torso').setColor @settings.palette.lightBlue
-    # @getPart('pelvis').setColor @settings.palette.lightBlue
+
+    if @bLockLight then return
+
+    setBackgroundColor 'black'
     b.lightsOff() for b in @bulbs
-    # @mode = 0
-    # console.log 'mode is ' + @mode

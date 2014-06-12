@@ -6,10 +6,10 @@ class mk.m11s.bulbs.Rope
     @relaxationIterations = 10
     @pixelsPerMeter       = 200
     @gravity              = 9.81
-    @handleId             = @nbItems-2
+    @handleId             = @nbItems-1
 
     @view = new paper.Group()
-    @view.z = 0
+    @view.z = 9999
 
     @items = []
     @mouse = new paper.Point()
@@ -42,6 +42,24 @@ class mk.m11s.bulbs.Rope
         @path.add new paper.Point(x, y)
 
     @items[0].isPinned = true
+
+  yoyo: ->
+    initY = -window.viewport.height*0.5
+    item = @items[0]
+    back  = new TWEEN.Tween(item).delay(2000).to({y:initY}, 1000)
+    back.onStart => 
+      @ropeLength = 500 + (rng('ropeyoyo')-0.3) * 200
+      newX = (rng('ropeyoyo')-0.5) * window.viewport.width
+      i = 0
+      for it in @items
+        it.x = it.prev_x = newX + i * @ropeLength / @nbItems * 0.1
+        it.y = it.prev_y = initY
+        i++
+    tween = new TWEEN.Tween(item).to({y:-window.viewport.height*0.5-700}, 1000)
+    # .repeat(1)
+    # .yoyo()
+    .chain(back)
+    .start(window.currentTime)
 
   update: (delta) ->
     @updatePhysics delta * 0.001, @ropeLength / @nbItems

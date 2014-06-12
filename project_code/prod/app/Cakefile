@@ -86,6 +86,10 @@ jade_options.main =
     'm11s/books/items/wave'
     'm11s/books/bodyitems'
 
+    'm11s/tech/settings'
+    'm11s/tech/items/lines'
+    'm11s/tech/bodyitems'
+
     'playback/playback'
     'playback/record'
 

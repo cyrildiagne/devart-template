@@ -7,6 +7,7 @@ metamorphoses = [
   'tribal'
   'birds'
   'books'
+  'tech'
 ]
 
 # packages

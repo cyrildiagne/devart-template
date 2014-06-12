@@ -5,6 +5,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     @addFeathers()
     @addFire()
     @addShadow()
+
     # for k,l of @sounds.loops.tribal
       # if k != 'basse_b' && k != 'deltafeu_b'
       # l.play()
@@ -58,15 +59,16 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
 
   update : (dt) ->
     super dt
-    
-    lh = @joints[NiTE.LEFT_HAND]
-    rh = @joints[NiTE.RIGHT_HAND]
-    head = @joints[NiTE.HEAD]
-    torso = @joints[NiTE.TORSO]
-    lh_pct = (lh.y-torso.y) / (head.y-torso.y) * 0.5
-    rh_pct = (rh.y-torso.y) / (head.y-torso.y) * 0.5
-    pct = Math.min(Math.max(0, lh_pct+rh_pct), 1)
-    @fire.setAmp pct
+
+    if @fire
+      lh = @joints[NiTE.LEFT_HAND]
+      rh = @joints[NiTE.RIGHT_HAND]
+      head = @joints[NiTE.HEAD]
+      torso = @joints[NiTE.TORSO]
+      lh_pct = (lh.y-torso.y) / (head.y-torso.y) * 0.5
+      rh_pct = (rh.y-torso.y) / (head.y-torso.y) * 0.5
+      pct = Math.min(Math.max(0, lh_pct+rh_pct), 1)
+      @fire.setAmp pct
 
     #snd = @sounds.loops.tribal.deltafeu_b
     #snd.volume pct+0.2

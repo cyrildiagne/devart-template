@@ -1,6 +1,7 @@
 class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems: () ->
+    @getPart('head').view.visible = false
     @book = null
     @cage = null
     @boat = null

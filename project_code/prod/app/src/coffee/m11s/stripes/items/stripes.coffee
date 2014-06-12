@@ -8,11 +8,11 @@ class mk.m11s.stripes.Stripes
     w = window.viewport.width * 2
     h = window.viewport.height
     bg = new paper.Path.Rectangle(-w*0.5, -h*0.5, w, h)
-    bg.fillColor = 'black'
+    bg.fillColor = '#' + @settings.palette.skin.toString 16 #'black'
     @view.addChild(bg)
 
     colors = [
-      @settings.palette.skin
+      # @settings.palette.skin
       @settings.palette.blue
       @settings.palette.beige
       @settings.palette.lightRed
@@ -48,6 +48,6 @@ class mk.m11s.stripes.Stripes
     # @velTracker.update()
     for s,i in @stripes
       # vel = Math.sqrt(@velTracker.get(i)) * 0.003 + 0.001
-      s.position.x = @torso.x
+      # s.position.x = @torso.x
       s.count += 0.1
     return

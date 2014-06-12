@@ -61,7 +61,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         p.view.visible = true for p in @parts
         b.removeConnections() for b in @bulbs
         B = mk.m11s.bulbs.Bulb
-        B::maxConnection += 3
+        B::maxConnection += 4
         # if B::maxConnection is 0 then B::maxConnection += 2
         # else B::maxConnection*=2
       when @MODE_RAYS

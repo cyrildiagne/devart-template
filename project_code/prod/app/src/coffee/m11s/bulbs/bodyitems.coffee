@@ -10,12 +10,12 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
 
     @rope = null
 
-    @mode = 0
-    @MODE_RAYS = 1
-    @MODE_RAYS = 1
-    @MODE_CONNECT = 2
+    @mode = -1
+    @MODE_FLOATING = 0
+    @MODE_CONNECT = 1
+    @MODE_RAYS = 2
     @MODE_LIFT = 3
-    @NUM_MODES = 3
+    @NUM_MODES = 4
     @bLockLight = false
     @lifModeIsDown = false
 
@@ -38,6 +38,8 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
           b.connectToNearbyBulbs(@bulbs) 
       when @MODE_RAYS 
         b.updateRedBlink(dt) for b in @bulbs
+      when @MODE_FLOATING
+        b.updateFloating(dt) for b in @bulbs
   
   setupMode: ->
     switch @mode
@@ -49,6 +51,8 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         @onLightsOn(false)
         @bLockLight = true
         @lift (@lifModeIsDown=!@lifModeIsDown)
+      when @MODE_FLOATING
+        b.startFloating() for b in @bulbs
         
 
   cleanMode: ->
@@ -57,11 +61,15 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         p.view.visible = true for p in @parts
         b.removeConnections() for b in @bulbs
         B = mk.m11s.bulbs.Bulb
-        if B::maxConnection is 0 then B::maxConnection += 2
-        else B::maxConnection*=2
+        B::maxConnection += 3
+        # if B::maxConnection is 0 then B::maxConnection += 2
+        # else B::maxConnection*=2
       when @MODE_RAYS
         b.removeRay() for b in @bulbs
-        mk.m11s.bulbs.Bulb::maxRays += 1
+        mk.m11s.bulbs.Bulb::maxRays += 2
+      when @MODE_FLOATING
+        b.stopFloating() for b in @bulbs
+        mk.m11s.bulbs.Bulb::floatPower += 0.35
 
   lift: (up=true) ->
     canvas = document.getElementById('paperjs-canvas')
@@ -91,11 +99,16 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     parts = @getPartsExcluding ['head', 'torso', 'pelvis']
     delay = 0
     id = 0
+    delays = []
+    for i in [0...parts.length*2]
+      delays.push 1000*i + 1000
     for p in parts
       for i in [1..2]
-        delay++
+        # delay++
+        did = Math.floor(rng('addbulb')*delays.length)
+        delay = delays.splice(did,1)[0]
         do (p,i,delay) =>
-          delayed delay*1000, =>
+          delayed delay, =>
             bulb = new mk.m11s.bulbs.Bulb p, i * 0.33, @colorOff, @colorOn, @bulbs.length
             @items.push bulb
             @bulbs.push bulb
@@ -120,9 +133,12 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
 
     if changeMode
       @cleanMode()
+      # if @mode is -1 then @mode = 3
+      # else @mode++
       @mode++
-      if @mode > @NUM_MODES
-        @mode = 1
+      # @mode = @MODE_FLOATING
+      if @mode >= @NUM_MODES
+        @mode = 0
       @setupMode()
       @rope.yoyo()
 

@@ -46,7 +46,9 @@ class mk.m11s.bulbs.Rope
   yoyo: ->
     initY = -window.viewport.height*0.5
     item = @items[0]
-    back  = new TWEEN.Tween(item).delay(2000).to({y:initY}, 1000)
+    delay = 5000
+    delay = 5000 if Config::DEBUG
+    back  = new TWEEN.Tween(item).delay(delay).to({y:initY}, 1000)
     back.onStart => 
       @ropeLength = 500 + (rng('ropeyoyo')-0.3) * 200
       newX = (rng('ropeyoyo')-0.5) * window.viewport.width

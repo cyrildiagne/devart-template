@@ -7,7 +7,6 @@ class mk.helpers.JointFollower
     @view.position.y = @joint.y
     @view.z = @joint.z + @zOffset
 
-
 class mk.helpers.PartFillFollower
   constructor : (@view, @part, @weights, @zOffset) ->
     @view.z = 0
@@ -120,3 +119,20 @@ mk.helpers.getRandomWeights = (joints, seed) ->
       sum += w
   weights[i] /= sum for w,i in weights
   return weights
+
+class mk.helpers.FloatFollower
+  constructor : (@view) ->
+    rngk = 'floatfollow'
+    @speed = rng(rngk)*0.01 + 0.001
+    @ang   = rng(rngk)*Math.PI
+    @dist  = 0#rng(rngk)*200 + 15
+    @dest  = {x:0, y:0}
+  update : (dt) ->
+    @ang += dt * @speed
+    p =
+      x : Math.cos(@ang)*@dist
+      y : Math.sin(@ang)*@dist
+    p.x += @dest.x
+    p.y += @dest.y
+    @view.position.x += (p.x-@view.position.x) * @speed * dt
+    @view.position.y += (p.y-@view.position.y) * @speed * dt

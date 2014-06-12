@@ -8,8 +8,10 @@ class mk.m11s.bulbs.BulbSocket
     @view.pivot = new paper.Point(radius + @item.bounds.width, 0)
     @view.rotation = @initRotation = if @mirrored then 180 - 25 else 25
     @velTracker = new mk.helpers.JointVelocityTracker [@follower.j2]
+    @side = if @mirrored then 1 else -1
     @bounce = 0
     @freq = 0
+    @ang = 120
 
   update: () ->
     @velTracker.update()
@@ -21,9 +23,10 @@ class mk.m11s.bulbs.BulbSocket
     @freq = Math.min(@freq, 0.4)
     phase = Math.cos(@bounce+=@freq)+1
     if @mirrored then phase *= -1
-    @amp = @freq * 120
+    @amp = @freq * @ang
     dRot = @initRotation + phase * @amp
     @view.rotation = dRot
+
 
 class mk.m11s.bulbs.Ray
 
@@ -86,6 +89,8 @@ class mk.m11s.bulbs.Bulb
 
   maxRays : 0
   numRays : 0
+
+  floatPower : 0.1
   
   constructor: (@part, @pct, @defaultColorOff, @defaultColorOn, id) ->
     @rngk = 'Bulb' + id
@@ -106,6 +111,9 @@ class mk.m11s.bulbs.Bulb
     @isActive = false
     @connections = []
     @ray = null
+    @isFloating = false
+    @floatFollower = null
+    @prevPos = null
     if @pct > 0.001
       @follower = new mk.helpers.PartEdgeFollower @view, @part.joints[0], @part.joints[1], @pct
       mirrored = @part.name.indexOf('right') isnt -1
@@ -129,6 +137,8 @@ class mk.m11s.bulbs.Bulb
     @haloLightsOff = @colorLightsOff.clone()
     @haloLightsOff.alpha = 0.5
 
+    @white = new paper.Color 'white'
+
     @lineColorOn = mk.Scene::settings.getHexColor 'lightRed'
     @lineColorOff = mk.Scene::settings.getHexColor 'lightBlue'
 
@@ -145,25 +155,18 @@ class mk.m11s.bulbs.Bulb
     @view.addChild @bulb
 
   lightsOn: ->
-    # @bulb.style.fillColor = @colorLightsOff
-    # @halo.style.fillColor = @haloLightsOff
     @halo.visible = true
     @areLightsOn = true
 
-    # c.line.strokeColor = @lineColorOn for c in @connections
-
   lightsOff: ->
-    # @bulb.style.fillColor = @colorOff
-    # @halo.style.fillColor = @haloColorOff
     @halo.visible = false
     @areLightsOn = false
-
-    # c.line.strokeColor = @lineColorOff for c in @connections
       
   update: (dt) ->
-    @follower.update()
-    if @socket
-      @socket.update()
+    if !@isFloating
+      @follower.update()
+      if @socket
+        @socket.update()
 
     phase = Math.cos(@power+=@freq)+1
     @haloColorOn.alpha = @haloColorOff.alpha = @haloLightsOff.alpha = phase * 0.20 + 0.11
@@ -232,7 +235,7 @@ class mk.m11s.bulbs.Bulb
         c.line.segments[0].point.y = @view.position.y
         c.line.segments[1].point.x = c.bulb.view.position.x
         c.line.segments[1].point.y = c.bulb.view.position.y
-        c.line.dashOffset += 1
+        # c.line.dashOffset += 1
 
   connectToNearbyBulbs : (bulbs) ->
     for b in bulbs
@@ -247,11 +250,12 @@ class mk.m11s.bulbs.Bulb
 
   connectToBulb : (b) ->
     line = new paper.Path.Line @view.position, b.view.position
-    line.z = 9999
-    line.strokeColor = @lineColorOff #if @areLightsOn then @lineColorOn else @lineColorOff
+    line.z = 4999 + rng('connectbulb') * 100
+    line.strokeColor = @lineColorOff
     # line.opacity = 0.5
-    line.strokeWidth = 2
-    line.dashArray = [10, 5]
+    line.strokeWidth = 3
+    # line.strokeCap = 'round'
+    # line.dashArray = [0.5, 12]
     @connections.push
       bulb : b
       line : line
@@ -268,4 +272,50 @@ class mk.m11s.bulbs.Bulb
       mk.m11s.bulbs.Bulb::numConnections--
     @connections.splice 0, @connections.length
 
-    
+  # 3 --- FLOATING
+
+  startFloating : ->
+    return if !@socket
+    @isFloating = true
+    @floatFollower = new mk.helpers.FloatFollower @view
+    @view.rotation = @socket.initRotation
+    @view.z = 9999
+    # @socket.amp = 60 if @socket
+
+  updateFloating : (dt) ->
+    return if !@socket
+    x = 0
+    y = 0
+    # @socket.update() if @socket
+    if @follower.joint
+      x = @follower.joint.x
+      y = @follower.joint.y
+      # @view.z = @follower.joint.z + 50
+    else
+      x = @follower.j1.x * @follower.pct + @follower.j2.x * (1-@follower.pct)
+      y = @follower.j1.y * @follower.pct + @follower.j2.y * (1-@follower.pct)
+      # @view.z = @follower.j1.z * @follower.pct + @follower.j2.z * (1-@follower.pct) + @follower.zOffset
+    @floatFollower.dest.x = x
+    @floatFollower.dest.y = y
+    if @prevPos
+      rt = Math.sqrt (@prevPos.x-x)*(@prevPos.x-x) + (@prevPos.y-y)*(@prevPos.y-y)
+      # if rt > 10
+      @floatFollower.dist += rt * mk.m11s.bulbs.Bulb::floatPower
+      @floatFollower.speed = Math.max(0.005, rt * 0.0001)
+    @floatFollower.dist += (0-@floatFollower.dist) * 0.0025 * dt
+    @floatFollower.update dt
+    if @socket
+      if @floatFollower.dist > 15
+        @bulb.style.fillColor = @white
+        @view.rotation = @socket.side * @floatFollower.ang / Math.PI * 180
+      else
+        @bulb.style.fillColor = @colorOff
+        @view.rotation +=  (@socket.initRotation - @view.rotation)*0.005*dt
+    @prevPos = {x:x, y:y}
+
+  stopFloating : ->
+    # @socket.amp = 120 if @socket
+    return if !@socket
+    @bulb.style.fillColor = @colorOff
+    @isFloating = false
+    @floatFollower = null

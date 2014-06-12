@@ -84,10 +84,10 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     b.lightsOn() for b in @bulbs
 
     @cleanMode()
-    m = @mode
-    while @mode is m
-      @mode = 1 + Math.floor(Math.random()*(@NUM_MODES))
-    # @mode = @MODE_RAYS
+    # m = @mode
+    # while @mode is m
+    #   @mode = 1 + Math.floor(Math.random()*(@NUM_MODES))
+    @mode = @MODE_CONNECT
     @setupMode()
     # console.log 'mode is ' + @mode
 

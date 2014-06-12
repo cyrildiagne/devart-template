@@ -199,6 +199,7 @@ class mk.m11s.bulbs.Bulb
         c.line.segments[0].point.y = @view.position.y
         c.line.segments[1].point.x = c.bulb.view.position.x
         c.line.segments[1].point.y = c.bulb.view.position.y
+        c.line.dashOffset += 1
 
   connectToNearbyBulbs : (bulbs) ->
     for b in bulbs
@@ -222,8 +223,9 @@ class mk.m11s.bulbs.Bulb
     line = new paper.Path.Line @view.position, b.view.position
     line.z = 9999
     line.strokeColor = if @areLightsOn then @lineColorOn else 'white'
-    line.opacity = 0.3
-    line.strokeWidth = 3
+    line.opacity = 0.5
+    line.strokeWidth = 2
+    line.dashArray = [10, 12]
     @connections.push
       bulb : b
       line : line

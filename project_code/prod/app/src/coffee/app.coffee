@@ -1,3 +1,4 @@
+isLive      = false
 chromeAppId = 'chrome-extension://cjmhlclabilhdpnenenfbpgpmnbejpnf'
 
 iframe      = null
@@ -5,7 +6,6 @@ quadwarp    = null
 gcs         = null
 scenes      = null
 currSceneId = -1
-isLive      = true
 isReady     = false
 
 currSceneName = null
@@ -192,12 +192,11 @@ saveCurrentToGCS = (data) ->
 
 # ---- IFRAME COMMUNICATION ----
 
-
 sendCommand = (cmd) ->
   iframe.contentWindow.postMessage cmd,'*'
 
 window.onmessage = (e) ->
-  if e.origin != chromeAppId then return
+  # if e.origin != chromeAppId then return
   if e.data instanceof Float32Array
     saveCurrentToGCS e.data
     return

@@ -18,9 +18,11 @@ class mk.m11s.base.Part
     for jv in @jointViews
       jv.view.remove()
 
-  setColor: (@color) ->
-    @path.fillColor = "#" + @color.toString(16)
-    j.setColor @color for j in @jointViews
+  setColor: (@color, isHex = true) ->
+    if isHex
+      @color = "#" + @color.toString(16)
+    @path.fillColor = @color
+    j.setColor @color, isHex for j in @jointViews
 
   update: () ->
     @updatePath()

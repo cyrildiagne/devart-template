@@ -17,8 +17,8 @@ class mk.m11s.tech.TrailLine
 
   brightnessInterval : =>
     # @path.strokeColor.brightness = Math.random()
-    # @path.strokeColor = mk.m11s.tech.TrailLine::colors.random()
-    # delayed rng('t')*600+300, @brightnessInterval
+    @path.strokeColor = mk.m11s.tech.TrailLine::colors.random()
+    delayed rng('t')*600+300, @brightnessInterval
 
   update : (dt) ->
     @pos.x = @j1.x * @pct + @j2.x * (1-@pct)
@@ -61,7 +61,7 @@ class mk.m11s.tech.Lines
   constructor : (@parts, @head, @pelvis) ->
     @view = new paper.Group()
     @view.transformContent = false
-    @view.z = 0
+    @view.z = 9999
 
     # parts = @parts.slice(0)
     # parts.push

@@ -12,7 +12,7 @@ class mk.m11s.base.JointView
     @setColor @color
 
   setColor : (@color) ->
-    @view.fillColor = "#" + @color.toString(16)
+    @view.fillColor = @color
 
   update : () ->
     @view.position.x = @joint.x

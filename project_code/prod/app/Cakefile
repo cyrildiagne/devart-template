@@ -65,7 +65,9 @@ jade_options.main =
     'm11s/tribal/part'
 
     'm11s/stripes/settings'
+    'm11s/stripes/items/ball'
     'm11s/stripes/items/stripes'
+    'm11s/stripes/bodyitems'
     'm11s/stripes/perso'
 
     'm11s/birds/settings'

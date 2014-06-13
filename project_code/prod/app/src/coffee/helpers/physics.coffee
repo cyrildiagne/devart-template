@@ -86,7 +86,7 @@ class mk.helpers.Physics
     return null
 
   addCircle : (view, pos, radius, opt) ->
-    circle = Matter.Bodies.circle pos.x, pos.y, radius, opt
+    circle = Matter.Bodies.circle pos.x, pos.y, radius, opt, 10
     circle.view = view
     Matter.World.add @engine.world, circle
     @bodies.push 

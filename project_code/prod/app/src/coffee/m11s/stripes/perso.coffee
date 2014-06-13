@@ -3,7 +3,7 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
   constructor : () ->
     @mask    = new paper.Group()
     @content = new paper.Group()
-    @view    = new paper.Layer(@mask, @content)
+    @view    = new paper.Layer()
     @type = 'stripes'
     @joints = []
     @parts  = []
@@ -11,6 +11,7 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
     @items  = null
     @stripes = null
     @count = 0
+    @sort = -> console.log 'sort'
 
   clean : () ->
     if @stripes
@@ -21,8 +22,15 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
     @view.removeChildren()
     super()
 
+  setupItems : () ->
+    @items = new (m11Class 'BodyItems') @settings, @assets, @sounds, @parts, @joints
+    @numItems = @items.items.length
+    for item in @items.items
+      @mask.addChild item.view
+
   setMetamorphose : (@settings, @assets) ->
     super @settings, @assets
+
     @view.addChild @mask
     @view.addChild @content
     @view.clipped = true
@@ -30,13 +38,20 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
 
   setupMaskContent : () ->
 
-    @stripes = new mk.m11s.stripes.Stripes @settings, @joints[NiTE.TORSO], 8
+    @stripes = new mk.m11s.stripes.Stripes @settings, @joints[NiTE.TORSO], 10
     @content.addChild @stripes.view
 
     @circle = new paper.Path.Circle
       center: [0, 0],
       radius: 0,
     @mask.addChild(@circle)
+
+  update : (delta) ->
+    if @items
+      for item in @items.items
+        if item.view.parent isnt @mask
+          @mask.addChild item.view
+      @items.update delta
 
   resize : () ->
     # @view.position.x = 

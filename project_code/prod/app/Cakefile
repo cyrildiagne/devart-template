@@ -158,7 +158,7 @@ task 'dev', 'start dev env', ->
     watch 'jade',   ['-w', jade_path[config], '-P', '-o', bin_path, '-O', JSON.stringify jade_options[config]]
   simple_server()
 
-task 'build', 'Build single application file from source files', ->
+task 'build', 'Build optimized version of the app for the web', ->
   
   config = 'app'
 
@@ -191,15 +191,24 @@ task 'build', 'Build single application file from source files', ->
   fs.copySync 'vendor', outputDir+'/vendor'
   fs.copySync 'assets', outputDir+'/assets'
 
+  fs.removeSync outputDir+'/assets/sounds'
+  invoke 'mp3'
+
   fs.renameSync outputDir+'/app.html', outputDir+'/index.html'
 
 task 'publish', 'Publish bin directory to app engine instance', ->
 
   serverPath = '../server'
-  increment_version serverPath
+  # increment_version serverPath
   fs.removeSync serverPath + '/public'
   fs.copySync 'bin', serverPath + '/public'
   prcss = spawn 'appcfg.py', ['--email=diagne.cyril@gmail.com', '--oauth2', 'update', serverPath+'/']
+  prcss.stdout.pipe process.stdout
+  prcss.stderr.pipe process.stderr
+
+task 'mp3', 'Publish sounds', ->
+  prcss = spawn 'coffee', ['export_sounds.coffee', 'publish'],
+    cwd : './res'
   prcss.stdout.pipe process.stdout
   prcss.stderr.pipe process.stderr
 

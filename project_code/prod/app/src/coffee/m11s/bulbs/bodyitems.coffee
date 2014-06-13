@@ -81,11 +81,9 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     .to({y:0}, 2000)
     .easing( TWEEN.Easing.Quadratic.Out )
     .onUpdate(->
-      # console.log @y
       canvas.style.top = @y+'px'
     )
     .onComplete(=>
-      console.log 'back lift animation complete'
       @bLockLight = false
       @onLightsOff()
     )

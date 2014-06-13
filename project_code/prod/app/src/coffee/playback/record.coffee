@@ -3,7 +3,7 @@ class mk.playback.Record
   constructor : () ->
     @durationMaxSeconds = 180
     @reset()
-    @gcs = new CloudStorage()
+    # @gcs = new CloudStorage()
 
   reset : () ->
     @skeletonDatas = new Float32Array 30*@durationMaxSeconds*15*3 # fps * seconds_max * numjoints * axis
@@ -21,7 +21,10 @@ class mk.playback.Record
     @info.duration = new Date() - @info.timestamp
     name = @info.timestamp + '_' + ('000'+@info.duration).slice(-6) + '_' + @info.m11
     # @saveToDisk name, @skeletonDatas.subarray 0, @length
-    @saveToGCS name, @skeletonDatas.subarray(0, @length)
+    # @saveToGCS name, @skeletonDatas.subarray(0, @length)
+    data = @skeletonDatas.subarray(0, @length)
+    dispatch 'upload:'+name
+    dispatch data
     @reset()
 
   saveToDisk : (name, data) ->
@@ -43,12 +46,6 @@ class mk.playback.Record
           writer.write blob
     else
       console.log "can't save outside of chrome app"
-
-  saveToGCS : (name, data) ->
-    console.log 'RECORD > uploading ' + name + ' - length: ' + data.length
-    blob = new Blob [data], {type: 'application/octet-binary'}
-    gcs.upload name, blob, ->
-      console.log 'RECORD > file uploaded'
 
   saveComplete : ->
     @reset()

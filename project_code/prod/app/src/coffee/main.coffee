@@ -140,13 +140,13 @@ onSceneFinished = () ->
   dispatch 'finishing'
   curtainDown isLive, ->
     if isLive
+      record.end()
       light.fadeTo 1, 3000
   # fadeScene 'off', 1000
   scene.fadeOut()
   setTimeout ->
     stop()
     clean ->
-      # record.end()
       dispatch 'finished'
   , 4000
 

@@ -2,7 +2,7 @@ class mk.physical.DMXLight
 
   setup : (callback) ->
     @currDMXVal = 0
-    @light = new ArtNetClient '192.168.3.3', 6454, =>
+    @light = new ArtNetClient '192.168.1.3', 6454, =>
       console.log 'DMX light ready'
       @currDMXVal = 255
       @light.send [255]

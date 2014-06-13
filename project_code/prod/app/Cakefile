@@ -145,7 +145,8 @@ task 'dev', 'start dev env', ->
 
   fs.copySync 'vendor', bin_path+'/vendor'
   fs.copySync 'assets', bin_path+'/assets'
-  fs.copySync 'res/replays', bin_path+'/replays'
+  if fs.existsSync 'res/replays'
+    fs.copySync 'res/replays', bin_path+'/replays'
 
   js_path = path.join bin_path,'js'
   css_path = path.join bin_path,'css'

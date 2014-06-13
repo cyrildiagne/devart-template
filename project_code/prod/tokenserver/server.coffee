@@ -1,6 +1,6 @@
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 jws = require 'jws'
-secret = require 'secret'
+secret = require './secret'
 
 class GAPI
 
@@ -50,6 +50,11 @@ class GAPI
 
 
 gapi = new GAPI()
+
+gapi.getToken (err, token) -> 
+  if err then throw err
+  else console.log token
+
 http = require 'http'
 http.createServer( (req, res) ->
   res.writeHead 200, 

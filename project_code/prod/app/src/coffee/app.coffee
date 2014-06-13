@@ -1,9 +1,14 @@
+chromeAppId = 'chrome-extension://cjmhlclabilhdpnenenfbpgpmnbejpnf'
+
 iframe      = null
 quadwarp    = null
+gcs         = null
 scenes      = null
 currSceneId = -1
-isLive      = false
+isLive      = true
 isReady     = false
+
+currSceneName = null
 
 currentMode = 0
 SCENE_INIT      = 'scene_init'
@@ -13,6 +18,7 @@ SCENE_CHANGING  = 'scene_changing'
 SCENE_ENDING    = 'scene_ending'
 
 $currSceneBt = null
+$title = null
 $timeline = null
 $status = null
 $sound = null
@@ -21,9 +27,11 @@ uiHideTimeout = -1
 initApp = ->
   iframe = $("#frame")[0]
   if isLive
+    gcs = new CloudStorage()
     quadwarp = new QuadWarp iframe
     scenes = ['tiroirs']
     currSceneId = 0
+    launchCurrentScene()
   else
     getIndex (data) ->
       scenes = data
@@ -104,6 +112,7 @@ hashChanged = ->
   if mute then sendCommand 'mute'
 
 setupUI = ->
+  $title = $('#title').html('Les Métamorphoses de Mr Kalia')
   $status = $('#date')
   setupMuteButton()
   setupTimeline()
@@ -155,6 +164,7 @@ mouseDownTimeline = (e) ->
     set $(e.target).index()
 
 updateTimelineView = ->
+  if isLive then return
   bt = $timeline.children().eq(currSceneId)
   # color = bt.css('background-color')
   # console.log color
@@ -162,6 +172,7 @@ updateTimelineView = ->
   $currSceneBt = $(bt).addClass 'on'
 
 updateLoading = (msg) ->
+  if isLive then return
   $status.html 'LOADING ' + (msg || 'Scene')
 
 mouseMoveTimeline = (e) ->
@@ -169,6 +180,14 @@ mouseMoveTimeline = (e) ->
   pos = - pct*($timeline.width()-window.innerWidth)
   $timeline[0].style.WebkitTransform = 'translate('+pos+'px, 0)'
 
+
+# ---- RECORDED FILE UPLOAD
+
+saveCurrentToGCS = (data) ->
+  console.log 'APP > uploading ' + currSceneName + ' - length: ' + data.length
+  blob = new Blob [data], {type: 'application/octet-binary'}
+  gcs.upload currSceneName, blob, ->
+    console.log 'APP > file uploaded'
 
 
 # ---- IFRAME COMMUNICATION ----
@@ -178,6 +197,10 @@ sendCommand = (cmd) ->
   iframe.contentWindow.postMessage cmd,'*'
 
 window.onmessage = (e) ->
+  if e.origin != chromeAppId then return
+  if e.data instanceof Float32Array
+    saveCurrentToGCS e.data
+    return
   args = e.data.split ':'
   switch args[0]
     when 'init'
@@ -196,27 +219,33 @@ window.onmessage = (e) ->
         updateLoading(args[1])
     when 'loaded'
       console.log 'APP > scene loaded'
-      $status.html 'setting up performance'
+      if !isLive
+        $status.html 'setting up performance'
     when 'started'
       console.log 'APP > scene started'
-      $('#ui').removeClass 'inactive'
       currentMode = SCENE_RUNNING
-      setSceneDate()
       hashChanged()
+      if !isLive
+        $('#ui').removeClass 'inactive'
+        setSceneDate()
     when 'finishing'
       console.log 'APP > scene finishing'
-      $('#ui').addClass 'inactive'
-      $status.html 'closing performance'
       currentMode = SCENE_CHANGING
+      if !isLive
+        $('#ui').addClass 'inactive'
+        $status.html 'closing performance'
     when 'finished'
       console.log 'APP > scene finished'
-      $status.html 'cleaning up the stage'
       if isLive
         currSceneId = Math.floor(Math.random()*scenes.length)
+      else
+        $status.html 'cleaning up the stage'
       iframe.contentWindow.location.reload()
     when 'mute'
       $sound.addClass 'off'
     when 'unmute'
       $sound.removeClass 'off'
+    when 'upload'
+      currSceneName = args[1]
     else
       console.log 'app received unknown message : ' + e.data

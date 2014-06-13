@@ -164,6 +164,11 @@ stop = () ->
   console.log '> stopped at frame ' + frameNum
 
 clean = (callback) ->
+  window.removeEventListener 'resize', windowResized
+  window.removeEventListener 'focus', windowFocus
+  window.removeEventListener 'blur', windowLostFocus
+  window.removeEventListener 'keydown', onKeyDown
+  window.removeEventListener 'mousemove', onMouseMove
   if isLive
     sync.close ->
       callback()

@@ -73,23 +73,26 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
 
   lift: (up=true) ->
     canvas = document.getElementById('paperjs-canvas')
-    dst = window.viewport.height
+    dst = Math.min(window.viewport.height, window.innerHeight)
+    dst *= 0.95
     if !up then dst *= -1
 
-    back = new TWEEN.Tween({y:dst})
+    backTween = new TWEEN.Tween({y:dst})
     .to({y:0}, 2000)
     .easing( TWEEN.Easing.Quadratic.Out )
     .onUpdate(->
+      # console.log @y
       canvas.style.top = @y+'px'
     )
     .onComplete(=>
+      console.log 'back lift animation complete'
       @bLockLight = false
       @onLightsOff()
     )
 
     tween = new TWEEN.Tween({y:0})
     .to({y:-dst}, 1000)
-    .chain(back)
+    .chain(backTween)
     .easing( TWEEN.Easing.Quadratic.In )
     .onUpdate(->
       canvas.style.top = @y+'px'

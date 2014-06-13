@@ -11,7 +11,7 @@ class mk.m11s.base.Perso
     @sort = @paperSort
 
   setMetamorphose : (@settings, @assets, @sounds) ->
-    @clean()
+    @clean() if @items
     @setupJoints window.jointRatio
     @setupParts()
     @setupItems()

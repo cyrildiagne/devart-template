@@ -29,24 +29,25 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
     @track = 'assets/sounds/birds/track/trees_008.mp3'
     @musicEvents = [
       #apparition maisons
-      21.321  # nappe
+      5
+      #21.321  - 40# nappe
       #apparition branches
-      42.686  # rythmique
+      42.686  - 33# rythmique
       #apparition fleurs / feuilles
-      53.346  - 0.5# violon
+      53.346  - 33 - 0.5# violon
       #apparition oiseaux
-      60.300  # 2eme violon
+      60.300  - 33 # 2eme violon
       # oiseaux rentrent / sortent maisons
-      96.010  # break
+      96.010  - 33# break
       # oiseaux rentent dans les maisons
       # lune apparait
       # changement de couleur progressif
-      106.671 + 0.3 # reprise rythmique
+      106.671 - 33 + 0.3 # reprise rythmique
       # apparition des lucioles
-      117.342 # retour violon
-      138.669 # 2eme violon
-      159.995 # break
-      176.046 # fadeout
+      117.342 - 33# retour violon
+      138.669 - 33# 2eme violon
+      159.995 - 33# break
+      176.046 - 33# fadeout
     ]
     @sfx = [
       'assets/sounds/birds/sfx/BrancheQuiPousse_1.mp3'

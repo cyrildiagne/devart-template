@@ -26,6 +26,7 @@ class mk.helpers.Physics
 
     @bodies = []
     @persoPartBodies = []
+    @persoJointBodies = []
 
   addPersoPartRect : (part) ->
     x = 0
@@ -43,6 +44,19 @@ class mk.helpers.Physics
 
     @updatePersoPartRect ppb
     @persoPartBodies.push ppb
+
+  addPersoJoint : (jnt, opt) ->
+    opt = {} if !opt
+    opt.isStatic = true
+    body = Matter.Bodies.circle jnt.x, jnt.y, jnt.radius, opt, 10
+    Matter.World.add @engine.world, body
+
+    pjb =
+      body : body
+      joint : jnt
+
+    @updatePersoJoint pjb
+    @persoJointBodies.push pjb
 
   updatePersoPartRect : (ppb) ->
 
@@ -73,6 +87,11 @@ class mk.helpers.Physics
     Matter.Vertices.rotate body.vertices, angle, body.position
 
     # @updatePaperDebug ppb
+
+  updatePersoJoint : (pjb) ->
+    dx = pjb.joint.x - pjb.body.position.x
+    dy = pjb.joint.y - pjb.body.position.y
+    Matter.Body.translate pjb.body, {x:dx,y:dy}
 
   updatePaperDebug : (ppb) ->
     if !ppb.debug
@@ -111,5 +130,8 @@ class mk.helpers.Physics
     
     for ppb in @persoPartBodies 
       @updatePersoPartRect ppb
+
+    for pjb in @persoJointBodies 
+      @updatePersoJoint pjb
     return null
     

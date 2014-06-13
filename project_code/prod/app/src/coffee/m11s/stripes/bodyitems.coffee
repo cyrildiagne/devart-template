@@ -5,9 +5,6 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
     @setupPhysics()
     @balls = null
     @addBalls()
-    delayed 1000, =>
-      # @balls.ballsToAdd.push null for i in [0...10]
-      @balls.intervalBall()
     
   setupPhysics: ->
     @physics = new mk.helpers.Physics()
@@ -16,6 +13,7 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
     @physics.addPersoPartRect @getPart('leftUpperArm')
     @physics.addPersoPartRect @getPart('rightUpperArm')
 
+    @physics.addPersoJoint @joints[NiTE.HEAD]
     
     # @physics.addPersoPartRect @getPart('rightUpperLeg')
     # @physics.addPersoPartRect @getPart('leftUpperLeg')
@@ -29,3 +27,5 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
   addBalls: ->
     @balls = new mk.m11s.stripes.Balls @physics
     @items.push @balls
+    delayed 1000, =>
+      @balls.intervalBall()

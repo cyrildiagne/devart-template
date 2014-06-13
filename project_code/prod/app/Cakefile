@@ -123,6 +123,19 @@ simple_server = ->
   server.stdout.pipe process.stdout
   server.stderr.pipe process.stderr
 
+increment_version = (server_path) ->
+  fs.readFile server_path+'/app.yaml', 'utf8', (err,data) ->
+    throw err if err
+    lines = data.split('\n')
+    v = lines[1].split(': ')[1].split('-')
+    m = parseInt(v[1]) + 1
+    for val in [10,100]
+      m = '0' + m if m < val 
+    lines[1] = 'version: ' + v[0] + '-' + m
+    fs.writeFile server_path+'/app.yaml', lines.join('\n'), 'utf8', (err) ->
+      throw err if err
+
+
 task 'dev', 'start dev env', ->
 
   fs.removeSync bin_path
@@ -178,7 +191,9 @@ task 'build', 'Build single application file from source files', ->
   fs.renameSync outputDir+'/app.html', outputDir+'/index.html'
 
 task 'publish', 'Publish bin directory to app engine instance', ->
+
   serverPath = '../server'
+  increment_version serverPath
   fs.removeSync serverPath + '/public'
   fs.copySync 'bin', serverPath + '/public'
   prcss = spawn 'appcfg.py', ['--email=diagne.cyril@gmail.com', '--oauth2', 'update', serverPath+'/']

@@ -29,7 +29,7 @@ class mk.Scene
       Scene::assets = @assets.symbols[type]
 
       dispatch 'loading:sound effects'
-      @sounds.load type, @settings.sfx, @settings.loops, =>
+      @sounds.load type, @settings.sfx, =>
 
         Scene::sfx = @sounds.sfx[type]
         Scene::sfx.play = (s) -> @[s].play() if !Scene::settings.mute

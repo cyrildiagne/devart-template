@@ -51,6 +51,7 @@ class mk.m11s.bulbs.Ray
     if @tween then @tween.stop()
 
   show: ->
+    mk.Scene::sfx.play 'laserOn'
     v = @view
     thick = @thick
     @tween = new TWEEN.Tween({amp:0})
@@ -66,6 +67,7 @@ class mk.m11s.bulbs.Ray
     @isShowing = true
 
   hide: (callback) ->
+    mk.Scene::sfx.play 'laserOff'
     v = @view
     thick = @thick
     @tween = new TWEEN.Tween({amp:1})
@@ -90,7 +92,7 @@ class mk.m11s.bulbs.Bulb
   maxRays : 0
   numRays : 0
 
-  floatPower : 0.1
+  floatPower : 0.2
   
   constructor: (@part, @pct, @defaultColorOff, @defaultColorOn, id) ->
     @rngk = 'Bulb' + id
@@ -226,7 +228,7 @@ class mk.m11s.bulbs.Bulb
       p1 = @view.position
       p2 = c.bulb.view.position
       d = (p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y)
-      if d > 30000
+      if d > 22000
         c.line.remove()
         mk.m11s.bulbs.Bulb::numConnections--
         @connections.splice @connections.indexOf(c),1

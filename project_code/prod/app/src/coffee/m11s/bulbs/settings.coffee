@@ -33,3 +33,15 @@ class mk.m11s.bulbs.Settings extends mk.m11s.base.Settings
       120.506 # (violon grave)
       132.006 # end
     ]
+
+    @sfx =
+      ropeFalls    : 'Ampoule_3-2_cordeTombe'
+      ropeReleased : 'Ampoule_OFF-1_cordeRelachee'
+      ropeGrabbed  : 'Ampoule_ON-1'
+      laserOn      : 'Ampoule_Scintille-1_laserGrandit'
+      laserOff     : 'Ampoule_Scintille-2_laserDiminue'
+      bulbShow1    : 'Ampoule_6-2'
+      bulbShow2    : 'Ampoule_6-4'
+      bulbShow3    : 'Ampoule_6-6'
+      liftOut      : 'Ampoule_2-2_ascenseurArrivee'
+      liftIn       : 'Ampoule_2-1_ascenseurDepart'

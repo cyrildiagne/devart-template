@@ -11,8 +11,8 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @rope = null
 
     @mode = -1
-    @MODE_FLOATING = 0
-    @MODE_CONNECT = 1
+    @MODE_CONNECT = 0
+    @MODE_FLOATING = 1
     @MODE_RAYS = 2
     @MODE_LIFT = 3
     @NUM_MODES = 4
@@ -61,9 +61,9 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         p.view.visible = true for p in @parts
         b.removeConnections() for b in @bulbs
         B = mk.m11s.bulbs.Bulb
-        B::maxConnection += 4
-        # if B::maxConnection is 0 then B::maxConnection += 2
-        # else B::maxConnection*=2
+        # B::maxConnection += 6
+        if B::maxConnection is 0 then B::maxConnection = 4
+        else B::maxConnection*=2
       when @MODE_RAYS
         b.removeRay() for b in @bulbs
         mk.m11s.bulbs.Bulb::maxRays += 2
@@ -80,6 +80,9 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     backTween = new TWEEN.Tween({y:dst})
     .to({y:0}, 2000)
     .easing( TWEEN.Easing.Quadratic.Out )
+    .onStart(->
+      mk.Scene::sfx.play 'liftIn'
+    )
     .onUpdate(->
       canvas.style.top = @y+'px'
     )
@@ -91,6 +94,9 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     tween = new TWEEN.Tween({y:0})
     .to({y:-dst}, 1000)
     .chain(backTween)
+    .onStart(->
+      mk.Scene::sfx.play 'liftOut'
+    )
     .easing( TWEEN.Easing.Quadratic.In )
     .onUpdate(->
       canvas.style.top = @y+'px'
@@ -101,12 +107,13 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     delay = 0
     id = 0
     delays = []
+    seed = 'addbulb'
     for i in [0...parts.length*2]
       delays.push 1000*i + 1000
     for p in parts
       for i in [1..2]
         # delay++
-        did = Math.floor(rng('addbulb')*delays.length)
+        did = Math.floor(rng(seed)*delays.length)
         delay = delays.splice(did,1)[0]
         do (p,i,delay) =>
           delayed delay, =>
@@ -114,6 +121,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
             @items.push bulb
             @bulbs.push bulb
             bulb.id = id++
+            mk.Scene::sfx.play 'bulbShow'+rngi(seed,1,3)
   
   addHeadBulb: ->
     bulb = new mk.m11s.bulbs.Bulb @getPart('head'), 0, @colorOff, @colorOn, @bulbs.length
@@ -125,9 +133,12 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @rope.onLightsOff = @onLightsOn
     @rope.onLightsOn = @onLightsOff
     @items.push @rope
+    mk.Scene::sfx.play 'ropeFalls'
 
   onLightsOn:(changeMode=true)=>
     if @bLockLight then return
+    
+    mk.Scene::sfx.play 'ropeGrabbed'
 
     setBackgroundColor '#fff'
     b.lightsOn() for b in @bulbs
@@ -143,9 +154,12 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
       @setupMode()
       @rope.yoyo()
 
+
   onLightsOff: =>
 
     if @bLockLight then return
+
+    mk.Scene::sfx.play 'ropeReleased'
 
     setBackgroundColor 'black'
     b.lightsOff() for b in @bulbs

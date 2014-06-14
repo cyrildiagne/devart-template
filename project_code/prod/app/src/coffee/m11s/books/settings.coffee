@@ -35,5 +35,3 @@ class mk.m11s.books.Settings extends mk.m11s.base.Settings
       159.995 # break
       176.046 # fadeout
     ]
-    @sfx = []
-    @loops = []

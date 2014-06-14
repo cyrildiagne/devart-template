@@ -51,6 +51,3 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       179.979  # end 
     # tiroirs grandissent puis sortent
     ]
-
-    @sfx   = []
-    @loops = []

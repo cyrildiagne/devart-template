@@ -23,7 +23,8 @@ setupPlayback = (filename) ->
   # .className = filename.split('_')[3]
   playback = new mk.playback.Playback skeleton, onPlaybackComplete
   playback.load filename, (seed, m11) ->
-    setSeed new Date().getTime()
+    seed = new Date().getTime() if Config::DEBUG
+    setSeed seed
     setMetamorphose m11
 
 setupLive = (m11) ->

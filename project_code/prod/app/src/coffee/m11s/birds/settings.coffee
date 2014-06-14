@@ -49,10 +49,13 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
       159.995 - 33# break
       176.046 - 33# fadeout
     ]
-    @sfx = [
-      'assets/sounds/birds/sfx/BrancheQuiPousse_1.mp3'
-      'assets/sounds/birds/sfx/Maison_1.mp3'
-      'assets/sounds/birds/sfx/OiseauBranche_1.mp3'
-      'assets/sounds/birds/sfx/OiseauBranche_2.mp3'
-    ]
-    @loops = []
+    @sfx =
+      nightbird1 : 'OiseauSenvole_MOYEN_1-SansCri'
+      nightbird2 : 'OiseauSenvole_GRAND_2-SansCri'
+      house1     : 'MaisonBascule_3-PETITE'
+      house2     : 'MaisonBascule_3-MOYENNE'
+      house3     : 'MaisonBascule_3-GRANDE'
+      branch1    : 'BrancheQuiPousse_PETITE_2'
+      branch2    : 'BrancheQuiPousse_MOYENNE_1'
+      bird1      : 'OiseauBranche_3-PETIT'
+      bird2      : 'OiseauBranche_2-GRAND'

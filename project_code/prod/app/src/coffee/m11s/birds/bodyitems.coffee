@@ -164,11 +164,11 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
   sendBirdsToHouses : ->
     for b in @birds
       house = @houses.seedRandom 'sbth'
-      b.flyToHouse house, =>
-        # ...
-        # @birds.splice @birds.indexOf(b),1
-        # console.log @birds.length
-        # @items.splice @items.indexOf(b),1
+      do (b) =>
+        b.flyToHouse house, =>
+          delayed 1, =>
+            @birds.splice @birds.indexOf(b),1
+            # @items.splice @items.indexOf(b),1
 
   addHouses: ->
     symbs = ['house1', 'house2', 'house3', 'house_side1', 'house_side2', 'house_side3']
@@ -211,12 +211,13 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       return
     p.hasTree = true
     tree = new mk.m11s.birds.Branches p.joints[1], p.joints[0], rng('addTree'),
-      branchColor       : '#' + p.color.toString(16)
+      branchColor       : p.color
       maxBranches       : Math.floor(rng('addTree')*3) + 4
       maxBranchLength   : rng('addTree') * 450 + 250
       firstBranchAngles : [ang]
     @items.push tree
     @trees.push tree
+    delayed rng('adtr')*500, -> mk.Scene::sfx.play 'branch2'
     return null
 
   addBodyFlowers: ->

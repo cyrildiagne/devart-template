@@ -18,14 +18,17 @@ class mk.m11s.birds.Bird extends mk.helpers.Flying
       pos : new paper.Point -600, (rng(rngk)-0.5) * 800 - 50
       v1length : 180
     @view.z = 3000+rng(rngk)*2
-    @speed *= 0.002
+    @speed *= 0.0025
     @bFlyingToBranch = false
     @bFlyingToHouse = false
+    mk.Scene::sfx.play 'bird'+rngi('ftb',1,2)
 
   flyToBranch : (@target) ->
     @bFlyingToBranch = true
     if !@isFlying
       @start()
+      console.log 'fly to branch'
+      mk.Scene::sfx.play 'bird'+rngi('ftb',1,2)
 
   flyToHouse : (@house, @goneHomeCallback) ->
     @bFlyingToHouse = true

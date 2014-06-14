@@ -22,6 +22,7 @@ class mk.m11s.birds.House
 
     @wiggle = 0
     @wiggleVal = 0
+    @wiggleSfxName = 'house' + rngi('h',1,3)
     @wiggleSfx = null
 
     asset = mk.Scene::assets['wildbird']
@@ -79,7 +80,7 @@ class mk.m11s.birds.House
       dist = (h.x-p.x) * (h.x-p.x) + (h.y-p.y) * (h.y-p.y)
       if dist < @distMax
         if (@wiggleSfx and @wiggleSfx.pos() is 0) or !@wiggleSfx
-          @wiggleSfx = mk.Scene::sfx.play 'Maison_1'
+          @wiggleSfx = mk.Scene::sfx.play @wiggleSfxName
 
         @wiggle = Math.min 35, @wiggle + 5
         if @bReleaseBirds and !@bird.isFlying

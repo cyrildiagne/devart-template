@@ -16,11 +16,19 @@
 #
 
 import webapp2
+import yaml
+# from oauth2client.client import SignedJwtAssertionCredentials
 
-class MainHandler(webapp2.RequestHandler):
+class TokenHandler(webapp2.RequestHandler):
   def get(self):
-    self.response.write('Hello world!')
+    secret = open("secret.yaml", 'r')
+    keys = yaml.load(secret)
+    iss = keys["iss"]
+    key = keys["key"]
+    scope = keys["scope"]
+    # credentials = SignedJwtAssertionCredentials(iss, key, scope=scope)
+    # self.response.write(credentials.access_token)
 
 app = webapp2.WSGIApplication([
-  ('/', MainHandler)
+  ('/token', TokenHandler)
 ], debug=True)

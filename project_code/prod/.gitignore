@@ -17,3 +17,4 @@ tokenserver/node_modules/*
 tokenserver/secret.coffee
 
 server/public/*
+server/secret.yaml

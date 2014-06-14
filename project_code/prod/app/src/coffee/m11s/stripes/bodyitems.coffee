@@ -15,10 +15,10 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
 
     @physics.addPersoJoint @joints[NiTE.HEAD]
     
-    # @physics.addPersoPartRect @getPart('rightUpperLeg')
-    # @physics.addPersoPartRect @getPart('leftUpperLeg')
-    # @physics.addPersoPartRect @getPart('rightLowerLeg')
-    # @physics.addPersoPartRect @getPart('leftLowerLeg')
+    @physics.addPersoPartRect @getPart('rightUpperLeg')
+    @physics.addPersoPartRect @getPart('leftUpperLeg')
+    @physics.addPersoPartRect @getPart('rightLowerLeg')
+    @physics.addPersoPartRect @getPart('leftLowerLeg')
 
   update: (dt) ->
     @physics.update dt
@@ -27,5 +27,5 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
   addBalls: ->
     @balls = new mk.m11s.stripes.Balls @physics
     @items.push @balls
-    delayed 1000, =>
+    delayed 5000, =>
       @balls.intervalBall()

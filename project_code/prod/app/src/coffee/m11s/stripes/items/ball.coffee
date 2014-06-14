@@ -15,6 +15,8 @@ class mk.m11s.stripes.Balls
     @ballsToAdd = []
     @maxBalls = 8
 
+    @ballIntervalTime = 8000
+
   addBall : (p, radius = 60) ->
     p = p || 
       x : (rng('addball')-0.5) * window.viewport.width
@@ -31,7 +33,9 @@ class mk.m11s.stripes.Balls
   intervalBall : =>
     radius = 40 + rng('iball')*80
     @ballsToAdd.push {radius:radius}
-    delayed 1000, @intervalBall
+    if @ballIntervalTime > 1000 + 300
+      @ballIntervalTime -= 500
+    delayed @ballIntervalTime, @intervalBall
 
   update : (dt) ->
     if @ballsToAdd.length > 0

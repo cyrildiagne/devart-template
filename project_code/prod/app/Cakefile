@@ -57,12 +57,13 @@ jade_options.main =
     'm11s/thorns/part'
 
     'm11s/tribal/settings'
+    'm11s/tribal/perso'
     'm11s/tribal/bodyitems'
     'm11s/tribal/items/feather'
     'm11s/tribal/items/mask'
     'm11s/tribal/items/shadow'
+    'm11s/tribal/items/stars'
     'm11s/tribal/items/fire'
-    'm11s/tribal/part'
 
     'm11s/stripes/settings'
     'm11s/stripes/items/ball'

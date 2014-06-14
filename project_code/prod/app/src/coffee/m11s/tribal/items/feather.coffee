@@ -8,6 +8,7 @@ class mk.m11s.tribal.Feather
     @follower = new mk.helpers.PartEdgeFollower @view, @j1, @j2, @pct
     @speed = 0
     @offset = 0
+    @defom = false
 
   setColor: (color) ->
     @view.fillColor = color
@@ -19,6 +20,8 @@ class mk.m11s.tribal.Feather
     @follower.update()
     @view.rotate( @speed )
     @view.z += 10
+    if @deform
+      @view.scaling = @speed / 9
 
 
 

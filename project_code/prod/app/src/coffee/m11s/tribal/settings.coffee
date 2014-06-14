@@ -20,6 +20,9 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
       147.033 # end
     ]
 
+    @sfx =
+      fireloop : 'Feu_boucle_2'
+
   # setupSounds: ->
   #   @loops = [
   #     'assets/sounds/tribal/loop/basse_a.mp3'

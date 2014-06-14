@@ -25,6 +25,7 @@ class mk.sound.Sounds
     url = 'assets/sounds/'+@type+'/sfx/'+file+'.mp3'
     sound = new Howl
       urls : [ url ]
+      loop : name.indexOf('loop') > -1
       onload : =>
         # sound.volume 0.6
         # console.log "#{name} loaded"

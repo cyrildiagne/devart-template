@@ -25,7 +25,7 @@ class mk.m11s.tribal.Shadow
     dist = @head.x - @lightSrcX
     # center = window.viewport.width * 0.5
 
-    @svg.scaling = 0.4 - (@head.y / window.viewport.height) * 4
+    @svg.scaling = Math.max(0.1, 0.4 - (@head.y / window.viewport.height) * 4)
     # console.log @svg.scaling
 
     mw = @svg.bounds.width * 0.5

@@ -55,6 +55,14 @@ class mk.m11s.tribal.Fire
     @minSpeed = 0.05
     @riseSpeed = 10
 
+    @amp = 0
+
+    @sfx = mk.Scene::sfx.play 'fireloop'
+    @sfx.volume(0) if @sfx
+
+  clean : ->
+    @sfx.stop()
+
   addFlame : ->
     rngk = @rngk + 'addFlame'
     flameWidth = 400
@@ -80,11 +88,14 @@ class mk.m11s.tribal.Fire
     @flames.push(flame)
 
   setAmp : (ratio) ->
+    @amp = ratio
     @maxCount = 15 + ratio * 30
     @growSpeed = 1.030 + ratio*0.008
     @initScale = ratio * 0.5 + 0.1
     @minSpeed = 0.02 + ratio * 0.06
     @riseSpeed = 10 + ratio * 5
+
+    @sfx.volume(Math.min(1, 0.2 + ratio*0.5)) if @sfx
 
   update: (dt) ->
     i = 0
@@ -108,5 +119,5 @@ class mk.m11s.tribal.Fire
     @timeSinceFlame+=dt
     if @timeSinceFlame > @timeBeforeNextFlame
       @timeSinceFlame -= @timeBeforeNextFlame
-      @timeBeforeNextFlame = rng(@rngk + 'newFlame') * 40 + 20
+      @timeBeforeNextFlame = rng(@rngk + 'newFlame') * 60 + 20
       @addFlame()

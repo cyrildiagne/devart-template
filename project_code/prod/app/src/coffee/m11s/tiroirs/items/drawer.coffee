@@ -19,6 +19,8 @@ class mk.m11s.tiroirs.Drawer
     @follower = new mk.helpers.PartFillFollower @view, @part, opt.weights, opt.z + 100
     @drawerItem = null
 
+    @sfxType = 1
+
     @openCallback = null
     @maxOpenness = 60
 
@@ -28,9 +30,13 @@ class mk.m11s.tiroirs.Drawer
     @isOpen = false
     @isChanging = false
 
+    @isGrowing = false
+    @growSpeed = 0.5 + rng('dr') * 2
+
   setup : ->
     if rng(@rgnk+'setup') > 0.3
       c1 = ['beige', 'cream']
+      @sfxType = 2
     else c1 = ['lightBlue', 'blue']
     if @part.name is 'torso'
       c2 = ['red', 'darkGray']
@@ -54,6 +60,9 @@ class mk.m11s.tiroirs.Drawer
      #    @bReleaseBirds = true
      )
      .start window.currentTime
+
+  growToInfinity : ->
+    @isGrowing = true
 
   growItem : ->
     rep = false
@@ -113,16 +122,18 @@ class mk.m11s.tiroirs.Drawer
     @view.addChild @right
 
   toggle : ->
-    if @isChanging
+    if @isChanging or @isGrowing
       return false
     if @isOpen then @dOpenness = 0
     else @dOpenness = 1
     @isOpen = !@isOpen
     @isChanging = true
-    if @isOpen and @openCallback
-      @openCallback @
-    else if !@isOpen and @closeCallback
-      @closeCallback @
+    if @isOpen
+      mk.Scene::sfx.play 'drawerOpen' + @sfxType
+      @openCallback @ if @openCallback
+    else
+      mk.Scene::sfx.play 'drawerClose' + @sfxType
+      @closeCallback @ if @closeCallback
 
   updateOpenness : ->
     @left.segments[0].point = @front.bounds.topLeft
@@ -137,12 +148,17 @@ class mk.m11s.tiroirs.Drawer
 
   update : (dt) ->
     @follower.update()
-    @openness += (@dOpenness-@openness) * 0.0035 * dt
-    if @isChanging
-      if Math.abs(@dOpenness-@openness) < 0.1
-        @isChanging = false
-    @front.position.x = @openness * @maxOpenness * @side
-    @front.position.y = @openness * @maxOpenness * 0.5
+
+    if @isGrowing
+      @front.position.x += @growSpeed * @side
+      @front.position.y += @growSpeed * 0.5
+    else
+      @openness += (@dOpenness-@openness) * 0.005 * dt
+      if @isChanging
+        if Math.abs(@dOpenness-@openness) < 0.1
+          @isChanging = false
+      @front.position.x = @openness * @maxOpenness * @side
+      @front.position.y = @openness * @maxOpenness * 0.5
     
     @updateOpenness()
 

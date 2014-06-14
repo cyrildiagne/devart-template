@@ -62,6 +62,8 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         @cleanFlyings()
         @mode = 2
         @addButtons()
+      when 9
+        d.growToInfinity() for d in @drawers
         break
 
   hintOnOpenedDrawer: (max=99) ->

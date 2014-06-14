@@ -18,6 +18,7 @@ class mk.m11s.tiroirs.DrawerItem
     @item.position.y = @h
     @view.addChild @item
 
+    @sfxType = rngi('dri', 1,2)
     @rotation = 0
 
     @offset = new paper.Point 0,-10
@@ -31,6 +32,8 @@ class mk.m11s.tiroirs.DrawerItem
     @view.z = @drawer.view.z + @zOffset
 
   show : ->
+    @sfx = mk.Scene::sfx.play('itemAppear' + @sfxType)
+    @sfx.volume 0.2 if @sfx
     new TWEEN.Tween(@offset).to({x:40*@drawer.scale,y:0}, 500).start window.currentTime
     it = @item
     if @tween then @tween.stop()

@@ -51,3 +51,12 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       179.979  # end 
     # tiroirs grandissent puis sortent
     ]
+
+    @sfx =
+      drawerClose1 : 'Tirroir_Ferme_MOYEN_3'
+      drawerClose2 : 'Tirroir_Ferme_GRAND_3'
+      drawerOpen1  : 'Tirroir_Ouvert_GRAND_3'
+      drawerOpen2  : 'Tirroir_Ouvert_MOYEN_3'
+      itemAppear1  : 'ObjetquiSort_3'
+      itemAppear2  : 'ObjetquiSort_3-2'
+      itemFly      : 'OiseauSenvole_GRAND_1-SansCri'

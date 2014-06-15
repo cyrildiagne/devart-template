@@ -62,7 +62,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         b.removeConnections() for b in @bulbs
         B = mk.m11s.bulbs.Bulb
         # B::maxConnection += 6
-        if B::maxConnection is 0 then B::maxConnection = 4
+        if B::maxConnection is 0 then B::maxConnection = 8
         else B::maxConnection*=2
       when @MODE_RAYS
         b.removeRay() for b in @bulbs

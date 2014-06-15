@@ -33,7 +33,7 @@ class mk.m11s.base.Perso
     @morph = new MorphClass @joints, @settings.morph
 
   setupItems : () ->
-    @items = new (m11Class 'BodyItems') @settings, @assets, @sounds, @parts, @joints
+    @items = new (m11Class 'BodyItems') @settings, @assets, @sounds, @parts, @joints, @view
     @numItems = @items.items.length
     for item in @items.items
       @view.addChild item.view

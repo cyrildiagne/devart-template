@@ -4,7 +4,9 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     @color = new paper.Color '#151515'
     @updateBodyColor()
     @bgStrombo = false
-    @addLines()
+    # @addTrails()
+    # @addLinks()
+    @addSculpt()
 
   onMusicEvent : (evId) ->
     switch evId
@@ -17,9 +19,7 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     super()
     setBackgroundColor '#000'
 
-
   brightnessInterval : =>
-    
     beat = 83
     if @bgStrombo
       # b = if Math.random() > 0.5 then 255 else 0
@@ -57,7 +57,15 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     for p in @parts
       p.setColor @color, false
 
-  addLines : ->
+  addTrails : ->
     parts = @getParts ['leftUpperArm', 'leftLowerArm','rightUpperArm','rightLowerArm']
-    @lines = new mk.m11s.tech.Lines parts, @getPart('head'), @getPart('pelvis')
-    @items.push @lines
+    @trails = new mk.m11s.tech.Lines parts, @getPart('head'), @getPart('pelvis')
+    @items.push @trails
+
+  addLinks : ->
+    @links = new mk.m11s.tech.Links @joints
+    @items.push @links
+
+  addSculpt : ->
+    @sculpt = new mk.m11s.tech.Sculpt @joints, @view
+    @items.push @sculpt

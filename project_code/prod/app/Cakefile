@@ -91,6 +91,8 @@ jade_options.main =
 
     'm11s/tech/settings'
     'm11s/tech/items/lines'
+    'm11s/tech/items/links'
+    'm11s/tech/items/sculpt'
     'm11s/tech/bodyitems'
 
     'playback/playback'

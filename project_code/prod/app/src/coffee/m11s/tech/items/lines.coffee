@@ -3,7 +3,6 @@ class mk.m11s.tech.TrailLine
   colors : []
 
   constructor : (@j1, @j2, @pct) ->
-
     @length = 40
     @path = new paper.Path()
     @path.add([0,0]) for i in [0...@length]
@@ -57,7 +56,7 @@ class mk.m11s.tech.Line
     @dest.y = @j1.y * @pct + @j2.y * (1-@pct)
 
 
-class mk.m11s.tech.Lines
+class mk.m11s.tech.Trail
   constructor : (@parts, @head, @pelvis) ->
     @view = new paper.Group()
     @view.transformContent = false

@@ -74,9 +74,13 @@ class mk.m11s.tiroirs.Drawer
     @drawerItem.show()
     return rep
 
-  shrinkItem : ->
+  shrinkItem : (clean=false, callback)->
     if @drawerItem
-      @drawerItem.hide()
+      @drawerItem.hide =>
+        if callback then callback()
+        if clean 
+          @drawerItem.view.remove()
+          @drawerItem = null
 
   setupFront : (color, handleColor) ->
     @front = new paper.Group

@@ -43,7 +43,7 @@ class mk.m11s.tiroirs.DrawerItem
         it.position.y = @y
      ).start window.currentTime
 
-  hide : ->
+  hide : (callback) ->
     new TWEEN.Tween(@offset).to({x:0,y:-10}, 400).start window.currentTime
     it = @item
     if @tween then @tween.stop()
@@ -51,6 +51,9 @@ class mk.m11s.tiroirs.DrawerItem
      .to({y:@h+1}, 400)
      .onUpdate(->
         it.position.y = @y
+     )
+     .onComplete(->
+        if callback then callback()
      ).start window.currentTime
 
   update: (dt) ->

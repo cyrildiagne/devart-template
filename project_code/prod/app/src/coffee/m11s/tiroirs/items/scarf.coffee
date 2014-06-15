@@ -1,4 +1,4 @@
-class mk.m11s.tiroirs.Scarf extends mk.helpers.SimpleJointItem
+class mk.m11s.tiroirs.ScarfPart extends mk.helpers.SimpleJointItem
 
   constructor: (@pinPoint, @options) ->
     @view = new paper.Group()
@@ -62,3 +62,35 @@ class mk.m11s.tiroirs.Scarf extends mk.helpers.SimpleJointItem
     lastB = @path.segments[@numPoints-2].point
     @end.position = lastA
     @end.rotation = lastA.subtract(lastB).angle - 90
+
+
+class mk.m11s.tiroirs.Scarf extends mk.helpers.Flying
+
+  constructor : ->
+
+    @view = new paper.Group()
+    @view.z = 9999
+
+    @scarf1 = new mk.m11s.tiroirs.ScarfPart new paper.Point(),
+      color     : mk.Scene::settings.getHexColor 'blue'
+      stiffness : 0.85
+    @scarf1.view.z = 1997
+    @view.addChild @scarf1.view
+
+    # j = @joints[NiTE.LEFT_HAND]
+    @scarf2 = new mk.m11s.tiroirs.ScarfPart new paper.Point(),
+      color     : mk.Scene::settings.getHexColor 'lightBlue'
+      stiffness : 0.9
+      numPoints : 6
+    @scarf2.view.z = 1999
+    @view.addChild @scarf2.view
+
+  update : (p) ->
+    @scarf1.pinPoint.x = @scarf2.pinPoint.x = p.x
+    @scarf1.pinPoint.y = @scarf2.pinPoint.y = p.y - 10
+    @scarf1.update()
+    @scarf2.update()
+
+  clean : ->
+    @scarf1.view.remove()
+    @scarf2.view.remove()

@@ -30,13 +30,8 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     # @addDrawers()
     @drawersWithItems = []
 
-    @physics = new mk.helpers.Physics()
-    @physics.addPersoPartRect @getPart('leftLowerArm')
-    @physics.addPersoPartRect @getPart('rightLowerArm')
-    @physics.addPersoPartRect @getPart('leftUpperArm')
-    @physics.addPersoPartRect @getPart('rightUpperArm')
-
     @mode = -1
+    @physics = null
     @buttons = null
     # @addButtons()
 
@@ -51,13 +46,14 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     switch evId
       when 0 
         @mode = 0
-        @hintOnOpenedDrawer()
+        @ensureDrawersOpen()
       when 2
-        @closeOpenDrawers()
         @mode = -1
+        @closeOpenDrawers()
+        @cleanDrawerItems()
       when 3
         @mode = 1
-        @hintOnOpenedDrawer 1
+        @ensureDrawersOpen 1
       when 7
         @cleanFlyings()
         @mode = 2
@@ -66,7 +62,16 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         d.growToInfinity() for d in @drawers
         break
 
-  hintOnOpenedDrawer: (max=99) ->
+  cleanDrawerItems: ->
+    for d in @drawers
+      do (d) =>
+        d.shrinkItem true, =>
+          idx = @items.indexOf(d.drawerItem)
+          if idx > -1
+            @items.splice idx,1
+    @drawersWithItems.splice 0,@drawersWithItems.length
+
+  ensureDrawersOpen: (max=99) ->
     bOneAppeared = false
     num = 0
     for d in @drawers
@@ -110,11 +115,16 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     return
 
   addButtons: ->
+    @physics = new mk.helpers.Physics()
+    @physics.addPersoPartRect @getPart('leftLowerArm')
+    @physics.addPersoPartRect @getPart('rightLowerArm')
+    @physics.addPersoPartRect @getPart('leftUpperArm')
+    @physics.addPersoPartRect @getPart('rightUpperArm')
     @buttons = new mk.m11s.tiroirs.Buttons @physics, @assets.symbols.tiroirs
 
   drawerClosingCallback : (dr) =>
     switch @mode
-      when 0
+      when 0, -1
         dr.shrinkItem()
         idx = @drawersWithItems.indexOf dr
         if idx > -1
@@ -135,20 +145,6 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       when 2
         for i in [0...4]
           @buttons.buttonsToAdd.push {x:dr.view.position.x, y:dr.view.position.y-10}
-
-  cleanFlyings : ->
-    for fly in @flys
-      fly.stop()
-      if fly.item
-        fly.item.remove()
-      fly.view.remove()
-      @items.splice @items.indexOf(fly.view),1
-
-    @scarf1.view.remove()
-    @items.splice @items.indexOf(@scarf1.view),1
-    @scarf2.view.remove()
-    @items.splice @items.indexOf(@scarf2.view),1
-    @flys.splice 0, @flys.length
 
   addFlying: (drawer) ->
     if @flys.length is 0
@@ -199,45 +195,47 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @flys.push fly
     @items.push fly
     
-    s1 = @scarf1 = new (m11Class 'Scarf') new paper.Point(),
-      color     : '#' + @settings.palette.blue.toString(16)
-      stiffness : 0.85
-    s1.view.z = 1997
-    @items.push @scarf1
-
-    j = @joints[NiTE.LEFT_HAND]
-    s2 = @scarf2 = new (m11Class 'Scarf') new paper.Point(),
-      color     : '#' + @settings.palette.lightBlue.toString(16)
-      stiffness : 0.9
-      numPoints : 6
-    s2.view.z = 1999
-    @items.push @scarf2
+    fly.scarf = new mk.m11s.tiroirs.Scarf()
 
     fly.stop()
-    # fly.view.transformContent = false
+    s1 = fly.scarf.scarf1
+    s2 = fly.scarf.scarf2
     s1.view.scaling = s2.view.scaling = fly.view.scaling = 0.01
     tween = new TWEEN.Tween({scale:0.01}).to({scale:1}, 400)
      .easing( TWEEN.Easing.Quadratic.Out )
      .onStart(->
-      # fly.view.position.x = fly.pos.x = drawer.view.position.x
-      # fly.view.position.y = fly.pos.y = drawer.view.position.y - 10
       fly.start()
      )
      .onUpdate(->
       s1.view.scaling = s2.view.scaling = fly.view.scaling = @scale
      ).start window.currentTime
+
+  removeFlying : ->
+
+
+  cleanFlyings : ->
+    for fly in @flys
+      fly.stop()
+      if fly.scarf
+        fly.scarf.clean()
+      if fly.item
+        fly.item.remove()
+      fly.view.remove()
+      @items.splice @items.indexOf(fly.view),1
+
+    # @scarf1.view.remove()
+    # @items.splice @items.indexOf(@scarf1.view),1
+    # @scarf2.view.remove()
+    # @items.splice @items.indexOf(@scarf2.view),1
+    @flys.splice 0, @flys.length
   
   updateFlyings : ->
-    if @flys.length is 3
-      if @flys[2].isFlying
-        @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].view.position.x
-        @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].view.position.y - 10
-      else if @flys[2].joint
-        @scarf1.pinPoint.x = @scarf2.pinPoint.x = @flys[2].joint.x
-        @scarf1.pinPoint.y = @scarf2.pinPoint.y = @flys[2].joint.y - 10
 
     for fly in @flys
+
       if fly.isFlying
+
+        if fly.scarf then fly.scarf.update fly.view.position # scarf
         for j,i in @availableJoints
           if j.isUsed then continue
           fp = fly.view.position
@@ -246,7 +244,10 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
             fly.joint = j
             fly.stop()
             j.isUsed = true
+
       else if fly.joint
+
+        if fly.scarf then fly.scarf.update fly.joint # scarf
         fly.view.position.x = fly.joint.x
         fly.view.position.y = fly.joint.y
         if fly.joint is @joints[NiTE.LEFT_HAND]

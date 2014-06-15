@@ -89,7 +89,7 @@ class mk.m11s.bulbs.Bulb
   maxConnection : 0
   numConnections : 0
 
-  maxRays : 0
+  maxRays : 1
   numRays : 0
 
   floatPower : 0.2

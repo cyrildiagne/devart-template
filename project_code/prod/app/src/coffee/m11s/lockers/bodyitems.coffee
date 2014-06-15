@@ -9,7 +9,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @keyId = 0
     @lockId = 0
 
-    @distMax = 30
+    @distMax = 20
     @distMax *= @distMax
 
     @timeSinceKey = -4000
@@ -21,7 +21,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     rngk = 'addLockers'
     for p in parts
       for i in [1..5]
-        chance = 0.5
+        chance = 0.4
         if p.name is "torso"
           chance = 1
         if rng(rngk) < chance
@@ -31,24 +31,9 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
           @items.push lock
 
   addKey: ->
-    rngk = 'addKey'
-    asset = ['key1', 'key2'].seedRandom rngk
-    symbol = @assets.symbols.lockers[asset]
-    item = symbol.place()
-    item.pivot = new paper.Point 0, 0
-    fly = new mk.helpers.Flying item, @items.length,
-      color1 : '#' + @settings.palette.cream.toString 16
-      color2 : '#' + @settings.palette.lightRed.toString 16
-      wingWidth : 350
-      wingHeight : 0
-      velocity : new paper.Point 3+rng(rngk)*2, 0
-      wingSpeed : 0.7
-      pos : new paper.Point -400, (rng(rngk)-0.5) * 800 - 50
-    fly.view.scaling = rng(rngk)*0.2 + 0.8
-    fly.view.pivot = new paper.Point item.bounds.width*0.5,0
-    fly.view.z = 9999
-    @items.push fly
-    @flys.push fly
+    key = new mk.m11s.lockers.Key @flys.length
+    @items.push key
+    @flys.push key
 
   addPile: ->
     sym = @assets.symbols.lockers['pile']
@@ -93,8 +78,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
         lock.breakFree()
         @pile.addSome()
       if lock || fly.view.position.x > 500
-        fly.view.remove()
-        fly.stop()
+        fly.clean()
         @items.splice @items.indexOf(fly),1
         @flys.splice i,1
         if lock

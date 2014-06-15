@@ -32,3 +32,9 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
       179.979  # end 
     # tiroirs grandissent puis sortent
     ]
+
+    @sfx =
+      openLock : 'OuvreSerrure_1'
+      flyloop1 : 'Vole_GRAND_2'
+      flyloop2 : 'Vole_MOYEN_2'
+      flyloop3 : 'Vole_PETIT_2'

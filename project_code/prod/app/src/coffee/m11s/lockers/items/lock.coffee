@@ -24,13 +24,15 @@ class mk.m11s.lockers.Lock
     @view.remove()
 
   breakFree: ->
-    view = @view
-    rngk = @seed+'breakFree'
-    @velX = (rng(rngk)+1) / 20
-    @velY = -(rng(rngk)+1) / 30
-    @velRotation = (rng(rngk)+1) / 40
-    @flying = true
-    @follower = null
+    mk.Scene::sfx.play 'openLock'
+    delayed 300, =>
+      view = @view
+      rngk = @seed+'breakFree'
+      @velX = (rng(rngk)+1) / 20
+      @velY = -(rng(rngk)+1) / 30
+      @velRotation = (rng(rngk)+1) / 40
+      @flying = true
+      @follower = null
 
   update: (dt) ->
     if @out then return

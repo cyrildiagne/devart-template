@@ -3,9 +3,10 @@ class mk.m11s.tech.SculptShape
   colors : []
 
   constructor : (@j1, @j2, @color, @mainView,@isArm = false) ->
-    @view = new paper.Group()
     @paths = []
 
+    @visible = false
+    
     @addNew()
 
     @max = 10
@@ -18,11 +19,14 @@ class mk.m11s.tech.SculptShape
     # @impulse()
 
   addNew : ->
+    if !@visible then return
+
     @currPath = new paper.Path()
     @currPath.segments = [[@j1.x,@j1.y], [@j2.x,@j2.y], [@j2.x,@j2.y], [@j1.x,@j1.y]]
     @currPath.fillColor = @color.clone()
     @currPath.initColor = @color.clone()
     @currPath.fillColor.brightness += 0.3
+    # @currPath.visible = @visible
     # @view.addChild @currPath
     if @isArm
       @currPath.z = (@j1.z + @j2.z) / 2 + 1000 + rng('sclpt')*50
@@ -39,6 +43,7 @@ class mk.m11s.tech.SculptShape
       c.initColor.brightness -= 0.05
 
   update : (dt) ->
+    if !@visible then return
 
     @currPath.segments[2].point.x = @j2.x
     @currPath.segments[2].point.y = @j2.y
@@ -69,14 +74,29 @@ class mk.m11s.tech.SculptShape
       c.fillColor.brightness = c.initColor.brightness + (rng('sclpt')-0.5) * 0.1
       # delayed 160+200*Math.random(), => @impulse()
 
+  setVisibility : (v) ->
+    if v is @visible then return
+    @visible = v
+    if !@visible
+      for c in @paths
+        c.visible = @visible
+    #   while @paths.length
+    #     @paths.shift().remove()
+    else
+      while @paths.length
+        @paths.shift().remove()
+      @addNew()
+    # for c in @paths
+    #   c.visible = @visible
+
 
 class mk.m11s.tech.Sculpt
   constructor : (@joints, @mainView) ->
     @view = new paper.Group()
-    @view.transformContent = false
     @view.z = -9999
 
-    c = ['lightBlue','blue','red','lightRed'].seedRandom('sculpt')
+    # c = ['lightBlue','blue','red','lightRed'].seedRandom('sculpt')
+    c = 'lightRed'
     color = new paper.Color mk.Scene::settings.getHexColor(c)
     mk.m11s.tech.SculptShape::colors.push color
 
@@ -94,3 +114,7 @@ class mk.m11s.tech.Sculpt
   update : (dt) ->
     for s in @shapes
       s.update(dt)
+
+  setVisible : (visible) ->
+    for s in @shapes
+      s.setVisibility visible

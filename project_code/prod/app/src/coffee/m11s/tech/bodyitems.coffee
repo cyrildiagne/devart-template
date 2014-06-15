@@ -1,55 +1,97 @@
 class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems : ->
-    @color = new paper.Color '#151515'
+    @color = new paper.Color() #'#151515'
+    @color.brightness = 0.06
     @updateBodyColor()
     @bgStrombo = false
-    # @addTrails()
-    # @addLinks()
+    @addTrails()
+    @addLinks()
     @addSculpt()
+
+    @modes = [@trails, @links, @sculpt]
+    # @stromboInterval()
+    @modeItvlTween = null
+    @currMode = 0
+    @switchModeDelay = 83 * 8 * 2
+    @switchModeInterval()
+
+    @numBgFlash = @numPersoFlash = 0
 
   onMusicEvent : (evId) ->
     switch evId
       when 0
-        break
         # @brightnessInterval()
         # @stromboInterval()
+        @modeItvlTween.stop()
+        @switchModeDelay = 4784 #83 * 8 * 7
+        @switchModeInterval()
+      when 1
+        @modeItvlTween.stop()
+        @stromboInterval()
 
   clean : ->
     super()
     setBackgroundColor '#000'
 
-  brightnessInterval : =>
-    beat = 83
-    if @bgStrombo
-      # b = if Math.random() > 0.5 then 255 else 0
-      if @bgColor is 'f' then @bgColor = '0'
-      else @bgColor = 'f'
-      b = @bgColor
-      setBackgroundColor '#'+b+b+b
-      delay = beat
-    else
-      b = Math.random()
-      if b > 0.3 and b < 0.7 then b = 0
-      # if @color.brightness is 0 then @color.brightness = 255
-      # else @color.brightness = 0
-      @color.brightness = b
-      @updateBodyColor()
-      delay = beat*(1+Math.floor(Math.random()*5))
-    
-    delayed delay, @brightnessInterval
-
   stromboInterval : =>
-    @bgStrombo = !@bgStrombo
-    if @bgStrombo
-      rdmInt = [8, 16, 24].random()
-      @color.brightness = 0
-      @updateBodyColor()
-    else
-      rdmInt = 10 + Math.floor(Math.random()*50)
-      setBackgroundColor '#000'
+
+    @nextMode()
+    @numBgFlash = @numPersoFlash = 0
+    switch @currMode
+      when 0 then @stromboBgInterval()
+      when 1 then @stromboLinksInterval()
+      when 2 then @stromboPersoInterval()
+    
+    delayed 2400, @stromboInterval
+
+  stromboBgInterval : =>
+
+    if @bgColor is 'f' then @bgColor = '0'
+    else @bgColor = 'f'
+    b = @bgColor
+    setBackgroundColor '#'+b+b+b
+    
+    if @numBgFlash++ < 11 * 2 + 1
+      delayed 75, @stromboBgInterval
+
+  stromboPersoInterval : =>
+
+    @color.brightness = 1 - @color.brightness
+    # console.log @color.brightness
+    @updateBodyColor()
+
     beat = 83
-    delayed beat*rdmInt, @stromboInterval
+    delay = 75 #beat*rdmInt
+    if @numPersoFlash++ < 11 * 2 + 1
+      delayed delay, @stromboPersoInterval
+
+  stromboLinksInterval : =>
+
+    @links.toggleStrombo()
+
+    beat = 83
+    delay = 75 #beat*rdmInt
+    if @numPersoFlash++ < 11 * 2 + 1
+      delayed delay, @stromboLinksInterval
+
+  nextMode : ->
+    if @currMode != -1
+      prev = @modes[@currMode]
+      prev.setVisible false
+
+    @currMode++
+    if @currMode > 2 then @currMode = 0
+
+    @modes[@currMode].setVisible true
+
+  switchModeInterval : =>
+    @nextMode()
+    
+    # rdmInt = [2, 4, 8, 16].random()
+    # beat = 83
+    # delayed beat*(rdmInt), @switchModeInterval
+    @modeItvlTween = delayed @switchModeDelay, @switchModeInterval
 
   updateBodyColor : ->
     # for p in @parts
@@ -59,7 +101,7 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
 
   addTrails : ->
     parts = @getParts ['leftUpperArm', 'leftLowerArm','rightUpperArm','rightLowerArm']
-    @trails = new mk.m11s.tech.Lines parts, @getPart('head'), @getPart('pelvis')
+    @trails = new mk.m11s.tech.Trail parts, @getPart('head'), @getPart('pelvis')
     @items.push @trails
 
   addLinks : ->

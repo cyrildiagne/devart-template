@@ -6,6 +6,6 @@ class mk.m11s.tech.Settings extends mk.m11s.base.Settings
 
     @musicEvents = [
       14.4 # synthé
-      67 # alt
+      72 + 0.45 # alt
       166  # end
     ]

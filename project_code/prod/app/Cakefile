@@ -114,6 +114,7 @@ jade_options.app =
   includes : [
     'app/quadwarp'
     'app/cloudstorage'
+    'app/analytics'
     'app'
   ]
 

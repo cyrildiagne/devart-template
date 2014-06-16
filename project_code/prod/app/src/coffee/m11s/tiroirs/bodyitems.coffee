@@ -223,18 +223,8 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       delayed 1, => @cleanFlying fly
 
   cleanFlyings : ->
-    for d in @drawers
-      if !d.isOpen then d.toggle()
+    @removeFlying(fly, @drawers.random()) for fly in @flys
 
-    @removeFlying(fly, d.random()) for fly in @flys
-  #   for fly in @flys
-  #     @cleanFlyings fly
-
-    # @scarf1.view.remove()
-    # @items.splice @items.indexOf(@scarf1.view),1
-    # @scarf2.view.remove()
-    # @items.splice @items.indexOf(@scarf2.view),1
-    # @flys.splice 0, @flys.length
   
   cleanFlying : (fly) ->
     fly.stop()

@@ -57,7 +57,7 @@ class mk.m11s.stripes.Stripes
   update: () ->
     # @velTracker.update()
     if @speed < 2
-      @speed += 0.001
+      @speed += 0.0005
     for s,i in @stripes
       # vel = Math.sqrt(@velTracker.get(i)) * 0.003 + 0.001
       # s.position.x = @torso.x

@@ -46,8 +46,8 @@ class mk.m11s.bulbs.Rope
   yoyo: ->
     initY = -window.viewport.height*0.5
     item = @items[0]
-    delay = 5000
-    delay = 1000 if Config::DEBUG
+    delay = 7000
+    delay = 7000 if Config::DEBUG
     back  = new TWEEN.Tween(item).delay(delay).to({y:initY}, 1000)
     back.onStart => 
       mk.Scene::sfx.play 'ropeFalls'

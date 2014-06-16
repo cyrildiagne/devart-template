@@ -72,6 +72,12 @@ class CloudStorage
     @gapi = new GAPI()
 
   upload : (filename, data, callback) ->
+    
+    numFrames = data.size / (4*3*15)
+    duration = numFrames * 1/50
+    if duration < 30
+      console.log 'performance too short (< 30s), not uploading...'
+      return
 
     @gapi.getToken (err, token) -> 
       if (err)

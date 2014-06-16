@@ -140,24 +140,30 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
           oldDr = @drawersWithItems.shift()
           oldDr.toggle()
       when 1
-        if @flys.length < 3
-          @addFlying dr
+        for fly in @flys
+          if !fly.bFlyingToDrawer 
+            otherDr = @drawers.random()
+            if !otherDr.isOpen then otherDr.toggle(true)
+            @removeFlying fly, otherDr
+        # if @flys.length < 3
+        @addFlying dr
       when 2
         for i in [0...4]
           @buttons.buttonsToAdd.push {x:dr.view.position.x, y:dr.view.position.y-10}
 
   addFlying: (drawer) ->
-    if @flys.length is 0
-      obj = 
-        symbol : @assets.symbols.tiroirs['hat']
-        pivot : new paper.Point 0, 0
-    else if @flys.length is 1
-      obj = 
-        symbol : @assets.symbols.tiroirs['necktie1']
-        pivot : new paper.Point 0, -28
-    else
-      @addScarf drawer
-      return
+    switch rngi('aflg',1,3)
+      when 1
+        obj = 
+          symbol : @assets.symbols.tiroirs['hat']
+          pivot : new paper.Point 0, 0
+      when 2
+        obj = 
+          symbol : @assets.symbols.tiroirs['necktie1']
+          pivot : new paper.Point 0, -28
+      when 3
+        @addScarf drawer
+        return
 
     item = obj.symbol.place()
     item.pivot = obj.pivot
@@ -186,6 +192,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       fly.view.scaling = @scale
      ).start window.currentTime
 
+
   addScarf: (drawer) ->
     fly = new (m11Class 'Flying') null, @flys.length,
       color1 : '#' + @settings.palette.cream.toString 16
@@ -210,28 +217,40 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       s1.view.scaling = s2.view.scaling = fly.view.scaling = @scale
      ).start window.currentTime
 
-  removeFlying : ->
-
+  removeFlying : (fly, drawer) ->
+    fly.flyToDrawer drawer, => 
+      if drawer.isOpen then drawer.toggle()
+      delayed 1, => @cleanFlying fly
 
   cleanFlyings : ->
-    for fly in @flys
-      fly.stop()
-      if fly.scarf
-        fly.scarf.clean()
-      if fly.item
-        fly.item.remove()
-      fly.view.remove()
-      @items.splice @items.indexOf(fly.view),1
+    for d in @drawers
+      if !d.isOpen then d.toggle()
+
+    @removeFlying(fly, d.random()) for fly in @flys
+  #   for fly in @flys
+  #     @cleanFlyings fly
 
     # @scarf1.view.remove()
     # @items.splice @items.indexOf(@scarf1.view),1
     # @scarf2.view.remove()
     # @items.splice @items.indexOf(@scarf2.view),1
-    @flys.splice 0, @flys.length
+    # @flys.splice 0, @flys.length
   
+  cleanFlying : (fly) ->
+    fly.stop()
+    if fly.scarf
+      fly.scarf.clean()
+    if fly.item
+      fly.item.remove()
+    fly.view.remove()
+    @items.splice @items.indexOf(fly),1
+    @flys.splice @flys.indexOf(fly),1
+
   updateFlyings : ->
 
     for fly in @flys
+
+      continue if fly.bFlyingToDrawer
 
       if fly.isFlying
 
@@ -240,7 +259,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
           if j.isUsed then continue
           fp = fly.view.position
           d = (j.x-fp.x) * (j.x-fp.x) + (j.y-fp.y) * (j.y-fp.y)
-          if d < 50*50
+          if d < 60*60
             fly.joint = j
             fly.stop()
             j.isUsed = true
@@ -250,18 +269,18 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         if fly.scarf then fly.scarf.update fly.joint # scarf
         fly.view.position.x = fly.joint.x
         fly.view.position.y = fly.joint.y
-        if fly.joint is @joints[NiTE.LEFT_HAND]
-          vel = @velTracker.get 0
-        else
-          vel = @velTracker.get 1
-        if vel > 180
-          fly.start new paper.Point fly.joint.x, fly.joint.y
-          jnt = fly.joint
-          fly.joint = null
-          tween = new TWEEN.Tween({}).to({}, 500)
-           .onComplete(->
-              jnt.isUsed = false
-           ).start window.currentTime
+        # if fly.joint is @joints[NiTE.LEFT_HAND]
+        #   vel = @velTracker.get 0
+        # else
+        #   vel = @velTracker.get 1
+        # if vel > 180
+        #   fly.start new paper.Point fly.joint.x, fly.joint.y
+        #   jnt = fly.joint
+        #   fly.joint = null
+        #   tween = new TWEEN.Tween({}).to({}, 500)
+        #    .onComplete(->
+        #       jnt.isUsed = false
+        #    ).start window.currentTime
     return
 
   updateDrawerOpening : ->

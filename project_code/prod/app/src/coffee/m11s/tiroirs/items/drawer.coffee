@@ -125,7 +125,7 @@ class mk.m11s.tiroirs.Drawer
     @right.fillColor = mk.Scene::settings.getHexColor(color)
     @view.addChild @right
 
-  toggle : ->
+  toggle : (silent) ->
     if @isChanging or @isGrowing
       return false
     if @isOpen then @dOpenness = 0
@@ -134,10 +134,12 @@ class mk.m11s.tiroirs.Drawer
     @isChanging = true
     if @isOpen
       mk.Scene::sfx.play 'drawerOpen' + @sfxType
-      @openCallback @ if @openCallback
+      if !silent
+        @openCallback @ if @openCallback
     else
       mk.Scene::sfx.play 'drawerClose' + @sfxType
-      @closeCallback @ if @closeCallback
+      if !silent
+        @closeCallback @ if @closeCallback
 
   updateOpenness : ->
     @left.segments[0].point = @front.bounds.topLeft

@@ -13,6 +13,7 @@ class mk.m11s.base.BodyItems
 
   update : (delta) ->
     item.update(delta) for item in @items
+    return
 
   getPart : (name) ->
     return (@getParts [name])[0]

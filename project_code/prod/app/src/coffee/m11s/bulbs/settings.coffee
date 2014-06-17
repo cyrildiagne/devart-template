@@ -24,14 +24,15 @@ class mk.m11s.bulbs.Settings extends mk.m11s.base.Settings
     @track = 'assets/sounds/bulbs/track/bulbs_004.mp3'
 
     @musicEvents = [
-      36.006 # rythmique
-      62.755 # xylophone
-      84.502 # violon grave
-      90.005 # (violon aigu)
-      108.005 # violon grave
-      114.005 # (violon aigu)
-      120.506 # (violon grave)
-      132.006 # end
+      11.000 # pre-rythmique ! NEW
+      12.000 # rythmique
+      38.380 # xylophone
+      59.480 # violon grave
+      66.000 # (violon aigu)
+      72.000 # violon grave
+      78.000 # (violon aigu)
+      84.000 # (violon grave)
+      96.000 # end
     ]
 
     @sfx =

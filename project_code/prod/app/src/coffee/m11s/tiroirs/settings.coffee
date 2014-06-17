@@ -35,20 +35,20 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
 
     @musicEvents = [
     # tiroirs apparaissent
-      26.409 # rythmique - 
+      12.040 # rythmique - 
     # objets verticaux sortent
-      67.216 # piano
+      50.210 # piano
     # objets sortent des tiroirs
-      74.227 # piano + grave)
-      84.005 - 0.5 # guitare
+      60.020 # piano + grave)
+      69.300 - 0.5 # guitare
     # apparition des objets volants
-      93.288 # guitare + grave)
-      102.956 # guitare + aigue)
-      103.166 # nappe
-      142.320 # break
+      78.440 # guitare + grave)
+      88.270 # guitare + aigue)
+      88.380 # nappe
+      108.010 # break
     # boutons + feuilles sortent des tiroirs
-      170.464 # nappe + aigue
-      179.979  # end 
+      117.290 # nappe + aigue
+      127.080  # end 
     # tiroirs grandissent puis sortent
     ]
 

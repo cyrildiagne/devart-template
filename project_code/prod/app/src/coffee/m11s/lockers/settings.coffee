@@ -17,7 +17,7 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
     @track = 'assets/sounds/lockers/track/Lockers_short_001.mp3'
 
     @musicEvents = [
-      20.5
+      84
     ]
 
     @sfx =

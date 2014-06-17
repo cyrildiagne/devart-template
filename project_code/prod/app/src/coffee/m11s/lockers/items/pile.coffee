@@ -100,6 +100,8 @@ class mk.m11s.lockers.Tentacles
 
 class mk.m11s.lockers.Pile
 
+  SCALE_MAX_BEFORE_FLY : 2.5
+
   constructor : (@type) ->
 
     symbs = ['pile1', 'pile2', 'pile3']
@@ -128,7 +130,6 @@ class mk.m11s.lockers.Pile
     @view.addChild @pile
 
     @grains = []
-    @numGrains = 0
 
     @timeSinceGrain = 0
     @timeBeforeNextGrain = 0
@@ -146,11 +147,11 @@ class mk.m11s.lockers.Pile
     @grains.push g
 
   removeGrain : (g) ->
-    @pile.scaling = @pile.scaling.x + 0.04
+    @pile.scaling = @pile.scaling.x + 0.025
     @pile.position.y -= 0.25
     g.remove()
     @grains.splice @grains.indexOf(g),1
-    if @pile.scaling.x > 2.8 && @grains.length is 0
+    if @pile.scaling.x > mk.m11s.lockers.Pile::SCALE_MAX_BEFORE_FLY && @grains.length is 0
       @fullCallback() if @fullCallback
 
   addSome : ->

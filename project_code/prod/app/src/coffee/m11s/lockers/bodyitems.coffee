@@ -19,11 +19,16 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @timeSinceKey = -4000
     @timeBeforeNextKey = 0
 
+    @pilesCanFly = false
+
   onMusicEvent : (evId) ->
     switch evId
       when 0
-        console.log 'flypile'
-        # @flyPile 2
+        @pilesCanFly = true
+        for pile in @piles
+          scaling = mk.m11s.lockers.Pile::SCALE_MAX_BEFORE_FLY
+          if pile.pile.scaling.x > scaling
+            @flyPile pile.type
 
   addLockers: ->
     parts = @getPartsExcluding ['head']
@@ -54,6 +59,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @piles.splice type, 0, pile
 
   flyPile : (type) ->
+    if !@pilesCanFly then return
     @piles[type].fly()
     @piles.splice type, 1
     @addPile type

@@ -15,6 +15,7 @@ class mk.Scene
     @delta = 0
     @numMesure = 0
     @isStarted = false
+    @loops = []
 
   setMetamorphose : (type) ->
     if @isLoading then return
@@ -31,8 +32,15 @@ class mk.Scene
       dispatch 'loading:sound effects'
       @sounds.load type, @settings.sfx, =>
 
+        loops = @loops
         Scene::sfx = @sounds.sfx[type]
-        Scene::sfx.play = (s) -> @[s].play() if !Scene::settings.mute
+        Scene::sfx.play = (s) ->
+          sound = @[s].play()
+          if Scene::settings.mute
+            sound.volume( 0 )
+          if s.indexOf 'loop' > -1
+            loops.push sound
+          return sound
 
         dispatch 'loading:music'
         @music.load @settings, (err) =>
@@ -79,11 +87,13 @@ class mk.Scene
   mute : ->
     @settings.mute = true
     @music.mute()
+    s.volume(0) for s in @loops
     dispatch 'mute'
 
   unmute : ->
     @settings.mute = false    
     @music.unmute()
+    s.volume(1) for s in @loops
     dispatch 'unmute'
 
   toggleMute : ->
@@ -95,11 +105,13 @@ class mk.Scene
     @isStarted = false
     if @music
       @music.stop()
+    s.volume(0) for s in @loops
 
   start : ->
     @isStarted = true
     if @music and !@music.isFinished
       @music.play()
+    s.volume(1) for s in @loops
 
   fadeOut : ->
     if @music

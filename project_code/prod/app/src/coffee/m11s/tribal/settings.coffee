@@ -11,13 +11,13 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
     @track = 'assets/sounds/tribal/track/Tribal_short_004.mp3'
 
     @musicEvents = [
-      5.235 # rythmique
-      15.754 # basses + sythe
-      25.380 # synthe aigu
-      42.015 # nappe
-      83.942 # instru
-      105.759 # violon
-      147.033 # end
+       # rythmique a disparu avec cut !
+      20.000 # basses + sythe
+      32.000 # synthe aigu
+      # nappe a disparu avec cut !
+      63.070 # instru
+      124.390 # (break)
+      126.230 # end
     ]
 
     @sfx =

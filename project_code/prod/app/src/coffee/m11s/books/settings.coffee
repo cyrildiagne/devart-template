@@ -13,7 +13,7 @@ class mk.m11s.books.Settings extends mk.m11s.base.Settings
       @assets[i] = 'assets/items/books/' + @assets[i] + '.svg'
 
   setupSounds : ->
-    @track = 'assets/sounds/books/track/books_018.mp3'
+    @track = 'assets/sounds/books/track/Books_short_002.mp3'
     @musicEvents = [
       #apparition maisons
       21.321  # nappe

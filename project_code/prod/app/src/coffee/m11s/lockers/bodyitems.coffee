@@ -2,9 +2,13 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems: () ->
     @flys = []
+
     @locks = []
     @addLockers()
-    @addPile()
+
+    @piles = []
+    @addPile type for type in [0...3]
+    # delayed 1000, => @flyPile 2
 
     @keyId = 0
     @lockId = 0
@@ -15,30 +19,44 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @timeSinceKey = -4000
     @timeBeforeNextKey = 0
 
+  onMusicEvent : (evId) ->
+    switch evId
+      when 0
+        console.log 'flypile'
+        # @flyPile 2
+
   addLockers: ->
-    symbs = ['locker1', 'locker2', 'locker3']
     parts = @getPartsExcluding ['head']
     rngk = 'addLockers'
     for p in parts
-      for i in [1..5]
-        chance = 0.4
-        if p.name is "torso"
-          chance = 1
-        if rng(rngk) < chance
-          symbol = @assets.symbols.lockers[symbs.seedRandom(rngk)]
-          lock = new mk.m11s.lockers.Lock symbol, p, 'Lockers'+@items.length
-          @locks.push lock
-          @items.push lock
+      max = 3
+      if p.name is "torso"
+        max = 6
+      for i in [1..max]
+        type = rngi(rngk,0,2)
+        lock = new mk.m11s.lockers.Lock type, p, 'Lockers'+@items.length
+        @locks.push lock
+        @items.push lock
+    lock = new mk.m11s.lockers.Lock 0, @getPart('head'), 'Lockers'+@items.length
+    @locks.push lock
+    @items.push lock
 
   addKey: ->
     key = new mk.m11s.lockers.Key @flys.length
     @items.push key
     @flys.push key
 
-  addPile: ->
-    sym = @assets.symbols.lockers['pile']
-    @pile = new mk.m11s.lockers.Pile sym, @settings.palette.lightRed
-    @items.push @pile
+  addPile: (type) ->
+    console.log 'add pile'
+    pile = new mk.m11s.lockers.Pile type
+    pile.fullCallback = => @flyPile pile.type
+    @items.push pile
+    @piles.splice type, 0, pile
+
+  flyPile : (type) ->
+    @piles[type].fly()
+    @piles.splice type, 1
+    @addPile type
 
   getKeyInLock : (fly) ->
     for lock in @locks
@@ -50,21 +68,6 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
           return lock
     return null
 
-  turnKeyAnimation : (keyView) ->
-    # tween = new TWEEN.Tween( { x : 0 } )
-    #  .to( { x: 20 }, 500 )
-    #  .easing( TWEEN.Easing.Quadratic.Out )
-    #  .onUpdate( ->
-    #     keyView.position.x = @x
-    #  )
-    #  .onComplete( ->
-    #     tween = new TWEEN.Tween( { scale: keyView.scaling.y } )
-    #      .to( { scale: keyView.scaling.y * 0.5 }, 500 )
-    #      .onUpdate( ->
-    #         keyView.scaling = new paper.Point keyView.scaling.x, @scale
-    #      ).start()
-    #  ).start()    
-
   update: (dt) ->
     super dt
 
@@ -74,9 +77,10 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
       if lock
         fly.view.position = new paper.Point 0, -10 * lock.item.scaling.y
         lock.available = false
-        @turnKeyAnimation fly.view
-        lock.breakFree()
-        @pile.addSome()
+        do (fly, lock) =>
+          fly.turn =>
+            lock.breakFree()
+            @piles[lock.type].addSome()
       if lock || fly.view.position.x > 500
         fly.clean()
         @items.splice @items.indexOf(fly),1

@@ -1,6 +1,7 @@
 class mk.m11s.lockers.Lock
 
-  constructor: (@symbol, @part, @seed) ->
+  constructor: (@type, @part, @seed) ->
+    @symbol = mk.Scene::assets['locker'+(@type+1)]
     @item = @symbol.place()
     scale = rng(@seed)*0.3 + 0.7
     if @part.name is "torso"
@@ -24,7 +25,6 @@ class mk.m11s.lockers.Lock
     @view.remove()
 
   breakFree: ->
-    mk.Scene::sfx.play 'openLock'
     delayed 300, =>
       view = @view
       rngk = @seed+'breakFree'
@@ -48,3 +48,5 @@ class mk.m11s.lockers.Lock
       @velRotation *= 1.02
     else
       @follower.update()
+      if @part.name is 'head'
+        @view.position.y += 15

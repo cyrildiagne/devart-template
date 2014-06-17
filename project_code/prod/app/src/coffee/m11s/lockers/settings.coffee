@@ -7,7 +7,9 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
       'assets/items/lockers/locker1.svg'
       'assets/items/lockers/locker2.svg'
       'assets/items/lockers/locker3.svg'
-      'assets/items/lockers/pile.svg'
+      'assets/items/lockers/pile1.svg'
+      'assets/items/lockers/pile2.svg'
+      'assets/items/lockers/pile3.svg'
     ]
 
    setupSounds : ->

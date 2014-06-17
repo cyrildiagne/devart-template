@@ -15,23 +15,14 @@ class mk.m11s.books.Settings extends mk.m11s.base.Settings
   setupSounds : ->
     @track = 'assets/sounds/books/track/Books_short_002.mp3'
     @musicEvents = [
-      #apparition maisons
-      21.321  # nappe
-      #apparition branches
-      42.686  # rythmique
-      #apparition fleurs / feuilles
-      53.346  - 0.5# violon
-      #apparition oiseaux
-      60.300  # 2eme violon
-      # oiseaux rentrent / sortent maisons
-      96.010  # break
-      # oiseaux rentent dans les maisons
-      # lune apparait
-      # changement de couleur progressif
-      106.671 + 0.3 # reprise rythmique
-      # apparition des lucioles
-      117.342 # retour violon
-      138.669 # 2eme violon
-      159.995 # break
-      176.046 # fadeout
+  01.060 # grelots
+  07.380 # grelots
+  14.270 # grelots
+  21.100 # grelots
+  27.090 # violon boucle 1
+  44.050 # violon boucle 2
+  53.450 # instru
+  81.260 # piano
+  107.320 # break
+  135.080 # end
     ]

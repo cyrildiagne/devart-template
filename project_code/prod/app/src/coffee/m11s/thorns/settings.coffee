@@ -26,7 +26,7 @@ class mk.m11s.thorns.Settings extends mk.m11s.base.Settings
 
   setupSounds : ->
 
-    @track = 'assets/sounds/thorns/track/thorns_010.mp3'
+    @track = 'assets/sounds/thorns/track/Thorns_short_002.mp3'
 
     @musicEvents = [
       20.000 # guitar

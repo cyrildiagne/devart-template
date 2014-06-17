@@ -26,7 +26,7 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
       @assets[i] = 'assets/items/birds/' + @assets[i]
 
   setupSounds : ->
-    @track = 'assets/sounds/birds/track/trees_008.mp3'
+    @track = 'assets/sounds/birds/track/Trees_short_004.mp3'
     @musicEvents = [
       #apparition maisons
       5

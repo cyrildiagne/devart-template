@@ -2,7 +2,7 @@ class mk.m11s.stripes.Settings extends mk.m11s.base.Settings
   
   setupSounds : ->
 
-    @track = 'assets/sounds/stripes/track/stripes_016.mp3'
+    @track = 'assets/sounds/stripes/track/Stripes_short_004.mp3'
 
     @musicEvents = [
         7.240 # rythmique

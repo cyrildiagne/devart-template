@@ -31,7 +31,7 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
 
   setupSounds : ->
 
-    @track = 'assets/sounds/tiroirs/track/tiroirs_006.mp3'
+    @track = 'assets/sounds/tiroirs/track/Drawers_short_002.mp3'
 
     @musicEvents = [
     # tiroirs apparaissent

@@ -21,7 +21,7 @@ class mk.m11s.bulbs.Settings extends mk.m11s.base.Settings
 
   setupSounds : ->
 
-    @track = 'assets/sounds/bulbs/track/bulbs_004.mp3'
+    @track = 'assets/sounds/bulbs/track/Ampoules_short_003.mp3'
 
     @musicEvents = [
       11.000 # pre-rythmique ! NEW

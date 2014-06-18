@@ -118,6 +118,7 @@ jade_options.app =
     'app/quadwarp'
     'app/cloudstorage'
     'app/analytics'
+    'app/viewport'
     'app'
   ]
 

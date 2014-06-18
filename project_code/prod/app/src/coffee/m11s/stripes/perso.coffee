@@ -24,6 +24,8 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
 
   setupItems : () ->
     @items = new (m11Class 'BodyItems') @settings, @assets, @sounds, @parts, @joints
+    # @items.stage = new paper.Group()
+    # @view.parent.addChild @items.stage
     @numItems = @items.items.length
     for item in @items.items
       @mask.addChild item.view
@@ -33,6 +35,7 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
 
     @view.addChild @mask
     @view.addChild @content
+    # @view.addChild @items.stage
     @view.clipped = true
     @setupMaskContent()
 

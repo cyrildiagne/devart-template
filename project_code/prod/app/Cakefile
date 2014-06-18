@@ -66,7 +66,8 @@ jade_options.main =
     'm11s/tribal/items/fire'
 
     'm11s/stripes/settings'
-    'm11s/stripes/items/ball'
+    'm11s/stripes/items/umbrella'
+    'm11s/stripes/items/falling'
     'm11s/stripes/items/stripes'
     'm11s/stripes/bodyitems'
     'm11s/stripes/perso'

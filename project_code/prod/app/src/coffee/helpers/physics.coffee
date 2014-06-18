@@ -8,8 +8,7 @@ class mk.helpers.Physics
       create : (options) ->
         return @
       world : (engine) ->
-        console.log engine
-        # ...
+        return
 
     @engine = Matter.Engine.create
       positionIterations: 6
@@ -19,14 +18,19 @@ class mk.helpers.Physics
         controller: CustomRenderer
         options:
           something: true
-
-    floor = Matter.Bodies.rectangle 0, window.viewport.height*0.5, window.innerWidth + 100, 50,
-      isStatic : true
-    Matter.World.add @engine.world, floor
+      world :
+        bounds :
+          min: { x: 0, y: 0 }
+          max: { x: window.viewport.width, y: window.viewport.height } 
 
     @bodies = []
     @persoPartBodies = []
     @persoJointBodies = []
+
+  addFloor : ->
+    floor = Matter.Bodies.rectangle 0, window.viewport.height*0.5, window.innerWidth + 100, 50,
+      isStatic : true
+    Matter.World.add @engine.world, floor
 
   addPersoPartRect : (part) ->
     x = 0
@@ -112,6 +116,35 @@ class mk.helpers.Physics
       body : circle
       view : view
     return circle
+
+  addRectangle : (view, pos, width, height, opt) ->
+    rect = Matter.Bodies.rectangle pos.x, pos.y, width, height, opt, 10
+    rect.view = view
+    Matter.World.add @engine.world, rect
+    @bodies.push 
+      body : rect
+      view : view
+    return rect
+
+  tweenGravity : (x, y, duration) ->
+    # g = @getGravity()
+    # ph = @
+    # ph.setGravity 0,0
+    # new TWEEN.Tween({x:0, y:0}, duration*0.5)
+    # .to({x:x,y:y})
+    # .delay(duration*0.5)
+    # .onUpdate(->
+    @setGravity x, y
+    # ).start window.currentTime
+
+  setGravity : (x,y) ->
+    if x isnt null and x isnt undefined
+      @engine.world.gravity.x = x
+    if y isnt null and y isnt undefined
+      @engine.world.gravity.y = y
+
+  getGravity : () ->
+    return @engine.world.gravity
 
   remove : (body) ->
     Matter.World.remove @engine.world, body

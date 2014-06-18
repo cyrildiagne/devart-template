@@ -21,12 +21,12 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
   onMusicEvent : (evId) ->
     switch evId
       when 0
-        # @brightnessInterval()
-        # @stromboInterval()
         @modeItvlTween.stop()
         @switchModeDelay = 4784 #83 * 8 * 7
         @switchModeInterval()
       when 1
+        @clearCurrentMode()
+        @currMode = 0
         @modeItvlTween.stop()
         @stromboInterval()
 
@@ -75,10 +75,13 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     if @numPersoFlash++ < 11 * 2 + 1
       delayed delay, @stromboLinksInterval
 
-  nextMode : ->
+  clearCurrentMode : ->
     if @currMode != -1
       prev = @modes[@currMode]
       prev.setVisible false
+
+  nextMode : ->
+    @clearCurrentMode()
 
     @currMode++
     if @currMode > 2 then @currMode = 0

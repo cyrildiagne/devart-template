@@ -17,14 +17,14 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
     @track = 'assets/sounds/lockers/track/Lockers_short_002.mp3'
 
     @musicEvents = [
-      04.140 # piano
-  21.000 # piano aigu
-  36.160 # violon
-  52.130 # 2e violon
-  84.120 # rythmique
-  100.000 # piano
-  116.130 # (rythmique) 
-  140.130 # end (non flagrant)
+      4.140 # piano
+      21.000 # piano aigu
+      36.160 # violon
+      52.130 # 2e violon
+      84.120 # rythmique
+      100.000 # piano
+      116.130 # (rythmique) 
+      140.130 # end (non flagrant)
     ]
 
     @sfx =

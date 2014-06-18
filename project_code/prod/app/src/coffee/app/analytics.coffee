@@ -13,6 +13,6 @@
   a.src = g
   m.parentNode.insertBefore a, m
   return
-) window, document, "script", "//www.google-analytics.com/analytics.js", "ga"
+) window, document, "script", "http://www.google-analytics.com/analytics.js", "ga"
 ga "create", "UA-51930218-1", "devartmrkalia.com"
 ga "send", "pageview"

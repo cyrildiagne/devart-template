@@ -109,7 +109,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     delays = []
     seed = 'addbulb'
     for i in [0...parts.length*2]
-      delays.push 1000*i + 1000
+      delays.push 500*i + 500
     for p in parts
       for i in [1..2]
         # delay++

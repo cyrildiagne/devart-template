@@ -60,7 +60,6 @@ class mk.m11s.lockers.Tentacles
 
     @tentacles = []
 
-
     time = 0
     for i in [0...3]
       color = new paper.Color @color
@@ -138,6 +137,8 @@ class mk.m11s.lockers.Pile
     @speed = 0
     @tentacles = null
 
+    @scaleFactor = 0.025
+
   addGrain : ->
     g = new paper.Path.Circle
       center : new paper.Point -(rng('pile')-0.5)*30*@pile.scaling.x, -900
@@ -147,7 +148,7 @@ class mk.m11s.lockers.Pile
     @grains.push g
 
   removeGrain : (g) ->
-    @pile.scaling = @pile.scaling.x + 0.025
+    @pile.scaling = @pile.scaling.x + @scaleFactor
     @pile.position.y -= 0.25
     g.remove()
     @grains.splice @grains.indexOf(g),1
@@ -158,6 +159,7 @@ class mk.m11s.lockers.Pile
     @addGrainTime += 1000
 
   fly : ->
+    @removeGrain(@grains[0]) while @grains.length
     @tentacles = new mk.m11s.lockers.Tentacles @pile, @color
     @view.insertChild 0, @tentacles.view
 

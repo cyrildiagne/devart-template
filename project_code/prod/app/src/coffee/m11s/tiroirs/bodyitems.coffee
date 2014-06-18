@@ -219,12 +219,12 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
 
   removeFlying : (fly, drawer) ->
     fly.flyToDrawer drawer, => 
+      fly.joint.isUsed = false if fly.joint
       if drawer.isOpen then drawer.toggle()
       delayed 1, => @cleanFlying fly
 
   cleanFlyings : ->
     @removeFlying(fly, @drawers.random()) for fly in @flys
-
   
   cleanFlying : (fly) ->
     fly.stop()

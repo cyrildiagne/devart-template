@@ -8,7 +8,7 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
 
    setupSounds : ->
 
-    @track = 'assets/sounds/tribal/track/Tribal_short_003.mp3'
+    @track = 'assets/sounds/tribal/track/Tribal_short_004.mp3'
 
     @musicEvents = [
        # rythmique a disparu avec cut !

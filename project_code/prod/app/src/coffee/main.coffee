@@ -128,7 +128,7 @@ beginScene = ->
     start()
 
     dispatch 'started'
-    # fadeScene 'on', 1000
+    fadeScene 'on', 1000
 
 finishScene = ->
   # if !scene.isStarted then return
@@ -143,7 +143,7 @@ onSceneFinished = () ->
     if isLive
       record.end()
       light.fadeTo 1, 3000
-  # fadeScene 'off', 1000
+  fadeScene 'off', 1000
   scene.fadeOut()
   setTimeout ->
     stop()

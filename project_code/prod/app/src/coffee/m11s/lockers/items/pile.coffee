@@ -100,7 +100,7 @@ class mk.m11s.lockers.Tentacles
 
 class mk.m11s.lockers.Pile
 
-  SCALE_MAX_BEFORE_FLY : 2.5
+  SCALE_MAX_BEFORE_FLY : 2.2
 
   constructor : (@type) ->
 

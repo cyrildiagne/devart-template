@@ -23,7 +23,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
 
   onMusicEvent : (evId) ->
     switch evId
-      when 0
+      when 4
         @pilesCanFly = true
         for pile in @piles
           scaling = mk.m11s.lockers.Pile::SCALE_MAX_BEFORE_FLY

@@ -51,9 +51,9 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @bTreeGrowsItems = true
         @newTreeItemTick()
         @addBodyFlowers()
-        break
-      when 2 # apparition des oiseaux
-        times = [625, 625*5, 625*9]
+        # break
+      # when 2 # apparition des oiseaux
+        times = [625, 625*17, 625*35]
         for duration in times
           tween = new TWEEN.Tween().to({}, duration)
            .onComplete(=>

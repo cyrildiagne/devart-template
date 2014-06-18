@@ -2,7 +2,7 @@ class mk.m11s.bulbs.Rope
 
   constructor: (@joints, @colors) ->
     @nbItems              = 12
-    @ropeLength           = 500
+    @ropeLength           = 400
     @relaxationIterations = 10
     @pixelsPerMeter       = 200
     @gravity              = 9.81
@@ -43,15 +43,16 @@ class mk.m11s.bulbs.Rope
 
     @items[0].isPinned = true
 
-  yoyo: ->
+  yoyo: (mode) ->
     initY = -window.viewport.height*0.5
     item = @items[0]
     delay = 7000
     delay = 7000 if Config::DEBUG
+    # delay = 5000 is mode is 3
     back  = new TWEEN.Tween(item).delay(delay).to({y:initY}, 1000)
     back.onStart => 
       mk.Scene::sfx.play 'ropeFalls'
-      @ropeLength = 500 + (rng('ropeyoyo')-0.3) * 200
+      @ropeLength = 400 + (rng('ropeyoyo')-0.3) * 100
       newX = (rng('ropeyoyo')-0.5) * window.viewport.width * 0.4
       i = 0
       for it in @items

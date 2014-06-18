@@ -54,7 +54,6 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
       when @MODE_FLOATING
         b.startFloating() for b in @bulbs
         
-
   cleanMode: ->
     switch @mode
       when @MODE_CONNECT
@@ -152,7 +151,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
       if @mode >= @NUM_MODES
         @mode = 0
       @setupMode()
-      @rope.yoyo()
+      @rope.yoyo @mode
 
 
   onLightsOff: =>

@@ -3,7 +3,7 @@ class mk.m11s.tribal.Stars
   constructor : (@head) ->
     @view = new paper.Group()
     @view.transformContent = false
-    @view.z = 1000
+    @view.z = -3000
 
     @path = new paper.Path.Circle
       center : [0,0]
@@ -28,8 +28,13 @@ class mk.m11s.tribal.Stars
     w2 = window.viewport.width * 0.5
     for s in @view.children
       s.position.y += (s.dy-s.position.y) * 0.002 * dt
-      s.position.x += s.z * hDist * 0.4
+      s.position.x += s.z * hDist * 0.6
       if s.position.x > w2
         s.position.x = - w2
       else if s.position.x < -w2
         s.position.x = w2
+
+  remove : (callback) ->
+    dy = -window.viewport.height*0.5
+    s.dy = dy for s in @view.children
+    delayed 2000, callback

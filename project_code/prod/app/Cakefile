@@ -59,6 +59,8 @@ jade_options.main =
     'm11s/tribal/settings'
     'm11s/tribal/perso'
     'm11s/tribal/bodyitems'
+    'm11s/tribal/items/dreamcatcher'
+    'm11s/tribal/items/pattern'
     'm11s/tribal/items/feather'
     'm11s/tribal/items/mask'
     'm11s/tribal/items/shadow'

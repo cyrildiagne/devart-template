@@ -157,6 +157,9 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
       rh_pct = (rh.y-torso.y) / (head.y-torso.y) * 0.7
       pct = Math.min(Math.max(0, lh_pct+rh_pct), 1.3)
 
+      if @fire
+        @fire.wind = (lh.x + rh.x - 2 * torso.x) / 2 * 0.01
+
       for amper in [@fire, @dreamcatcher]
         if amper then amper.setAmp pct
       # if @shadow

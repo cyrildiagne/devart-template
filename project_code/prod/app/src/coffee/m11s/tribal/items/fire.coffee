@@ -56,6 +56,7 @@ class mk.m11s.tribal.Fire
     @riseSpeed = 10
 
     @amp = 0
+    @wind = 1
 
     @sfx = mk.Scene::sfx.play 'fireloop'
     @sfx.volume(0) if @sfx
@@ -99,8 +100,10 @@ class mk.m11s.tribal.Fire
 
   update: (dt) ->
     i = 0
+    @view.rotation = @wind * 20
     for f in @flames
       f.update()
+      f.path.position.x -= f.path.position.y * @wind * 0.05
       if f.count > @maxCount
         f.path.position.y -= f.time*2 + @riseSpeed
         f.path.scale(0.96)

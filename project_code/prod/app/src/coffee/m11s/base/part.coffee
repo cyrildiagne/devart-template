@@ -68,6 +68,14 @@ class mk.m11s.base.Part
   getJointCircleTangents: (j1, j2) ->
     return GeomUtils.getCircleTangents j1.x, j1.y, j1.radius, j2.x, j2.y, j2.radius
 
+  getAngle : () ->
+    if @joints.length isnt 2 then return 0
+    j1 = @joints[0]
+    j2 = @joints[1]
+    vx = j2.x - j1.x
+    vy = j2.y - j1.y
+    return Math.atan2(vy, vx)
+
 # HEAD
 
 class mk.m11s.base.Head extends mk.m11s.base.Part

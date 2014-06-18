@@ -2,10 +2,11 @@ class mk.m11s.tech.Settings extends mk.m11s.base.Settings
 
   setupSounds : ->
 
-    @track = 'assets/sounds/tech/track/tech_070.mp3'
+    @track = 'assets/sounds/tech/track/Technology_short_002.mp3'
 
     @musicEvents = [
-      14.4 # synthé
-      72 + 0.45 # alt
-      166  # end
+      9.400 # synthé
+      48.320 + 0.45 # alt
+      106.19 # percu NEW !
+      125.28  # end
     ]

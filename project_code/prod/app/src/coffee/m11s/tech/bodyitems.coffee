@@ -8,8 +8,9 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     @addTrails()
     @addLinks()
     @addSculpt()
+    @addClones()
 
-    @modes = [@trails, @links, @sculpt]
+    @modes = [@trails, @links, @sculpt, @clones]
     # @stromboInterval()
     @modeItvlTween = null
     @currMode = 0
@@ -42,6 +43,7 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
       when 0 then @stromboBgInterval()
       when 1 then @stromboLinksInterval()
       when 2 then @stromboPersoInterval()
+      when 3 then @stromboClonesInterval()
     
     delayed 2400, @stromboInterval
 
@@ -67,13 +69,18 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
       delayed delay, @stromboPersoInterval
 
   stromboLinksInterval : =>
-
     @links.toggleStrombo()
-
     beat = 83
     delay = 75 #beat*rdmInt
     if @numPersoFlash++ < 11 * 2 + 1
       delayed delay, @stromboLinksInterval
+
+  stromboClonesInterval : =>
+    @clones.toggleStrombo()
+    beat = 83
+    delay = 75 #beat*rdmInt
+    if @numPersoFlash++ < 11 * 2 + 1
+      delayed delay, @stromboClonesInterval
 
   clearCurrentMode : ->
     if @currMode != -1
@@ -84,7 +91,7 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     @clearCurrentMode()
 
     @currMode++
-    if @currMode > 2 then @currMode = 0
+    if @currMode > 3 then @currMode = 0
 
     @modes[@currMode].setVisible true
 
@@ -114,3 +121,7 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
   addSculpt : ->
     @sculpt = new mk.m11s.tech.Sculpt @joints, @view
     @items.push @sculpt
+
+  addClones : ->
+    @clones = new mk.m11s.tech.Clones @parts
+    @items.push @clones

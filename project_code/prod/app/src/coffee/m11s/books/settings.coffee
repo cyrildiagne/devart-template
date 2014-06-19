@@ -2,10 +2,16 @@ class mk.m11s.books.Settings extends mk.m11s.base.Settings
 
   setupAssets : ->
     @assets = [
-      'cage'
+      'balloon1'
+      'balloon2'
+      'boat'
       'book_closed'
       'book_open'
-      'boat'
+      'cage'
+      'lighthouse'
+      'luggage'
+      'rock1'
+      'rock2'
       'wave1'
       'wave2'
     ]

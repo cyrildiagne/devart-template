@@ -60,6 +60,9 @@ class mk.m11s.base.Settings
   getHexColor : (name) ->
     return '#' + @palette[name].toString 16
 
+  getPaperColor : (name) ->
+    return new paper.Color(@getHexColor(name))
+
   setupColors : ->
     @colors =
       head          : @palette.skin

@@ -23,6 +23,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @moon = null
 
     @lucioles = null
+    @hands = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
 
     # @bGrowHouses = false
     # @timeBetweenNewHouse = 625 * 4
@@ -39,6 +40,8 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @newTreeItemTick()
     if @moon
       @moon.position.x += (-@joints[NiTE.HEAD].x*0.8-@moon.position.x) * 0.001 * dt
+    @checkBirdTouch()
+    return
 
   onMusicEvent : (evId) ->
     switch evId
@@ -75,6 +78,18 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       when 9
         fadeScene 'off', 7000
         break
+
+  checkBirdTouch : ->
+    distMax = 30 * 30
+    for j in @hands
+      for b in @birds
+        if !b.isFlying
+          dpos = b.view.position
+          dist = (j.x-dpos.x) * (j.x-dpos.x) + (j.y-dpos.y) * (j.y-dpos.y)
+          if dist < distMax
+            do (b) ->
+              b.flyOut ->
+                b.flyToBranch b.target
 
   setNightMode : ->
     color = @settings.palette.blue
@@ -147,7 +162,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @lucioles = new mk.m11s.birds.Lucioles @assets.symbols.birds['luciole'], leftHand, rightHand
     @items.push @lucioles
 
-  addBird: (tree)->
+  addBird : (tree)->
     symbs = ['bird1', 'bird2']
     rdmk = 'addBird'
     sname = symbs.seedRandom rdmk
@@ -157,6 +172,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     bird = new mk.m11s.birds.Bird symbol, @items.length, color
     if !tree
       tree = @trees.seedRandom 'addBird'
+    console.log 'addbird'
     bird.flyToBranch tree.addTrackPoint()
     # @items.push bird
     @birds.push bird
@@ -166,6 +182,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       house = @houses.seedRandom 'sbth'
       do (b) =>
         b.flyToHouse house, =>
+          b.hide()
           delayed 1, =>
             @birds.splice @birds.indexOf(b),1
             # @items.splice @items.indexOf(b),1

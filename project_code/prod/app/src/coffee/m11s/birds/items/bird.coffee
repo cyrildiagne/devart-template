@@ -20,35 +20,53 @@ class mk.m11s.birds.Bird extends mk.helpers.Flying
     @view.z = 3000+rng(rngk)*2
     @speed *= 0.0025
     @bFlyingToBranch = false
-    @bFlyingToHouse = false
+    @bFlyingToDestination = false
+    @destination = null
     mk.Scene::sfx.play 'bird'+rngi('ftb',1,2)
 
   flyToBranch : (@target) ->
     @bFlyingToBranch = true
     if !@isFlying
       @start()
-      console.log 'fly to branch'
+      # console.log 'fly to branch'
       mk.Scene::sfx.play 'bird'+rngi('ftb',1,2)
 
-  flyToHouse : (@house, @goneHomeCallback) ->
-    @bFlyingToHouse = true
+  flyToHouse : (house, @goneHomeCallback) ->
+    @bFlyingToDestination = true
     @bFlyingToBranch = false
     @speed *= 2.5
+    @destination = house.view
+
+  flyOut : (@goneHomeCallback) ->
+    if @isFlying then return
+
+    # console.log 'fly out'
+
+    @bFlyingToDestination = true
+    @bFlyingToBranch = false
+    x = @target.pos.x * 2#(rng('flyout')-5) * window.viewport.width
+    y = @target.pos.y - 100#- window.viewport.height * 0.5
+    @destination = 
+      position : new paper.Point x,y
+
+    @start()
+    mk.Scene::sfx.play 'bird'+rngi('ftb',1,2)
+    # @speed *= 2.5
 
   land : () ->
     if @isFlying
       @stop()
     @bFlyingToBranch = false
-    if @bFlyingToHouse
-      @hide()
+    if @bFlyingToDestination
       @goneHomeCallback()
+      @bFlyingToDestination = false
 
   hide : () ->
     @view.remove()
 
   update: (dt) ->
-    if @bFlyingToHouse
-      t = @house.view.position
+    if @bFlyingToDestination
+      t = @destination.position
     else 
       t = @target.pos.add(@target.ref.position)
       t.y -= 20

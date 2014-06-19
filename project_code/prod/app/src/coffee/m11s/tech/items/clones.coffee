@@ -16,6 +16,16 @@ class mk.m11s.tech.Clone
     @offset = 0
     @strombo = false
 
+    @valids = [
+      'leftLowerArm', 'rightLowerArm',
+      'leftUpperArm', 'rightUpperArm',
+      'leftLowerLeg', 'rightLowerLeg',
+      # 'leftUpperLeg', 'rightUpperLeg'
+    ]
+
+    # for p in @parts
+    #   console.log @valids.indexOf(p.name)
+
     @colors = []
     for c in ['skin','cream','beige','red','lightRed']
       color = mk.Scene::settings.getPaperColor c
@@ -32,10 +42,14 @@ class mk.m11s.tech.Clone
   update : ->
     parts = []
     for p in @parts
-      p.setColor @currColor, false
+      if @valids.indexOf(p.name) is -1 then continue
+      # console.log p.name
+      # p.setColor @currColor, false
       s = p.view.clone()
-      if !@strombo
-        p.setColor @initColor, false
+      for sc in s.children
+        sc.fillColor = @currColor
+      # if !@strombo
+      # p.setColor @initColor, false
       s.position.x += @offset
       s.remove()
       parts.push s
@@ -79,16 +93,18 @@ class mk.m11s.tech.Clones
 
     @white = new paper.Color 'white'
     @initColor = @white.clone()
-    @initColor.brightness = 0.5
+    @initColor.brightness = 0.1
+
+    @spread = 500
 
     @clones = []
     numDelay = 10
-    for i in [0...2]
+    for i in [0...5]
       cl = new mk.m11s.tech.Clone @parts, numDelay
       cl.view.scale 0.8
       @view.addChild cl.view
       @clones.push cl
-      numDelay += 20
+      numDelay += 10
 
     @strombo = false
 
@@ -106,6 +122,7 @@ class mk.m11s.tech.Clones
 
   update : (dt) ->
     if !@visible then return
-    @clones[0].offset = -200
-    @clones[1].offset = 200
+    # space = @spread / @clones.length
+    for i in [0...@clones.length]
+      @clones[i].offset = @spread * (i/@clones.length-0.5)
     c.update() for c in @clones

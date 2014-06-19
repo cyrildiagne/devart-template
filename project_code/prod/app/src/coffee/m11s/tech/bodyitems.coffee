@@ -18,6 +18,7 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     @switchModeInterval()
 
     @numBgFlash = @numPersoFlash = 0
+    @stromboIntervalMode = 0
 
   onMusicEvent : (evId) ->
     switch evId
@@ -30,6 +31,10 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
         @currMode = 0
         @modeItvlTween.stop()
         @stromboInterval()
+      when 2
+        @stromboIntervalMode = 1
+        @trails.setLength 25
+        @sculpt.setLength 20
 
   clean : ->
     super()
@@ -37,7 +42,8 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
 
   stromboInterval : =>
 
-    @nextMode()
+    if @stromboIntervalMode is 0 or (@stromboIntervalMode *= -1) > 0
+      @nextMode()
     @numBgFlash = @numPersoFlash = 0
     switch @currMode
       when 0 then @stromboBgInterval()

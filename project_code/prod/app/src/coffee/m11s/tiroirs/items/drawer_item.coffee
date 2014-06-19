@@ -20,6 +20,7 @@ class mk.m11s.tiroirs.DrawerItem
 
     @sfxType = rngi('dri', 1,2)
     @rotation = 0
+    @rotationImpact = 2 + rng('dri') * 3
 
     @offset = new paper.Point 0,-10
     @updatePos()
@@ -57,7 +58,7 @@ class mk.m11s.tiroirs.DrawerItem
      ).start window.currentTime
 
   update: (dt) ->
-    d = (@view.position.x - @drawer.view.position.x - @offset.x) * 3
+    d = (@view.position.x - @drawer.view.position.x - @offset.x) * @rotationImpact
     @view.rotation += (d - @view.rotation)*0.003*dt
     @view.rotation *= 0.97
     @updatePos()

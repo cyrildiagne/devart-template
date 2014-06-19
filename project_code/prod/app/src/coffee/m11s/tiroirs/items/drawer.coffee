@@ -68,7 +68,7 @@ class mk.m11s.tiroirs.Drawer
   growItem : ->
     rep = false
     if !@drawerItem
-      sym = ['cane', 'belt', 'ladder', 'umbrella'].seedRandom 'growItem'
+      sym = ['cane', 'belt', 'ladder', 'umbrella', 'cups', 'ruler', 'windmill', 'hand'].seedRandom 'growItem'
       symbol = mk.Scene::assets[sym]
       @drawerItem = new mk.m11s.tiroirs.DrawerItem symbol, @
       rep = true

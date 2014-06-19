@@ -35,7 +35,7 @@ class mk.m11s.tribal.Fire
 
   constructor:(@colors) ->
     @view = new paper.Group()
-    @view.z = 9999
+    @view.z = 99999
     @view.transformContent = false
     @view.scale(0.5)
     @view.pivot = new paper.Point(0, 0)

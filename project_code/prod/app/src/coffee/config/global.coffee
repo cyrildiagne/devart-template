@@ -99,7 +99,7 @@ delayed = (duration, callback) ->
 dispatch = (cmd) ->
   window.top.postMessage cmd, '*'
 
-# if Config::DEBUG
+if Config::DEBUG
   window.mouseDownCallbacks = []
   window.addEventListener 'mousedown', ->
     c() for c in window.mouseDownCallbacks

@@ -28,6 +28,8 @@ class mk.playback.Playback
     r.send()
 
   update : (dt) ->
+    return if @position > @numFrames
+
     @currDeltaTime += dt
 
     if @currDeltaTime >= @nextFrameDeltaTime

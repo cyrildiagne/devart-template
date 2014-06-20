@@ -186,7 +186,7 @@ goto = (frame, dt = 1/50) ->
   scene.unmute()
 
 onPlaybackComplete = () ->
-  # ...
+  finishScene()
 
 onFirstUserIn = () ->
   console.log 'first user in'

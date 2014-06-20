@@ -18,6 +18,7 @@ class mk.m11s.tiroirs.Drawer
 
     @follower = new mk.helpers.PartFillFollower @view, @part, opt.weights, opt.z + 100
     @drawerItem = null
+    @oldItem = null
 
     @sfxType = 1
 
@@ -66,14 +67,16 @@ class mk.m11s.tiroirs.Drawer
     @isGrowing = true
 
   growItem : ->
-    rep = false
-    if !@drawerItem
-      sym = ['cane', 'belt', 'ladder', 'umbrella', 'cups', 'ruler', 'windmill', 'hand'].seedRandom 'growItem'
-      symbol = mk.Scene::assets[sym]
-      @drawerItem = new mk.m11s.tiroirs.DrawerItem symbol, @
-      rep = true
+    if @drawerItem
+      @drawerItem.view.remove()
+      @items.splice @items.indexOf(@drawerItem),1
+
+    sym = ['cane', 'belt', 'ladder', 'umbrella', 'cups', 'ruler', 'windmill', 'hand'].seedRandom 'growItem'
+    symbol = mk.Scene::assets[sym]
+    @drawerItem = new mk.m11s.tiroirs.DrawerItem symbol, @
+    @items.push @drawerItem
     @drawerItem.show()
-    return rep
+    return
 
   shrinkItem : (clean=false, callback)->
     if @drawerItem

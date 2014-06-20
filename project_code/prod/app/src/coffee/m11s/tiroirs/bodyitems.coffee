@@ -109,6 +109,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         do (p, opt, dl) =>
           delayed dl, =>
             drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, opt
+            drawer.items = @items
             drawer.openCallback = @drawerOpenedCallback
             drawer.closeCallback = @drawerClosingCallback
             @items.push drawer
@@ -134,8 +135,9 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
   drawerOpenedCallback : (dr) =>
     switch @mode
       when 0
-        if dr.growItem()
-          @items.push dr.drawerItem
+        dr.growItem()
+        #if dr.growItem()
+        #@items.push dr.drawerItem
         @drawersWithItems.push dr
         if @drawersWithItems.length > 3
           oldDr = @drawersWithItems.shift()

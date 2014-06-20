@@ -53,12 +53,19 @@ class mk.sound.Music
       return
     @animTime = currentTime / 1000
     if @animTime > @nextEventTime
+      if @currEvent is (@settings.musicEvents.length-1) #finish scene at last event
+        @isFinished = true
+        @fadeOut =>
+          finishScene()
+        return
       console.log '> Music Event ' + @currEvent
       @onMusicEvent @currEvent if @onMusicEvent
       @setNextEvent()
 
-  fadeOut : () ->
-    @track.fade 1, 0, 1000
+  fadeOut : (callback) ->
+    @track.fade @track.volume(), 0, 2000
+    if callback
+      delayed 2000, callback
 
   mute : ->
     @track.mute()

@@ -21,11 +21,16 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
       63.070 # instru
       90 # ?
       124.390 # (break)
-      126.230 # end
+      126.230 # final
+      139.705 # end
     ]
 
     @sfx =
       fireloop : 'Feu_boucle_2'
+      # fireloop : 'Feu_boucle_4'
+      # windloop : 'VentBoucle_Neutre_2'
+      # scenechange : 'Flute_1'
+      # maskon : 'Plumes_ChimesSolo_4'
 
   # setupSounds: ->
   #   @loops = [

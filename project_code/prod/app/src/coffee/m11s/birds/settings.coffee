@@ -48,6 +48,7 @@ class mk.m11s.birds.Settings extends mk.m11s.base.Settings
       106.440 # 2eme violon
       128.100 # break
       # fadeout  a disparu avec cut !
+      137 # end
     ]
     @sfx =
       nightbird1 : 'OiseauSenvole_MOYEN_1-SansCri'

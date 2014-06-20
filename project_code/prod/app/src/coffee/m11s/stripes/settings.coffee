@@ -19,5 +19,6 @@ class mk.m11s.stripes.Settings extends mk.m11s.base.Settings
         78.400 # (violon)
         82.150 # xylophone
         97 #bis
-        112.120 # end
+        112.120 # final
+        131 # end
     ]

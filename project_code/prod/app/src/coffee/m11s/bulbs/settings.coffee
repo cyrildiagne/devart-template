@@ -32,7 +32,8 @@ class mk.m11s.bulbs.Settings extends mk.m11s.base.Settings
       72.000 # violon grave
       78.000 # (violon aigu)
       84.000 # (violon grave)
-      96.000 # end
+      96.000 # final
+      120 # end
     ]
 
     @sfx =

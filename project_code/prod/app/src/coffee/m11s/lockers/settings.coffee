@@ -24,7 +24,8 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
       84.120 # rythmique
       100.000 # piano
       116.130 # (rythmique) 
-      140.130 # end (non flagrant)
+      140.130 # final (non flagrant)
+      146 # end
     ]
 
     @sfx =

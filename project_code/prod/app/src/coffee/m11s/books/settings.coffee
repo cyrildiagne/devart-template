@@ -30,5 +30,6 @@ class mk.m11s.books.Settings extends mk.m11s.base.Settings
       53.450 # instru
       81.260 # piano
       107.320 # break
-      135.080 # end
+      135.080 # final
+      139.5 # end
     ]

@@ -52,8 +52,9 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       108.010 # break
     # boutons + feuilles sortent des tiroirs
       117.290 # nappe + aigue
-      127.080  # end 
+      127.080  # final
     # tiroirs grandissent puis sortent
+      138 #end 
     ]
 
     @sfx =

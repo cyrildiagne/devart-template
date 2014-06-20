@@ -147,7 +147,7 @@ class mk.m11s.lockers.Pile
     @grains.push g
 
   removeGrain : (g) ->
-    @pile.scaling = @pile.scaling.x + 0.025
+    @pile.scaling = @pile.scaling.x + 0.035
     @pile.position.y -= 0.25
     g.remove()
     @grains.splice @grains.indexOf(g),1

@@ -6,7 +6,7 @@ class mk.m11s.stripes.Stripes
     # @velTracker = new mk.helpers.JointVelocityTracker @joints.slice(0, numStripes)
 
     w = window.viewport.width * 2
-    h = window.viewport.height * 1.2
+    h = window.viewport.height * 1.5
     @bg = new paper.Path.Rectangle(-w, -h*0.5, w*2, h)
     @bg.rotate 25
     @bg.position.y = (window.viewport.height + @bg.bounds.height*0.6) * 0.5

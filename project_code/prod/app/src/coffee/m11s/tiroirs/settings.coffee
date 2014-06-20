@@ -11,6 +11,10 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       'assets/items/tiroirs/ladder.svg'
       'assets/items/tiroirs/belt.svg'
       'assets/items/tiroirs/umbrella.svg'
+      'assets/items/tiroirs/cups.svg'
+      'assets/items/tiroirs/ruler.svg'
+      'assets/items/tiroirs/windmill.svg'
+      'assets/items/tiroirs/hand.svg'
     ]
     
 

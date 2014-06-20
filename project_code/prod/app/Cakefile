@@ -11,6 +11,8 @@ stylus_path = path.join 'src','stylus'
 jade_path = {}
 jade_options = {}
 
+# ulimit -S -n 2048
+
 jade_path.main = path.join 'src','jade','main.jade'
 jade_options.main =
   rootDir : './'
@@ -59,6 +61,8 @@ jade_options.main =
     'm11s/tribal/settings'
     'm11s/tribal/perso'
     'm11s/tribal/bodyitems'
+    'm11s/tribal/items/dreamcatcher'
+    'm11s/tribal/items/pattern'
     'm11s/tribal/items/feather'
     'm11s/tribal/items/mask'
     'm11s/tribal/items/shadow'
@@ -89,12 +93,16 @@ jade_options.main =
     'm11s/books/settings'
     'm11s/books/items/book'
     'm11s/books/items/wave'
+    'm11s/books/items/whale'
+    'm11s/books/items/stars'
+    'm11s/books/items/cage'
     'm11s/books/bodyitems'
 
     'm11s/tech/settings'
     'm11s/tech/items/lines'
     'm11s/tech/items/links'
     'm11s/tech/items/sculpt'
+    'm11s/tech/items/clones'
     'm11s/tech/bodyitems'
 
     'playback/playback'
@@ -116,6 +124,7 @@ jade_options.app =
     'app/quadwarp'
     'app/cloudstorage'
     'app/analytics'
+    'app/viewport'
     'app'
   ]
 

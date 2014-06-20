@@ -36,6 +36,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     # @addButtons()
 
     @flys = []
+    @flyLock = false
     @availableJoints = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
     @velTracker = new mk.helpers.JointVelocityTracker @availableJoints
 
@@ -108,6 +109,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         do (p, opt, dl) =>
           delayed dl, =>
             drawer = new DrawerClass @assets.symbols.tiroirs[symbol], p, opt
+            drawer.items = @items
             drawer.openCallback = @drawerOpenedCallback
             drawer.closeCallback = @drawerClosingCallback
             @items.push drawer
@@ -133,13 +135,15 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
   drawerOpenedCallback : (dr) =>
     switch @mode
       when 0
-        if dr.growItem()
-          @items.push dr.drawerItem
+        dr.growItem()
+        #if dr.growItem()
+        #@items.push dr.drawerItem
         @drawersWithItems.push dr
         if @drawersWithItems.length > 3
           oldDr = @drawersWithItems.shift()
           oldDr.toggle()
       when 1
+        if @flyLock then return
         for fly in @flys
           if !fly.bFlyingToDrawer 
             otherDr = @drawers.random()
@@ -152,6 +156,11 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
           @buttons.buttonsToAdd.push {x:dr.view.position.x, y:dr.view.position.y-10}
 
   addFlying: (drawer) ->
+
+    if @flyLock then return
+    @flyLock = true
+    delayed 2000, => @flyLock = false
+
     switch rngi('aflg',1,3)
       when 1
         obj = 
@@ -176,6 +185,9 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     
     @flys.push fly
     @items.push fly
+
+    fly.grabLocked = true
+    delayed 1000, -> fly.grabLocked = false
 
     fly.stop()
     fly.view.transformContent = false
@@ -240,11 +252,15 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
 
     for fly in @flys
 
+      if fly.isFlying and fly.scarf
+        fly.scarf.update fly.view.position # scarf
+
       continue if fly.bFlyingToDrawer
 
       if fly.isFlying
+        
+        if fly.grabLocked then continue
 
-        if fly.scarf then fly.scarf.update fly.view.position # scarf
         for j,i in @availableJoints
           if j.isUsed then continue
           fp = fly.view.position
@@ -274,8 +290,9 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     return
 
   updateDrawerOpening : ->
-    distMax = 20 * 20
+    distMax = 30 * 30
     for j in [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
+      if j.isUsed then continue
       for dr in @drawers
         dpos = dr.view.position
         dist = (j.x-dpos.x) * (j.x-dpos.x) + (j.y-dpos.y) * (j.y-dpos.y)

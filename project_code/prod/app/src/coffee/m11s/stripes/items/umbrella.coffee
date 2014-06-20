@@ -2,8 +2,8 @@ class mk.m11s.stripes.Umbrella
 
   constructor : (@physics, @part) ->
 
-    @w = 300
-    @h = 100
+    @w = 250
+    @h = 80
     @y = -200
     @isStatic = true
 
@@ -26,6 +26,8 @@ class mk.m11s.stripes.Umbrella
       ],
       fillColor : 'black'
     @view.addChild @top
+
+    @dRot = 0
 
     @stick = new paper.Path.Rectangle [@w*0.5-2, 0], [4, -@y-@h*0.5+15]
     @view.addChild @stick
@@ -51,17 +53,17 @@ class mk.m11s.stripes.Umbrella
       Matter.Body.rotate @body, 0.02
       return
 
-    dRot = @part.getAngle() * 0.2
+    @dRot += (@part.getAngle() * 0.2 - @dRot) * 0.005 * dt
 
     bRot = @body.angle
     bPos = @body.position
 
     dPos = @part.joints[1]
-    dPos.x += @y * Math.sin(-dRot)
-    dPos.y += @y * Math.cos(-dRot)
+    dPos.x += @y * Math.sin(-@dRot)
+    dPos.y += @y * Math.cos(-@dRot)
 
     Matter.Body.translate @body,
       x : dPos.x - bPos.x
       y : dPos.y - bPos.y
 
-    Matter.Body.rotate @body, dRot - bRot
+    Matter.Body.rotate @body, @dRot - bRot

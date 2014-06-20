@@ -101,7 +101,13 @@ class mk.m11s.tech.Trail
     if @visible
       for line in @lines
         line.update(dt)
+
+  toggleStrombo : ->
+
   
+  setLength : (length) ->
+    l.length = length for l in @lines
+
   setVisible : (@visible) ->
     @view.visible = @visible
     if !@visible

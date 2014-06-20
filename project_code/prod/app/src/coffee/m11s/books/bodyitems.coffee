@@ -7,41 +7,60 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
     @boat = null
     @waves = []
     delayed 1000, => @addHeadBook()
+    @whale = null
+    @numPagesTurned = 0
+    @addWhale()
+    
+    mouseDownCallbacks.push @onPageTurn # if Config::DEBUG
     
   addHeadBook: () ->
     hands = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
     @book = new mk.m11s.books.Book @joints[NiTE.HEAD], hands, @onPageTurn
     @items.push @book
 
+  # clean : ->
+  #   mouseDownCallbacks.splice @onPageTurn
+
   onPageTurn : (hand) =>
-    if !@cage
-      @addCage hand
-    else
-      if rng('pageturn') > 0.5
-        @book.flyAway()
-      if !@boat
-        @addBoat()
-      else
-        for i in [0...12]
-          @addWave()
+    # if hand then return
+    @numPagesTurned++
+    console.log 'page turned : ' + @numPagesTurned
+    
+    if @numPagesTurned < 2 and !@cage
+      @addCage @joints[NiTE.LEFT_HAND]#hand
+      return
+    
+    if rng('pageturn') > 0.5
+      @book.flyAway()
+
+    if @whale
+      for i in [0...12]
+        @addWave()
+      @addBoat() if !@boat
+      if @numPagesTurned > 3 then @whale.jump()
+      return
+
+    if !@stars
+      @addStars()
+      return
+
+    # if @numPagesTurned is 3
+    #   @removeStars()
+    #   return
 
   addCage : (hand) ->
-    symbol = mk.Scene::assets['cage']
     h = @joints[NiTE.LEFT_HAND]
     if hand is h
       h = @joints[NiTE.RIGHT_HAND]
-    @cage = new mk.helpers.SimpleJointItem symbol, h, 200
-    @cage.view.pivot = new paper.Point 0, -@cage.view.bounds.width*0.5 - 20
-    @cage.view.scale 0.01
+    @cage = new mk.m11s.books.Cage h
     @items.push @cage
 
-    v = @cage.view
-    tween = new TWEEN.Tween({ scale: 0.01 })
-     .to({ scale: 1 }, 1000)
-     .onUpdate(->
-        v.scaling = @scale
-     )
-     .start window.currentTime
+  removeCage : ->
+    @cage.remove =>
+      delayed 20, =>
+        @cage.view.remove()
+        @items.splice @items.indexOf(@cage),1
+        @cage = null
 
   addBoat : ->
 
@@ -54,13 +73,13 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
     @boat.view.addChild mk.Scene::assets['boat'].place()
     @boat.view.position.x = -(window.viewport.width+@boat.view.bounds.width)*0.5 * side
     @boat.view.scale(side, 1)
-    @boat.view.z = -2000
+    @boat.view.z = -3000
     @boat.view.transformContent = false
 
     dt = 0
 
     tween = new TWEEN.Tween(@boat.view.position)
-    .to({ x: (window.viewport.width+@boat.view.bounds.width)*0.5*side }, 10000)
+    .to({ x: (window.viewport.width+@boat.view.bounds.width)*0.5*side }, 5000)
     .onUpdate(=>
       dt++
       @boat.view.rotation = Math.sin(dt*0.04) * 5 * side
@@ -81,3 +100,25 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
       @items.splice @items.indexOf(wave),1
     @waves.push wave
     @items.push wave
+
+  addWhale : ->
+    @whale = new mk.m11s.books.Whale =>
+      console.log 'whale done'
+      w = @whale
+      @whale = null
+      delayed 20, =>
+        w.view.remove()
+        @items.splice @items.indexOf(w),1
+    @items.push @whale
+
+  addStars : () ->
+    @stars = new mk.m11s.books.Stars @joints[NiTE.HEAD]
+    @items.push @stars
+    @cage.switchLightOn()
+
+  removeStars : ->
+    @cage.switchLightOff()
+    @stars.remove =>
+      delayed 20, =>
+        @stars.view.remove()
+        @items.splice @items.indexOf(@stars),1

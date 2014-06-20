@@ -115,6 +115,9 @@ class mk.m11s.tech.Sculpt
     for s in @shapes
       s.update(dt)
 
+  setLength : (length) ->
+    sc.length = length for sc in @shapes
+
   setVisible : (visible) ->
     for s in @shapes
       s.setVisibility visible

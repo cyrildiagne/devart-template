@@ -4,6 +4,9 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
     @assets = [
       'assets/items/tribal/head.svg'
       'assets/items/tribal/shadow.svg'
+      'assets/items/tribal/circle_1.svg'
+      'assets/items/tribal/circle_2.svg'
+      'assets/items/tribal/circle_3.svg'
     ]
 
    setupSounds : ->
@@ -12,10 +15,11 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
 
     @musicEvents = [
        # rythmique a disparu avec cut !
-      20.000 # basses + sythe
+      21.0 # basses + sythe
       32.000 # synthe aigu
       # nappe a disparu avec cut !
       63.070 # instru
+      90 # ?
       124.390 # (break)
       126.230 # end
     ]

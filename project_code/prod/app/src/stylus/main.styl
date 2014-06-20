@@ -4,9 +4,9 @@ bulbsColor   = #50757d
 tiroirsColor = #5f2633
 birdsColor   = #79795f
 tribalColor  = #ccccbe
-lockersColor = #897173
-thornsColor  = #832945
-stripesColor = #3a5b60
+lockersColor = #832945
+thornsColor  = #3a5b60
+stripesColor = #897173
 booksColor   = #898976
 techColor    = #2a2a2d
 
@@ -96,6 +96,8 @@ body
   &.tech
     background-color techColor
 
+margin = 5%
+
 #ui
   
   &.inactive > *
@@ -103,8 +105,8 @@ body
 
   #info
     position absolute
-    left 50px
-    top 50px
+    left margin
+    top margin
     z-index 998
     text-transform uppercase
     h1
@@ -112,9 +114,17 @@ body
       color #a6a67a
       font-size 18px
     h2
-      font-size 15px
       color #dbdbdb
       margin-top 8px
+      font-size 15px
+        
+    @media screen and (max-width: 640px)
+      width 300px
+      h1
+        font-size 13px
+      h2
+        font-size 10px
+        margin-top 4px
 
   #timeline
     display block
@@ -157,12 +167,14 @@ body
     transition-delay 0.4s, 0.5s
     &.left
       background url('../assets/ui/arrow_left.png')
-      left 50px
+      left margin
     &.right
       background url('../assets/ui/arrow_right.png')
-      right 50px
+      right margin
     &:hover
       opacity 0.5
+    @media screen and (max-width: 640px)
+      -webkit-transform scale(0.5,0.5)
 
   &.inactive .arrow
     &.left
@@ -175,13 +187,15 @@ body
     width 26px
     height 23px
     position absolute
-    right 65px
-    top 65px
+    right margin
+    top margin
     transition top 0.5s ease-out
     background url('../assets/ui/sound.png')
     cursor pointer
     &.off
-      width 15px
+      width 15px 
+    @media screen and (max-width: 640px)
+      display none
 
   &.inactive #sound
     top -23px

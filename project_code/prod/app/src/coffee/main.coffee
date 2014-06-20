@@ -55,7 +55,7 @@ setupApp = ->
 
 setupPaper = ->
   canvas = window.canvas = document.getElementById 'paperjs-canvas'
-  canvas.setAttribute 'data-paper-hidpi', ''
+  # canvas.setAttribute 'data-paper-hidpi', ''
   canvas.setAttribute 'data-paper-resize', ''
   canvas.style.display = 'block'
   document.body.appendChild canvas
@@ -202,7 +202,11 @@ windowResized = (ev) ->
   v =
     width : window.innerWidth
     height : window.innerHeight
-  view.scaling = v.height / viewport.height#* 0.85
+
+  pixelRatio = 1
+  # if window.devicePixelRatio
+  #   pixelRatio = window.devicePixelRatio
+  view.scaling = v.height / viewport.height
 
   view.position.x = v.width * 0.5
   view.position.y = v.height * 0.5

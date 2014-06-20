@@ -1,6 +1,6 @@
 class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
 
-  setupItems: () ->
+  setupItems : () ->
     @flys = []
 
     @locks = []
@@ -25,12 +25,14 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     switch evId
       when 4
         @pilesCanFly = true
-        for pile in @piles
-          scaling = mk.m11s.lockers.Pile::SCALE_MAX_BEFORE_FLY
-          if pile.pile.scaling.x > scaling
-            @flyPile pile.type
+        @flyInterval()
+        @scaleFactor = 0.1
+        # for pile in @piles
+        #   scaling = mk.m11s.lockers.Pile::SCALE_MAX_BEFORE_FLY
+        #   if pile.pile.scaling.x > scaling
+        #     @flyPile pile.type
 
-  addLockers: ->
+  addLockers : ->
     parts = @getPartsExcluding ['head']
     rngk = 'addLockers'
     for p in parts
@@ -46,15 +48,23 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @locks.push lock
     @items.push lock
 
-  addKey: ->
+  addKey : ->
     key = new mk.m11s.lockers.Key @flys.length
     @items.push key
     @flys.push key
 
-  addPile: (type) ->
+  getBiggestPile : ->
+    if !@piles.length then return
+    biggest = @piles[0]
+    for p in @piles
+      if p.pile.scaling.x > biggest.pile.scaling.x
+        biggest = p
+    return biggest
+
+  addPile : (type) ->
     console.log 'add pile'
     pile = new mk.m11s.lockers.Pile type
-    pile.fullCallback = => @flyPile pile.type
+    # pile.fullCallback = => @flyPile pile.type
     @items.push pile
     @piles.splice type, 0, pile
 
@@ -63,6 +73,11 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @piles[type].fly()
     @piles.splice type, 1
     @addPile type
+
+  flyInterval : =>
+    p = @getBiggestPile()
+    @flyPile(p.type)
+    delayed 4080, @flyInterval
 
   getKeyInLock : (fly) ->
     for lock in @locks
@@ -74,7 +89,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
           return lock
     return null
 
-  update: (dt) ->
+  update : (dt) ->
     super dt
 
     for i in [@flys.length-1..0] by -1

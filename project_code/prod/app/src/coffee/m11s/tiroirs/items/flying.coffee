@@ -9,8 +9,9 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
 
     @bFlyingToDrawer = false
     @onReachedDrawerCallback = null
-    @speed = 0.015
+    @speed = 0.003
     @scale = 1
+    @flyAwayVelocity = null
 
   randomPos: ->
     x = (rng(@rngk)-0.5)*400
@@ -23,11 +24,22 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
 
   flyToDrawer: (@drawer, @onReachedDrawerCallback)->
     @bFlyingToDrawer = true
-    if !@isFlying then @start()
+    if !@isFlying 
+      @flyAwayVelocity = new paper.Point
+        x : (rng('flytdr')-0.5)*5#window.viewport.width,
+        y : -10#-0.5*window.viewport.height
+      @start()
+      delayed 4000, => @onReachedDrawerCallback()
 
   update: (dt) ->
     if !@isFlying then return
-    if @bFlyingToDrawer
+
+    if @flyAwayVelocity
+
+      @velocity = @flyAwayVelocity
+
+    else if @bFlyingToDrawer
+
       t = @drawer.view.position
       dist = t.subtract(@view.position)
       dist.y -= 10
@@ -39,7 +51,7 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
         if @onReachedDrawerCallback
           @onReachedDrawerCallback()
           return
-      @scale *= 0.95
+      @scale *= 0.97
       @view.scaling = @scale
       if @scarf
         @scarf.scarf1.view.scaling = @scarf.scarf2.view.scaling = @scale
@@ -53,4 +65,5 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
       @velocity = @dest.subtract(@pos).multiply(1.5/1000*dt)
       if @item
         @item.rotation += (@velocity.x * 4 - @item.rotation) * 0.1
+        
     super dt

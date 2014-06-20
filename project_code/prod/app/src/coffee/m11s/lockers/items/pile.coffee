@@ -137,7 +137,7 @@ class mk.m11s.lockers.Pile
     @speed = 0
     @tentacles = null
 
-    @scaleFactor = 0.025
+    @scaleFactor = 0.035
 
   addGrain : ->
     g = new paper.Path.Circle

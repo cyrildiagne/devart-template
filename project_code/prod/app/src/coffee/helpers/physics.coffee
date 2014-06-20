@@ -21,7 +21,7 @@ class mk.helpers.Physics
       world :
         bounds :
           min: { x: 0, y: 0 }
-          max: { x: window.viewport.width, y: window.viewport.height } 
+          max: { x: window.viewport.width * 2, y: window.viewport.height } 
 
     @bodies = []
     @persoPartBodies = []

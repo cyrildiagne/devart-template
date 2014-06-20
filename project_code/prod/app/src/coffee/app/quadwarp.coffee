@@ -1,6 +1,6 @@
 class QuadWarp
 
-  constructor: (@dom) ->
+  constructor: (@dom, @storage_key) ->
     @current = null
     @view = null
     @pts = []
@@ -18,8 +18,16 @@ class QuadWarp
     for i in [0...4]
       @dst[i] = {x:0, y:0}
       @src[i] = {x:0, y:0}
-    @src[1].x = @src[2].x = @dst[1].x = @dst[2].x = window.innerWidth
-    @src[2].y = @src[3].y = @dst[2].y = @dst[3].y = window.innerHeight
+    @src[1].x = @src[2].x = window.innerWidth
+    @src[2].y = @src[3].y = window.innerHeight
+    @loadPts()
+
+  loadPts : ->
+    @dst = JSON.parse localStorage[@storage_key]
+
+  savePts : ->
+    json = JSON.stringify @dst
+    localStorage.setItem @storage_key, json
 
   initPtsView : ->
     @view = document.createElement 'div'
@@ -116,6 +124,7 @@ class QuadWarp
     @dst[@current.id].x = e.x
     @dst[@current.id].y = e.y
     @update()
+    @savePts()
 
   onMouseUp : (e) =>
     @current = null

@@ -28,7 +28,7 @@ initApp = ->
   iframe = $("#frame")[0]
   if isLive
     gcs = new CloudStorage()
-    quadwarp = new QuadWarp iframe
+    quadwarp = new QuadWarp iframe, 'kalia_quadwarp'
     scenes = ['tiroirs']
     currSceneId = 0
     launchCurrentScene()

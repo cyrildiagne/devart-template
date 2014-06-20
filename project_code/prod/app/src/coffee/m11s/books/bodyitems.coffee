@@ -11,7 +11,7 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
     @numPagesTurned = 0
     @addWhale()
     
-    mouseDownCallbacks.push @onPageTurn # if Config::DEBUG
+    mouseDownCallbacks.push @onPageTurn if Config::DEBUG
     
   addHeadBook: () ->
     hands = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]

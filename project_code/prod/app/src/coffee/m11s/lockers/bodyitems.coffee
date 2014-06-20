@@ -104,7 +104,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @timeSinceKey+=dt
     if @flys.length < 10 and @timeSinceKey > @timeBeforeNextKey
       @timeSinceKey -= @timeBeforeNextKey
-      @timeBeforeNextKey = rng('LockersUpdate') * 3000 + 2000
+      @timeBeforeNextKey = rng('LockersUpdate') * 3000 + 3000
       @addKey()
     
     

@@ -42,6 +42,7 @@ class mk.m11s.birds.House
      .delay(delay*(2650))#+7000)
      .easing( TWEEN.Easing.Quadratic.Out )
      .onStart(->
+        mk.Scene::sfx.play 'house_show'+rngi('shw',1,3)
         v.visible = true
      )
      .onUpdate(->

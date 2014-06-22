@@ -32,7 +32,7 @@ class mk.m11s.birds.WildBird extends mk.helpers.Flying
     @numUpdatesSinceDeparture = 0
     snd = [1, 2].random()
     delayed 600, ->
-      mk.Scene::sfx.play 'nightbird'+rngi('fl',1,2)
+      mk.Scene::sfx.play 'nightbird'+rngi('fl',1,3)
 
   update: (dt) ->
     if @isFlying

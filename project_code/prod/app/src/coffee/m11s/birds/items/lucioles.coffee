@@ -15,6 +15,14 @@ class mk.m11s.birds.Lucioles
     @timeBetweenRemoveLucioles = 625
     @timeSinceLastLucioleRemoved = 0
 
+    @velTracker = new mk.helpers.JointVelocityTracker [@leftHand, @rightHand] 
+
+    @sfx = mk.Scene::sfx.play 'lucioleloop'
+    @sfx.volume(0) if @sfx
+
+  clean : ->
+    @sfx.stop()
+
   addLuciole : (hand) ->
     l = @symbol.place()
     rngk = 'addluciole'
@@ -51,7 +59,15 @@ class mk.m11s.birds.Lucioles
         l.speed = 1
         @leavingLucioles.push l
 
+  updateSFXVolume : ->
+    @velTracker.update()
+    v = @velTracker.get(0)+@velTracker.get(1)
+    vol = Math.min 1, v / 500
+    @sfx.volume vol
+
   update : (dt) ->
+    @updateSFXVolume()
+
     if @bLeaving
       @timeSinceLastLucioleRemoved += dt
       if @timeSinceLastLucioleRemoved > @timeBetweenRemoveLucioles

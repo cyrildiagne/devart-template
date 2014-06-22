@@ -22,14 +22,14 @@ class mk.m11s.birds.Bird extends mk.helpers.Flying
     @bFlyingToBranch = false
     @bFlyingToDestination = false
     @destination = null
-    mk.Scene::sfx.play 'bird'+rngi('ftb',1,2)
+    mk.Scene::sfx.play 'bird'+rngi('ftb',1,3)
 
   flyToBranch : (@target) ->
     @bFlyingToBranch = true
     if !@isFlying
       @start()
       # console.log 'fly to branch'
-      mk.Scene::sfx.play 'bird'+rngi('ftb',1,2)
+      mk.Scene::sfx.play 'bird'+rngi('ftb',1,3)
 
   flyToHouse : (house, @goneHomeCallback) ->
     @bFlyingToDestination = true
@@ -50,7 +50,7 @@ class mk.m11s.birds.Bird extends mk.helpers.Flying
       position : new paper.Point x,y
 
     @start()
-    mk.Scene::sfx.play 'bird'+rngi('ftb',1,2)
+    mk.Scene::sfx.play 'bird'+rngi('ftb',1,3)
     # @speed *= 2.5
 
   land : () ->

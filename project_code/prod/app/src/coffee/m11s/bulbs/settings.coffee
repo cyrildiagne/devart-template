@@ -37,13 +37,14 @@ class mk.m11s.bulbs.Settings extends mk.m11s.base.Settings
     ]
 
     @sfx =
-      ropeFalls    : 'Ampoule_3-2_cordeTombe'
-      ropeReleased : 'Ampoule_OFF-1_cordeRelachee'
+      ropeFalls    : 'CordeTombe_1'
+      ropeReleased : 'TireCorde_13'
       ropeGrabbed  : 'Ampoule_ON-1'
       laserOn      : 'Ampoule_Scintille-1_laserGrandit'
       laserOff     : 'Ampoule_Scintille-2_laserDiminue'
-      bulbShow1    : 'Ampoule_6-2'
-      bulbShow2    : 'Ampoule_6-4'
-      bulbShow3    : 'Ampoule_6-6'
+      bulbShow1    : 'AmpouleApparait_1-1'
+      bulbShow2    : 'AmpouleApparait_1-4'
+      bulbShow3    : 'AmpouleApparait_1-13'
       liftOut      : 'Ampoule_2-2_ascenseurArrivee'
       liftIn       : 'Ampoule_2-1_ascenseurDepart'
+      bulbOn       : 'Ampoule_ON-1'

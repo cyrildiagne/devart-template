@@ -162,6 +162,7 @@ class mk.m11s.lockers.Pile
     @removeGrain(@grains[0]) while @grains.length
     @tentacles = new mk.m11s.lockers.Tentacles @pile, @color
     @view.insertChild 0, @tentacles.view
+    mk.Scene::sfx.play 'sandfly' + rngi('sf',1,3)
 
   update : (dt) ->
 

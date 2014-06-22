@@ -30,6 +30,12 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
 
     @sfx =
       openLock : 'OuvreSerrure_1'
-      flyloop1 : 'Vole_GRAND_2'
-      flyloop2 : 'Vole_MOYEN_2'
-      flyloop3 : 'Vole_PETIT_2'
+      flyloop1 : 'CleVole_5-GRAND'
+      flyloop2 : 'CleVole_5-MOYEN'
+      flyloop3 : 'CleVole_5-PETIT'
+      sandfly1 : 'SableSenvole_PETIT'
+      sandfly2 : 'SableSenvole_MOYEN'
+      sandfly3 : 'SableSenvole_GRAND'
+
+#       SableSenvole_GRAND.wav
+# SableSenvole_PETIT.wav

@@ -43,7 +43,11 @@ class mk.m11s.stripes.Umbrella
       body : @body
       view : @view
 
+    mk.Scene::sfx.play 'umbrella_in'
+
   setStatic : (@isStatic) ->
+    if !@isStatic
+      mk.Scene::sfx.play 'umbrella_out'
     # Matter.Body.setStatic @body, @isStatic
 
   update : (dt) ->

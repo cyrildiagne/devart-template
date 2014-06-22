@@ -40,6 +40,7 @@ class mk.helpers.Physics
     body = Matter.Bodies.rectangle x, y, width, height,
       isStatic: true
       angle : angle
+      label : 'perso'
     Matter.World.add @engine.world, body
 
     ppb =
@@ -52,12 +53,15 @@ class mk.helpers.Physics
   addPersoJoint : (jnt, opt) ->
     opt = {} if !opt
     opt.isStatic = true
+    opt.label = 'perso'
     body = Matter.Bodies.circle jnt.x, jnt.y, jnt.radius, opt, 10
+    body.label = 'perso'
     Matter.World.add @engine.world, body
 
     pjb =
       body : body
       joint : jnt
+      label : 'perso'
 
     @updatePersoJoint pjb
     @persoJointBodies.push pjb
@@ -156,6 +160,11 @@ class mk.helpers.Physics
 
   update : (dt) ->
     Matter.Engine.update @engine, 1000/60, 1
+
+    if @engine.pairs.collisionStart.length > 0
+      Matter.Events.trigger @engine, 'collisionStart',
+        pairs : @engine.pairs.collisionStart
+
     for b in @bodies
       b.view.position.x = b.body.position.x
       b.view.position.y = b.body.position.y

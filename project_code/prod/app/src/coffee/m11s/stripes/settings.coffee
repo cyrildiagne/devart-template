@@ -22,3 +22,11 @@ class mk.m11s.stripes.Settings extends mk.m11s.base.Settings
         112.120 # final
         131 # end
     ]
+
+    @sfx =
+     ballkalia1   : 'BalleTouche_2-1'
+     ballkalia2   : 'BalleTouche_2-2'
+     ballkalia3   : 'BalleTouche_2-3'
+     barrkalia    : 'BalleTouche_3-1'
+     umbrella_in  : 'Parapluie_1'
+     umbrella_out : 'Parapluie_2'

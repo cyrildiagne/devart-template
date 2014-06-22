@@ -5,6 +5,7 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
     @setupPhysics()
     @fallings = null
     @umbrella = null
+    @sfx = null
     delayed 1000, =>
       @addFalling()
       # @fallings.setMode 'all'
@@ -49,6 +50,24 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
     @physics.addPersoPartRect @getPart('leftUpperLeg')
     @physics.addPersoPartRect @getPart('rightLowerLeg')
     @physics.addPersoPartRect @getPart('leftLowerLeg')
+
+    Matter.Events.on @physics.engine, 'collisionStart', (event) =>
+      p = event.pairs[0]
+      for p in event.pairs
+        if p.bodyA.label isnt 'perso' and p.bodyB.label isnt 'perso'
+          return
+        if p.collision.depth < 1
+          return
+        if p.bodyA.label == 'Rectangle Body' or p.bodyB.label == 'Rectangle Body'
+          return
+          @sfx = mk.Scene::sfx.play 'barrkalia'
+        else
+          if @sfx
+            if @sfx.pos() > 0 and @sfx.pos() < 0.10
+              return
+          @sfx = mk.Scene::sfx.play 'ballkalia'+(1+Math.floor(Math.random()*3))
+
+          @sfx.volume Math.min(1, p.collision.depth / 5)
 
   update: (dt) ->
     @physics.update dt

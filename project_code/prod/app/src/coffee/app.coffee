@@ -220,6 +220,8 @@ window.onmessage = (e) ->
       console.log 'APP > scene loaded'
       if !isLive
         $status.html 'setting up performance'
+      if $.browser.mobile
+        sendCommand 'mobile', '*'
     when 'started'
       console.log 'APP > scene started'
       currentMode = SCENE_RUNNING

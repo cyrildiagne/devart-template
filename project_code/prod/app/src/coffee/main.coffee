@@ -15,6 +15,8 @@ currentTime = 0
 timestamp = 0
 frameNum = 0
 
+framerate = 50
+
 setupPlayback = (filename) ->
   dispatch 'loading'
   isLive = false
@@ -248,7 +250,7 @@ update = (deltaTime) ->
       record.addFrame sync.data
       sync.hasNewData = false
 
-  dt = 1000 / 50
+  dt = 1000 / framerate
   accumulator += deltaTime
   while accumulator >= dt
 
@@ -288,5 +290,8 @@ window.onmessage = (e) ->
       else setupLive args[1]
     when 'toggle_mute'
       scene.toggleMute()
+    when 'mobile'
+      alert 'mobile mode'
+      framerate = 25
 
 dispatch 'init'

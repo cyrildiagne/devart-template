@@ -1,4 +1,4 @@
-fs = require 'fs'
+fs = require 'fs-extra'
 which = require 'which'
 path = require 'path'
 {spawn, exec} = require 'child_process'
@@ -38,10 +38,12 @@ publishAll = ->
 exportItem = (m11, subfolder, bitrate=256, compress=1) ->
   s_path = path.join m11, subfolder
   files = fs.readdirSync path.join(in_path,s_path)
+  output = path.join(out_path,s_path)
+  fs.removeSync output
+  fs.ensureDirSync output
   for f in files
     if f[0] is '.' then continue
     s = f.split('.')[0]
-    mkdirRecSync path.join(out_path,s_path)
     input  = path.join in_path,  s_path, s+'.wav'
     output = path.join out_path, s_path, s+'.mp3'
     do (output) ->

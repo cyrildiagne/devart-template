@@ -22,7 +22,9 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     symbol = @assets.symbols.tribal['head']
     MaskClass = m11Class 'Mask'
     @mask = new MaskClass symbol, @joints[NiTE.RIGHT_HAND], @joints[NiTE.HEAD]
-    @mask.maskOnCallback = => @startFire()
+    @mask.maskOnCallback = => 
+      mk.Scene::sfx.play 'maskon'
+      @startFire()
     @items.push @mask
 
   onMusicEvent : (evId) ->
@@ -30,14 +32,18 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
       when 0
         @addFeathers()
       when 2
+        mk.Scene::sfx.play 'scenechange'
         @deform = true
         for feather in @feathers
           for f in feather.feathers
             f.deform = true
         @stopFire()
-        delayed 1000, => @addStars()
+        delayed 1000, =>
+          mk.Scene::sfx.play 'scenechange'
+          @addStars()
         delayed 2000, => @addDreamCatcher()
       when 3
+        mk.Scene::sfx.play 'scenechange'
         @removeDreamCatcher()
         @removeStars()
         @addPattern()
@@ -158,7 +164,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
       pct = Math.min(Math.max(0, lh_pct+rh_pct), 1.3)
 
       if @fire
-        @fire.wind = (lh.x + rh.x - 2 * torso.x) / 2 * 0.01
+        @fire.setWind (lh.x + rh.x - 2 * torso.x) / 2 * 0.01
 
       for amper in [@fire, @dreamcatcher]
         if amper then amper.setAmp pct

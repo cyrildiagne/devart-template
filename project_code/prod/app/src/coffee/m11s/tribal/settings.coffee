@@ -26,24 +26,11 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
     ]
 
     @sfx =
-      fireloop : 'Feu_boucle_2'
-      # fireloop : 'Feu_boucle_4'
-      # windloop : 'VentBoucle_Neutre_2'
-      # scenechange : 'Flute_1'
-      # maskon : 'Plumes_ChimesSolo_4'
-
-  # setupSounds: ->
-  #   @loops = [
-  #     'assets/sounds/tribal/loop/basse_a.mp3'
-  #     'assets/sounds/tribal/loop/basse_b.mp3'
-  #     'assets/sounds/tribal/loop/deltafeu_b.mp3'
-  #     'assets/sounds/tribal/loop/synth_loop.mp3'
-  #     'assets/sounds/tribal/loop/tactac.mp3'
-  #   ]
-  #   @oneshots = [
-  #     'assets/sounds/tribal/oneshot/deltafeu_c.mp3'
-  #     'assets/sounds/tribal/oneshot/violon_c.mp3'
-  #   ]
+      fireloop    : 'Feu_boucle_4'
+      windloop    : 'VentBoucle_Neutre_2'
+      scenechange : 'Flute_1'
+      featherout  : 'Plumes_5'
+      maskon      : 'Plumes_ChimesSolo_4'
 
   setupColors : ->
     super()

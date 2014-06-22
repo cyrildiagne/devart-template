@@ -58,11 +58,19 @@ class mk.m11s.tribal.Fire
     @amp = 0
     @wind = 1
 
-    @sfx = mk.Scene::sfx.play 'fireloop'
-    @sfx.volume(0) if @sfx
+    @fireSFX = mk.Scene::sfx.play 'fireloop'
+    @fireSFX.volume(0) if @fireSFX
+
+    @windSFX = mk.Scene::sfx.play 'windloop'
+    @windSFX.volume(0) if @windSFX
 
   clean : ->
-    @sfx.stop()
+    @fireSFX.stop()
+    @windSFX.stop()
+
+  setWind : (@wind) ->
+    @windSFX.volume Math.abs(@wind)
+    # console.log @wind
 
   addFlame : ->
     rngk = @rngk + 'addFlame'
@@ -96,7 +104,7 @@ class mk.m11s.tribal.Fire
     @minSpeed = 0.02 + ratio * 0.06
     @riseSpeed = 10 + ratio * 5
 
-    @sfx.volume(Math.min(1, 0.2 + ratio*0.5)) if @sfx
+    @fireSFX.volume(Math.min(1, 0.2 + ratio*0.5)) if @fireSFX
 
   update: (dt) ->
     i = 0

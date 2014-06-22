@@ -22,6 +22,7 @@ $title = null
 $timeline = null
 $status = null
 $sound = null
+
 uiHideTimeout = -1
 
 initApp = ->
@@ -33,13 +34,28 @@ initApp = ->
     currSceneId = 0
     launchCurrentScene()
   else
-    getIndex (data) ->
+    $title = $('#title').html('Les Métamorphoses de Mr Kalia')
+    $status = $('#date')
+    sceneName = getHashParam 'scene'
+    getList sceneName, (data) ->
       scenes = data
-      setupUI()
-      setupHashNav()
-      currSceneId = scenes.length-1
-      updateTimelineView()
-      launchCurrentScene()
+      if sceneName
+        currSceneId = getSceneIndexByName sceneName
+      else
+        currSceneId = scenes.length-1
+      playbackInfoLoaded()
+
+playbackInfoLoaded = ->
+  setupUI()
+  setupHashNav()
+  updateTimelineView()
+  launchCurrentScene()
+
+getSceneIndexByName = (sceneName) ->
+  idx = 0
+  for i in [0...scenes.length]
+    return i if scenes[i].tag is sceneName
+  return 0
 
 getHashParam = (key)->
    query = window.location.hash.substring 1
@@ -50,12 +66,14 @@ getHashParam = (key)->
       return pair[1] || true
    return false
 
-getIndex = (callback) ->
-  console.log 'APP > retrieving index ' + Config::indexURL
+getList = (scene, callback) ->
+  url = Config::indexURL + '&scene=' + scene
+  console.log 'APP > retrieving index ' + url
+  $status.html 'RETRIEVING PERFORMANCES LIST'
   r = new XMLHttpRequest()
   r.onload = () =>
     if r.status is 200
-      items = JSON.parse(r.responseText).items
+      items = JSON.parse(r.responseText)
       data = []
       for i in [0...items.length]
         infos = items[i].name.split '_'
@@ -68,25 +86,24 @@ getIndex = (callback) ->
             scene : infos[2]
       callback data
     else console.log 'error'
-  r.open 'GET', Config::indexURL
+  r.open 'GET', url
   setTimeout ->
     r.send()
   , 100
 
 next = ->
+  nextSceneId = currSceneId+1
   if currentMode is SCENE_RUNNING
-    if ++currSceneId >= scenes.length then currSceneId = 0
-    changeScene()
+    if nextSceneId >= scenes.length then nextSceneId = 0
+    sceneName = scenes[nextSceneId].tag
+    window.location.hash = 'scene='+sceneName
 
 prev = ->
+  prevSceneId = currSceneId-1
   if currentMode is SCENE_RUNNING
-    if --currSceneId < 0 then currSceneId = scenes.length-1
-    changeScene()
-
-set = (idx) ->
-  if currentMode is SCENE_RUNNING
-    currSceneId = idx
-    changeScene()
+    if prevSceneId < 0 then prevSceneId = scenes.length-1
+    sceneName = scenes[prevSceneId].tag
+    window.location.hash = 'scene='+sceneName
 
 changeScene = ->
   updateTimelineView()
@@ -97,6 +114,13 @@ launchCurrentScene = ->
   currScene = scenes[currSceneId]
   sendCommand 'launch ' + (currScene.tag || currScene), '*'
 
+setSceneFromName = (sceneName) ->
+  idx = getSceneIndexByName sceneName
+  console.log 'set scene from name ' + sceneName
+  if idx > 0 and idx != currSceneId 
+    currSceneId = idx
+    if currentMode is SCENE_RUNNING
+      changeScene()
 
 # ---- UI -----
 
@@ -104,6 +128,9 @@ setupHashNav = ->
   $(window).on 'hashchange', hashChanged
 
 hashChanged = ->
+  if currentMode is SCENE_RUNNING
+    scene = getHashParam 'scene'
+    if scene then setSceneFromName scene
   goto = getHashParam 'goto'
   if goto then sendCommand 'goto '+goto,'*'
   pause = getHashParam 'pause'
@@ -112,8 +139,6 @@ hashChanged = ->
   if mute then sendCommand 'mute'
 
 setupUI = ->
-  $title = $('#title').html('Les Métamorphoses de Mr Kalia')
-  $status = $('#date')
   setupMuteButton()
   setupTimeline()
   setupArrows()
@@ -136,10 +161,11 @@ setupMuteButton = ->
 setupTimeline = ->
   $timeline = $('#timeline')
   for i in [0...scenes.length]
-    $timeline.append $('<div>').addClass(scenes[i].scene)
+    $tmlItem = $('<a>').addClass(scenes[i].scene)
+    $tmlItem.attr 'href', '/#scene='+scenes[i].tag
+    $timeline.append $tmlItem
   
   setTimeout ->
-    $timeline.on 'mousedown', mouseDownTimeline
     mouseMoveTimeline {x:window.innerWidth*0.5}
     if window.innerWidth < $timeline.width()
       $timeline.on 'mousemove', mousemovetimeline
@@ -159,9 +185,9 @@ setSceneDate = ->
   date = day + '/' + m + '/' + d.getFullYear()
   $status.html 'PERF. N°'+currSceneId + ' - ' + time + ' | ' + date
 
-mouseDownTimeline = (e) ->
-  if currentMode is SCENE_RUNNING
-    set $(e.target).index()
+# mouseDownTimeline = (e) ->
+  # if currentMode is SCENE_RUNNING
+  #   set $(e.target).index()
 
 updateTimelineView = ->
   if isLive then return

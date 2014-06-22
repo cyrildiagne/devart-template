@@ -76,7 +76,7 @@ body
   &.off
     opacity 0
 
-#curtain, #timeline > div
+#curtain, #timeline > a
   &.bulbs
     background-color bulbsColor
   &.tiroirs
@@ -138,13 +138,13 @@ margin = 5%
     white-space nowrap
     transition bottom 0.5s ease-out
     transition-delay 0.6s
-    > div
+    > a
       display inline-block
       position relative
       width 20px
       height 40px
       top 40px
-      cursor pointer
+      // cursor pointer
       transition top 0.3s ease-out, background-color 0.3s ease-out
       &:hover
         opacity 0.5

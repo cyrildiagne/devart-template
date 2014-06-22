@@ -161,7 +161,9 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @flyLock = true
     delayed 2000, => @flyLock = false
 
-    switch rngi('aflg',1,3)
+    id = rngi('aflg',1,3)
+    mk.Scene::sfx.play 'itemFly'
+    switch id
       when 1
         obj = 
           symbol : @assets.symbols.tiroirs['hat']

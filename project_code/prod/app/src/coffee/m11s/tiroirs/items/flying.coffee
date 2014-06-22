@@ -12,6 +12,7 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
     @speed = 0.003
     @scale = 1
     @flyAwayVelocity = null
+    @sfx = mk.Scene::sfx.play 'itemFlyloop'
 
   randomPos: ->
     x = (rng(@rngk)-0.5)*400
@@ -30,6 +31,15 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
         y : -10#-0.5*window.viewport.height
       @start()
       delayed 4000, => @onReachedDrawerCallback()
+
+  start: ->
+    super()
+    @sfx = mk.Scene::sfx.play 'itemFlyloop'
+    
+  stop : ->
+    super()
+    @sfx.stop()
+
 
   update: (dt) ->
     if !@isFlying then return
@@ -65,5 +75,4 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
       @velocity = @dest.subtract(@pos).multiply(1.5/1000*dt)
       if @item
         @item.rotation += (@velocity.x * 4 - @item.rotation) * 0.1
-        
     super dt

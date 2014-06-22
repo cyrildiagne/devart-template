@@ -18,7 +18,6 @@ class mk.m11s.tiroirs.DrawerItem
     @item.position.y = @h
     @view.addChild @item
 
-    @sfxType = rngi('dri', 1,2)
     @rotation = 0
     @rotationImpact = 2 + rng('dri') * 3
 
@@ -33,7 +32,7 @@ class mk.m11s.tiroirs.DrawerItem
     @view.z = @drawer.view.z + @zOffset
 
   show : ->
-    @sfx = mk.Scene::sfx.play('itemAppear' + @sfxType)
+    @sfx = mk.Scene::sfx.play('itemAppear' + rngi('dri', 1,3))
     @sfx.volume 0.2 if @sfx
     new TWEEN.Tween(@offset).to({x:40*@drawer.scale,y:0}, 500).start window.currentTime
     it = @item

@@ -58,10 +58,14 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
     ]
 
     @sfx =
-      drawerClose1 : 'Tirroir_Ferme_MOYEN_3'
-      drawerClose2 : 'Tirroir_Ferme_GRAND_3'
+      drawerClose1 : 'Tirroir_Ferme_GRAND_3'
+      drawerClose2 : 'Tirroir_Ferme_MOYEN_3'
+      drawerClose3 : 'Tirroir_Ferme_PETIT_3'
       drawerOpen1  : 'Tirroir_Ouvert_GRAND_3'
       drawerOpen2  : 'Tirroir_Ouvert_MOYEN_3'
+      drawerOpen3  : 'Tirroir_Ouvert_PETIT_3'
       itemAppear1  : 'ObjetquiSort_3'
       itemAppear2  : 'ObjetquiSort_3-2'
+      itemAppear3  : 'ObjetquiSort_3-3'
       itemFly      : 'OiseauSenvole_GRAND_1-SansCri'
+      itemFlyloop  : 'Ailes_Boucle_PETIT'

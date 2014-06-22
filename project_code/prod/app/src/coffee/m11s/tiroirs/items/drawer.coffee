@@ -20,7 +20,12 @@ class mk.m11s.tiroirs.Drawer
     @drawerItem = null
     @oldItem = null
 
-    @sfxType = 1
+    if opt.scale > 0.41
+      @sfxType = 1
+    else if opt.scale > 0.21
+      @sfxType = 2
+    else @sfxType = 3
+
 
     @openCallback = null
     @maxOpenness = 60
@@ -37,7 +42,6 @@ class mk.m11s.tiroirs.Drawer
   setup : ->
     if rng(@rgnk+'setup') > 0.3
       c1 = ['beige', 'cream']
-      @sfxType = 2
     else c1 = ['lightBlue', 'blue']
     if @part.name is 'torso'
       c2 = ['red', 'darkGray']

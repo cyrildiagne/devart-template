@@ -103,3 +103,6 @@ if Config::DEBUG
   window.mouseDownCallbacks = []
   window.addEventListener 'mousedown', ->
     c() for c in window.mouseDownCallbacks
+  window.mouseUpCallbacks = []
+  window.addEventListener 'mouseup', ->
+    c() for c in window.mouseUpCallbacks

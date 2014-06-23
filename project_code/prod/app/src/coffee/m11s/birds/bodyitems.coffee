@@ -25,6 +25,13 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @lucioles = null
     @hands = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
 
+    if Config::DEBUG
+      mouseDownCallbacks.push =>
+        t.bShrink = true for t in @trees
+      mouseUpCallbacks.push =>
+        t.bShrink = false for t in @trees
+
+
     # @bGrowHouses = false
     # @timeBetweenNewHouse = 625 * 4
     # @intervalHouse = 0
@@ -47,6 +54,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     switch evId
       when 0 # apparition branches
         # @bGrowTrees = true
+        @addTree()
         @addTree()
         @addTree()
         @addTree()
@@ -90,6 +98,8 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
             do (b) ->
               b.flyOut ->
                 b.flyToBranch b.target
+    return
+
 
   setNightMode : ->
     color = @settings.palette.blue
@@ -105,6 +115,10 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @removeTreeItems()
     @removeBodyFlowers()
     @addMoon()
+    for t in @trees
+      for b in t.branches
+        b.path.strokeColor = '#' + color.toString(16)
+    return null
 
   addMoon : ->
     hex = '#' + @settings.palette.lightBlue.toString 16
@@ -151,10 +165,6 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         item.fillColor.saturation = @s
         item.fillColor.brightness = @b
      ).start window.currentTime
-    # for t in @trees
-    #   for b in t.branches
-    #     b.path.strokeColor = hexa
-    # return null
 
   addLucioles : ()->
     leftHand = @joints[NiTE.LEFT_HAND]
@@ -162,7 +172,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @lucioles = new mk.m11s.birds.Lucioles @assets.symbols.birds['luciole'], leftHand, rightHand
     @items.push @lucioles
 
-  addBird : (tree)->
+  addBird : (tree, trackPoint)->
     symbs = ['bird1', 'bird2']
     rdmk = 'addBird'
     sname = symbs.seedRandom rdmk
@@ -172,8 +182,8 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     bird = new mk.m11s.birds.Bird symbol, @items.length, color
     if !tree
       tree = @trees.seedRandom 'addBird'
-    console.log 'addbird'
-    bird.flyToBranch tree.addTrackPoint()
+    # console.log 'addbird'
+    bird.flyToBranch trackPoint#tree.addTrackPoint()
     # @items.push bird
     @birds.push bird
 
@@ -274,6 +284,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
             item.view.remove()
             items.splice items.indexOf(item), 1
          ).start window.currentTime
+    return
 
   removeTreeItems : ->
     delay = 0
@@ -290,6 +301,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
           # items.splice items.indexOf(item),1
           item.remove()
          ).start window.currentTime
+    return
 
   newTreeItemTick: (symbolName) =>
     if !@bTreeGrowsItems then return
@@ -301,18 +313,17 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     symbolName = symbolName || ['flower1', 'flower2'].seedRandom rdmk
     symbol = @assets.symbols.birds[symbolName]
     view = symbol.place()
-    view.scale 0.01
     view.transformContent = false
+    tp = tree.addTrackPoint view
     if symbolName isnt 'nest1'
       view.rotation = rng(rdmk) * 360
     else
-      @addBird tree
-    tree.addTrackPoint view
+      @addBird tree, tp
     @treeItems.push view
     
-    tween = new TWEEN.Tween( { scale: 0.01 } )
-     .to( { scale: 1 }, 3000 )
-     .easing( TWEEN.Easing.Elastic.Out )
-     .onUpdate( ->
-        view.scaling = new paper.Point(@scale, @scale)
-     ).start window.currentTime
+    # tween = new TWEEN.Tween( { scale: 0.01 } )
+    #  .to( { scale: 1 }, 3000 )
+    #  .easing( TWEEN.Easing.Elastic.Out )
+    #  .onUpdate( ->
+    #     view.scaling = new paper.Point(@scale, @scale)
+    #  ).start window.currentTime

@@ -20,7 +20,87 @@ import yaml
 import json
 import urllib2
 import math
-# from oauth2client.client import SignedJwtAssertionCredentials
+import datetime
+
+from google.appengine.ext import ndb
+
+# from oauth2client import client
+# from apiclient import sample_tools
+
+DEFAULT_REPLAY_FOLDER = 'default_replay'
+
+SECRET  = yaml.load( open("secret.yaml", 'r') )
+API_KEY = SECRET['apikey']
+
+class Replay(ndb.Model):
+  """Models an individual Guestbook entry."""
+  tag      = ndb.StringProperty()
+  shortURL = ndb.StringProperty()
+  date     = ndb.DateTimeProperty(auto_now_add=True)
+
+def replay_key(replay_folder=DEFAULT_REPLAY_FOLDER):
+  """Constructs a Datastore key for a Replay entity with guestbook_name."""
+  return ndb.Key('Replay', replay_folder)
+
+def shorten(url):
+  gurl = 'https://www.googleapis.com/urlshortener/v1/url'
+  data = json.dumps({'longUrl':url, 'key':API_KEY})
+  req = urllib2.Request(gurl, data=data)
+  req.add_header('Content-Type', 'application/json')
+  results = json.load(urllib2.urlopen(req))
+  return results['id']
+
+class LastHandler(webapp2.RequestHandler):
+
+  def options(self):
+    self.response.headers.add_header('Access-Control-Allow-Origin', '*')
+    self.response.headers.add_header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    self.response.headers.add_header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE')
+
+  def post(self):
+    self.response.headers.add_header("Access-Control-Allow-Origin", "*")
+
+    key = self.request.get('key')
+    if key == '' or key != API_KEY:
+      self.response.write('error : key missing or wrong')
+      return
+
+    replay_tag = self.request.get('tag')
+    if replay_tag != '':
+      repl = Replay(parent=replay_key())
+      repl.tag = replay_tag
+      repl.shortURL = shorten('http://devartmrkalia.com/#scene='+replay_tag)
+      repl.put()
+      self.response.write('success')
+    else:
+      self.response.write('error : replay tag missing')
+
+  def get(self):
+    query = Replay.query(ancestor=replay_key()).order(-Replay.date)
+    latests = query.fetch(1)
+    if len(latests) is 0:
+      self.response.write('empty.')
+      return
+
+    replay = latests[0]
+
+
+    # for r in latests:
+      # self.response.write(r.shortURL)
+    # shortURL = shorten('http://devartmrkalia.com/#scene='+scene)
+    
+    self.response.write('<html><head><link rel="stylesheet" href="./last/last.css"></head><body>')
+    self.response.write('<div class="last_scene">')
+    self.response.write('<img src="./last/m11/'+replay.tag.split('_')[-1]+'.png">')
+    self.response.write('<p>Watch the replay of your performance at</p>')
+    self.response.write('<a href="'+replay.shortURL+'">goo.gl/<span>'+replay.shortURL.split('/')[-1]+'</span></a>')
+    self.response.write('<p class="date" data-date="'+str(replay.date+datetime.timedelta(hours=1))+'"></p>')
+    self.response.write('</div>')
+    self.response.write('<script src="./vendor/js/jquery.min.js"></script>')
+    self.response.write('<script src="./last/moment.js"></script>')
+    self.response.write('<script src="./last/last.js"></script>')
+    self.response.write('</body></html>')
+
 
 class ReplayListHandler(webapp2.RequestHandler):
   def get(self):
@@ -59,8 +139,6 @@ class ReplayListHandler(webapp2.RequestHandler):
     start = int( max(start-end_offset, 0) )
     end   = int( min(end+start_offset, last) )
 
-    print "{} & {}".format(end, len(items)-1)
-
     # send slice as json
     subarr = items[start:end+1]
     # self.response.write(json.dumps(items))
@@ -79,5 +157,6 @@ class TokenHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
   ('/token', TokenHandler),
-  ('/list', ReplayListHandler)
+  ('/list', ReplayListHandler),
+  ('/last', LastHandler)
 ], debug=True)

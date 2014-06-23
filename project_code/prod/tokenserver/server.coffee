@@ -61,6 +61,15 @@ http.createServer( (req, res) ->
     'Content-Type': 'text/plain'
     'Access-Control-Allow-Origin' : '*'
   gapi.getToken (err, token) -> res.end token
-).listen 8000
+).listen 8081
 
-console.log 'listening on 8000'
+http = require 'http'
+http.createServer( (req, res) ->
+  res.writeHead 200, 
+    'Content-Type': 'text/plain'
+    'Access-Control-Allow-Origin' : '*'
+  res.end secret.apiKey
+).listen 8082
+
+console.log 'listening on 8081 (token) & 8082 (apikey)'
+console.log 'api key : '+secret.apiKey

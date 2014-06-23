@@ -29,6 +29,9 @@ initApp = ->
   iframe = $("#frame")[0]
   if isLive
     gcs = new CloudStorage()
+    # gcs.notifyIndexRepo '1403083919161_138333_books', (res) ->
+    #   console.log res
+    # return
     quadwarp = new QuadWarp iframe, 'kalia_quadwarp'
     scenes = ['tiroirs']
     currSceneId = 0

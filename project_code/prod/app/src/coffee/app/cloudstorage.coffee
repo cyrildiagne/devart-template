@@ -55,13 +55,21 @@ class GAPI
 
     # accounts.google.com doesn't accept cors so we need to do that externally
     req = new XMLHttpRequest()
-    req.open 'GET', 'http://localhost:8000', true
+    req.open 'GET', 'http://localhost:8081', true
     req.onload = (e) =>
       if req.status is 200
         callback null, req.responseText
       else callback req
     req.send()
 
+  getApiKey : (callback) ->
+    req = new XMLHttpRequest()
+    req.open 'GET', 'http://localhost:8082', true
+    req.onload = (e) =>
+      if req.status is 200
+        callback null, req.responseText
+      else callback req
+    req.send()
 
 
 class CloudStorage
@@ -79,7 +87,7 @@ class CloudStorage
       console.log 'performance too short (< 30s), not uploading...'
       return
 
-    @gapi.getToken (err, token) -> 
+    @gapi.getToken (err, token) => 
       if (err)
         return callback(err)
 
@@ -94,7 +102,19 @@ class CloudStorage
       req = new XMLHttpRequest()
       req.open "PUT", url, true
       req.setRequestHeader(k,v) for k, v of headers
-      req.onload = (e)->
+      req.onload = (e)=>
         if req.status is 200
-          if callback then callback()
+          @notifyIndexRepo filename, (res) ->
+            if callback then callback res
       req.send data
+
+  notifyIndexRepo : (filename, callback) ->
+
+    @gapi.getApiKey (err, apiKey) ->
+      if err
+        return callback(err)
+      data =
+        key : apiKey
+        tag : filename
+      $.post 'http://localhost:8080/last', data, callback
+      # $.post 'http://devartmrkalia.com/last', data, callback

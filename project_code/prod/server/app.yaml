@@ -10,6 +10,9 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /last
+  static_dir: last
+
 - url: /assets
   static_dir: public/assets
 

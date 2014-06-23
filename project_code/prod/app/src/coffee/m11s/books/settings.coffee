@@ -33,3 +33,13 @@ class mk.m11s.books.Settings extends mk.m11s.base.Settings
       135.080 # final
       139.5 # end
     ]
+
+    @sfx = [
+      boat     : 'Bateau_1'
+      pagefly  : 'PageSenvolle_5'
+      pageturn : 'PageTourne_5'
+      splash   : 'Splash_2'
+      wave1    : 'Vague_Grande_1'
+      wave2    : 'Vague_Moyenne_1'
+      wave3    : 'Vague_Petite_1'
+    ]

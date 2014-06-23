@@ -116,5 +116,5 @@ class CloudStorage
       data =
         key : apiKey
         tag : filename
-      $.post 'http://localhost:8080/last', data, callback
-      # $.post 'http://devartmrkalia.com/last', data, callback
+      # $.post 'http://localhost:8080/last', data, callback
+      $.post 'http://devartmrkalia.com/last', data, callback

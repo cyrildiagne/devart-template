@@ -10,12 +10,12 @@ isReady     = false
 
 currSceneName = null
 
-currentMode = 0
-SCENE_INIT      = 'scene_init'
-SCENE_LOADING   = 'scene_loading'
-SCENE_RUNNING   = 'scene_running'
-SCENE_CHANGING  = 'scene_changing'
-SCENE_ENDING    = 'scene_ending'
+currentMode    = 0
+SCENE_INIT     = 'scene_init'
+SCENE_LOADING  = 'scene_loading'
+SCENE_RUNNING  = 'scene_running'
+SCENE_CHANGING = 'scene_changing'
+SCENE_ENDING   = 'scene_ending'
 
 $currSceneBt = null
 $title = null
@@ -29,7 +29,7 @@ initApp = ->
   iframe = $("#frame")[0]
   if isLive
     gcs = new CloudStorage()
-    # gcs.notifyIndexRepo '1403083919161_138333_books', (res) ->
+    # gcs.notifyIndexRepo '1403083919161_138333_birds', (res) ->
     #   console.log res
     # return
     quadwarp = new QuadWarp iframe, 'kalia_quadwarp'
@@ -45,7 +45,7 @@ initApp = ->
       if sceneName
         currSceneId = getSceneIndexByName sceneName
       else
-        currSceneId = scenes.length-1
+        currSceneId = 0#scenes.length-1
       playbackInfoLoaded()
 
 playbackInfoLoaded = ->
@@ -120,7 +120,7 @@ launchCurrentScene = ->
 setSceneFromName = (sceneName) ->
   idx = getSceneIndexByName sceneName
   console.log 'set scene from name ' + sceneName
-  if idx > 0 and idx != currSceneId 
+  if idx >= 0 and idx != currSceneId 
     currSceneId = idx
     if currentMode is SCENE_RUNNING
       changeScene()
@@ -186,7 +186,7 @@ setSceneDate = ->
   m = d.getMonth()
   if m < 10 then m = '0'+m
   date = day + '/' + m + '/' + d.getFullYear()
-  $status.html 'PERF. N°'+currSceneId + ' - ' + time + ' | ' + date
+  $status.html time + ' | ' + date
 
 # mouseDownTimeline = (e) ->
   # if currentMode is SCENE_RUNNING

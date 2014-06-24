@@ -81,29 +81,44 @@ class LastHandler(webapp2.RequestHandler):
     if len(latests) is 0:
       self.response.write('empty.')
       return
-
     replay = latests[0]
 
+    m11     = replay.tag.split('_')[-1]
+    urlId = replay.shortURL.split('/')[-1]
+    date    = str(replay.date+datetime.timedelta(hours=1))
 
-    # for r in latests:
-      # self.response.write(r.shortURL)
-    # shortURL = shorten('http://devartmrkalia.com/#scene='+scene)
-    
-    self.response.write('<html><head><link rel="stylesheet" href="./last/last.css"></head><body>')
-    self.response.write('<div class="last_scene">')
-    self.response.write('<img src="./last/m11/'+replay.tag.split('_')[-1]+'.png">')
-    self.response.write('<p>Watch the replay of your performance at</p>')
-    self.response.write('<a href="'+replay.shortURL+'">goo.gl/<span>'+replay.shortURL.split('/')[-1]+'</span></a>')
-    self.response.write('<p class="date" data-date="'+str(replay.date+datetime.timedelta(hours=1))+'"></p>')
-    self.response.write('</div>')
-    self.response.write('<script src="./vendor/js/jquery.min.js"></script>')
-    self.response.write('<script src="./last/moment.js"></script>')
-    self.response.write('<script src="./last/last.js"></script>')
-    self.response.write('</body></html>')
-
+    if self.request.get('json'):
+      self.response.write('{"m11": "' + m11 + '",')
+      self.response.write('"urlId": "' + urlId + '",')
+      self.response.write('"date": "' + date + '"}')
+    else:
+      self.response.write('<html><head><link rel="stylesheet" href="./last/last.css"></head><body>')
+      self.response.write('<div class="last_scene">')
+      self.response.write('<img src="./last/m11/'+m11+'.png">')
+      self.response.write('<p>Watch the replay of your performance at</p>')
+      self.response.write('<a href="http://goo.gl/'+urlId+'">goo.gl/<span>'+urlId+'</span></a>')
+      self.response.write('<p class="date" data-date="'+date+'"></p>')
+      self.response.write('</div>')
+      self.response.write('<script src="./vendor/js/jquery.min.js"></script>')
+      self.response.write('<script src="./last/moment.js"></script>')
+      self.response.write('<script src="./last/last.js"></script>')
+      self.response.write('</body></html>')
 
 class ReplayListHandler(webapp2.RequestHandler):
   def get(self):
+
+    # query = Replay.query(ancestor=replay_key()).order(-Replay.date)
+    # query = Replay.query(ancestor=replay_key())#.filter(Replay.tag == '1403083919161_138333_books')
+    # query = Replay.query(Replay.tag == '1403083919161_138333_books')
+    # replays = query.fetch(1)
+    # if len(replays) is 0 :
+    #   self.response.write('empty.')
+    #   return
+    # replay = replays[0]
+    # query = Replay.query(Replay.date < replay.date).count() 
+    # print query
+    # self.response.write(len(replays))
+    # return
 
     # retrieve complete list of items
     # TODO : SAVE A CACHE !!

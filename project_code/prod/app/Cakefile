@@ -167,7 +167,7 @@ task 'dev', 'start dev env', ->
   css_path = path.join bin_path,'css'
   fs.ensureDir css_path
   watch 'coffee', ['-w', '-c', '-b', '-o', js_path, coffee_path]
-  watch 'stylus', ['-w', stylus_path, '-o', css_path]
+  watch 'stylus', ['-u', 'nib', '-w', stylus_path, '-o', css_path]
   for config in ['app', 'main']
     jade_options[config].includes.unshift 'config/config_debug'
     watch 'jade',   ['-w', jade_path[config], '-P', '-o', bin_path, '-O', JSON.stringify jade_options[config]]

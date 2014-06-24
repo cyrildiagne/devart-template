@@ -1,3 +1,5 @@
+@import 'nib/vendor'
+
 Tsar = 'tstar_twregular'
 
 bulbsColor   = #50757d
@@ -38,13 +40,13 @@ html, body, iframe
 
 iframe
   background-color curtainColor
-  -webkit-transform-origin 0 0 0   
+  transform-origin 0 0 0   
   transition opacity 1s ease
-  // pointer-events : none
+  pointer-events : none
 
 body
   background-color black
-  -webkit-perspective 1000px
+  perspective 1000px
   &.live
     #ui
       display none
@@ -112,11 +114,11 @@ margin = 5%
     h1
       margin 0px
       color #a6a67a
-      font-size 18px
+      font-size 16px
     h2
       color #dbdbdb
       margin-top 8px
-      font-size 15px
+      font-size 14px
         
     @media screen and (max-width: 640px)
       width 300px
@@ -144,13 +146,23 @@ margin = 5%
       width 20px
       height 40px
       top 40px
+      opacity 0.5
       // cursor pointer
       transition top 0.3s ease-out, background-color 0.3s ease-out
       &:hover
-        opacity 0.5
+        opacity 1
         top 30px
+        &::before
+          content attr(data-content)
+          color white
+          transform translate(-50%,-35px)
+          text-decoration none
+          position absolute
+          padding-left 20px
+          font-size 14px
       &.on
         top 20px
+        opacity 1
         background-color white
 
   &.inactive #timeline
@@ -174,7 +186,7 @@ margin = 5%
     &:hover
       opacity 0.5
     @media screen and (max-width: 640px)
-      -webkit-transform scale(0.5,0.5)
+      transform scale(0.5,0.5)
 
   &.inactive .arrow
     &.left
@@ -184,8 +196,8 @@ margin = 5%
 
 
   #sound
-    width 26px
-    height 23px
+    width 20px
+    height 18px
     position absolute
     right margin
     top margin
@@ -193,11 +205,28 @@ margin = 5%
     background url('../assets/ui/sound.png')
     cursor pointer
     &.off
-      width 15px 
+      width 12px 
     @media screen and (max-width: 640px)
       display none
 
   &.inactive #sound
+    top -23px
+
+
+  #help
+    width 20px
+    height 18px
+    position absolute
+    right margin
+    top margin
+    margin-right 50px
+    transition top 0.8s ease-out
+    background url('../assets/ui/help.png')
+    cursor pointer
+    @media screen and (max-width: 640px)
+      display none
+
+  &.inactive #help
     top -23px
 
 
@@ -213,3 +242,35 @@ w = 80px
   border-radius (w/2)
   &:hover
     background-color rgba(0,0,255, 0.6)
+
+#about
+  &.inactive
+    display none
+  position absolute
+  width 1000px
+  height 680px
+  box-sizing border-box
+  background #17171a url('../assets/ui/setup_photo.jpg') no-repeat
+  padding 30px
+  padding-left 500px
+  left 50%
+  top 50%
+  // transform translate(-50%, -50%)
+  margin-left -500px
+  margin-top -340px
+  z-index 999
+  // pointer-events none
+  h1
+    margin-top 0
+    color #a6a67a
+    font-size 24px
+  h2
+    text-transform uppercase
+    font-size 16px
+    line-height 18px
+    margin-top 22px
+    margin-bottom 0px
+  p
+    font-size 14px
+    opacity 0.8
+    line-height 18px

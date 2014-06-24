@@ -22,17 +22,19 @@ $title = null
 $timeline = null
 $status = null
 $sound = null
+$help = null
+$iframe = null
 
 uiHideTimeout = -1
 
 initApp = ->
-  iframe = $("#frame")[0]
+  $iframe = $("#frame")
   if isLive
     gcs = new CloudStorage()
     # gcs.notifyIndexRepo '1403083919161_138333_birds', (res) ->
     #   console.log res
     # return
-    quadwarp = new QuadWarp iframe, 'kalia_quadwarp'
+    quadwarp = new QuadWarp $iframe[0], 'kalia_quadwarp'
     scenes = ['tiroirs']
     currSceneId = 0
     launchCurrentScene()
@@ -45,7 +47,7 @@ initApp = ->
       if sceneName
         currSceneId = getSceneIndexByName sceneName
       else
-        currSceneId = 0#scenes.length-1
+        currSceneId = scenes.length-1
       playbackInfoLoaded()
 
 playbackInfoLoaded = ->
@@ -143,17 +145,26 @@ hashChanged = ->
 
 setupUI = ->
   setupMuteButton()
+  setupHelpButton()
   setupTimeline()
   setupArrows()
+  setupAutoHide()
   $(window).on 'resize', ->
     mouseMoveTimeline {x:window.innerWidth*0.5}
-  # $(window).mousemove ->
-  #   if currentMode is SCENE_RUNNING
-  #     $('#ui').removeClass 'inactive'
-  #     clearTimeout uiHideTimeout
-  #     uiHideTimeout = setTimeout ->
-  #       $('#ui').addClass 'inactive'
-  #     , 2000
+  $(window).on 'focus', ->
+    sendCommand 'focus'
+  $(window).on 'blur', ->
+    sendCommand 'focusout'
+
+setupAutoHide = ->
+  $('html').mousemove ->
+    if !$('#about').hasClass('inactive') then return
+    if currentMode is SCENE_RUNNING
+      $('#ui').removeClass 'inactive'
+      clearTimeout uiHideTimeout
+      uiHideTimeout = setTimeout ->
+        $('#ui').addClass 'inactive'
+      , 2000
 
 setupMuteButton = ->
   $sound = $('#sound')
@@ -161,11 +172,38 @@ setupMuteButton = ->
     ev.originalEvent.preventDefault()
     sendCommand('toggle_mute')
 
+setupHelpButton = ->
+  $help = $('#help')
+  $('#about').on 'click', closeAbout
+  $help.on 'click', (ev) ->
+    ev.originalEvent.preventDefault()
+    $('#about').removeClass 'inactive'
+
+    $('#ui').addClass 'inactive'
+    $title.hide()
+    $status.hide()
+    # $iframe.focusout()
+    # setTimeout(->
+    # $('html').on 'click', closeAbout
+    # ,1)
+
+closeAbout = (ev) ->
+  ev.originalEvent.preventDefault()
+  $('#about').addClass 'inactive'
+  $('#ui').removeClass 'inactive'
+  $title.show()
+  $status.show()
+  # $iframe.focus()
+  $('html').off 'click', closeAbout
+
 setupTimeline = ->
   $timeline = $('#timeline')
   for i in [0...scenes.length]
-    $tmlItem = $('<a>').addClass(scenes[i].scene)
-    $tmlItem.attr 'href', '/#scene='+scenes[i].tag
+    s = scenes[i]
+    time = s.date.getHours() + ':' + s.date.getMinutes()
+    $tmlItem = $('<a>').addClass(s.scene)
+    $tmlItem.attr 'data-content', time + ' | ' + s.scene.toUpperCase()
+    $tmlItem.attr 'href', '/#scene='+s.tag
     $timeline.append $tmlItem
   
   setTimeout ->
@@ -222,7 +260,7 @@ saveCurrentToGCS = (data) ->
 # ---- IFRAME COMMUNICATION ----
 
 sendCommand = (cmd) ->
-  iframe.contentWindow.postMessage cmd,'*'
+  $iframe[0].contentWindow.postMessage cmd,'*'
 
 window.onmessage = (e) ->
   # if e.origin != chromeAppId then return
@@ -270,7 +308,7 @@ window.onmessage = (e) ->
         currSceneId = Math.floor(Math.random()*scenes.length)
       else
         $status.html 'cleaning up the stage'
-      iframe.contentWindow.location.reload()
+      $iframe[0].contentWindow.location.reload()
     when 'mute'
       $sound.addClass 'off'
     when 'unmute'

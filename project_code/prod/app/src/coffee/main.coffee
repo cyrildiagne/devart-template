@@ -293,5 +293,9 @@ window.onmessage = (e) ->
     when 'mobile'
       alert 'mobile mode'
       framerate = 25
+    when 'focus'
+      windowFocus()
+    when 'focusout'
+      windowLostFocus()
 
 dispatch 'init'

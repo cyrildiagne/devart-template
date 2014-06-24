@@ -31,9 +31,6 @@ initApp = ->
   $iframe = $("#frame")
   if isLive
     gcs = new CloudStorage()
-    # gcs.notifyIndexRepo '1403083919161_138333_birds', (res) ->
-    #   console.log res
-    # return
     quadwarp = new QuadWarp $iframe[0], 'kalia_quadwarp'
     scenes = ['tiroirs']
     currSceneId = 0
@@ -81,11 +78,10 @@ getList = (scene, callback) ->
       items = JSON.parse(r.responseText)
       data = []
       for i in [0...items.length]
-        infos = items[i].name.split '_'
+        infos = items[i].split '_'
         if infos.length is 3
           data.push
-            tag   : items[i].name
-            size  : items[i].size
+            tag   : items[i]
             date  : new Date(parseInt(infos[0]))
             seed  : infos[1]
             scene : infos[2]

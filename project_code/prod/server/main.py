@@ -18,6 +18,7 @@
 import webapp2
 import yaml
 import json
+import urllib
 import urllib2
 import math
 import datetime
@@ -104,41 +105,58 @@ class LastHandler(webapp2.RequestHandler):
       self.response.write('<script src="./last/last.js"></script>')
       self.response.write('</body></html>')
 
+
+# class SyncHandler(webapp2.RequestHandler):
+
+#   def get(self):
+#     self.response.headers.add_header("Access-Control-Allow-Origin", "*")
+
+#     query = Replay.query(ancestor=replay_key()).order(-Replay.date)
+#     ndb_replays = query.fetch()
+
+#     # retrieve complete list of items
+#     url = 'https://www.googleapis.com/storage/v1/b/mr-kalia-replays/o?fields=items(name,size)'
+#     data = json.load(urllib2.urlopen(url))
+#     gcs_replays = data['items']
+
+#     # add missing gcs replays to ndb
+#     for r in gcs_replays:
+#       found = False
+#       for ndbr in ndb_replays:
+#         if r['name'] == ndbr.tag:
+#           found = True
+#       if found is False:
+#         # data = json.dumps()
+#         data = urllib.urlencode( {'key' : API_KEY, 'tag' : r['name']} )
+#         res = urllib2.urlopen('http://devartmrkalia.com' + '/last', data)
+#         print res
+
+
 class ReplayListHandler(webapp2.RequestHandler):
   def get(self):
 
-    # query = Replay.query(ancestor=replay_key()).order(-Replay.date)
-    # query = Replay.query(ancestor=replay_key())#.filter(Replay.tag == '1403083919161_138333_books')
-    # query = Replay.query(Replay.tag == '1403083919161_138333_books')
-    # replays = query.fetch(1)
-    # if len(replays) is 0 :
-    #   self.response.write('empty.')
-    #   return
-    # replay = replays[0]
-    # query = Replay.query(Replay.date < replay.date).count() 
-    # print query
-    # self.response.write(len(replays))
-    # return
+    query = Replay.query(ancestor=replay_key()).order(-Replay.date)
+    replays = query.fetch()
 
     # retrieve complete list of items
-    # TODO : SAVE A CACHE !!
-    url = 'https://www.googleapis.com/storage/v1/b/mr-kalia-replays/o?fields=items(name,size)'
-    data = json.load(urllib2.urlopen(url))
-    items = data['items']
-    pos = last = len(items)
+    # url = 'https://www.googleapis.com/storage/v1/b/mr-kalia-replays/o?fields=items(name,size)'
+    # data = json.load(urllib2.urlopen(url))
+    # replays = data['items']
+
+    pos = last = len(replays)-1
 
     # if a specific scene was requested, use it as our scene list cursor
     name = self.request.get('scene')
     if name != '':
       for i in range(0, last):
-        if items[i]['name'] == name:
+        if replays[i].tag == name:
           pos = i
           break
 
     # set number of scenes to include in list
     num = self.request.get('num')
     if num == '' : num = 100
-    num = min( int(num), len(items))
+    num = min( int(num), len(replays))
 
     # set start / end position of list
     hnum  = num*0.5
@@ -155,10 +173,9 @@ class ReplayListHandler(webapp2.RequestHandler):
     end   = int( min(end+start_offset, last) )
 
     # send slice as json
-    subarr = items[start:end+1]
-    # self.response.write(json.dumps(items))
+    subarr = replays[start:end+1]
     self.response.headers.add_header("Access-Control-Allow-Origin", "*")
-    self.response.write(json.dumps(subarr))
+    self.response.write( json.dumps([r.tag for r in subarr]) )
 
 class TokenHandler(webapp2.RequestHandler):
   def get(self):
@@ -173,5 +190,6 @@ class TokenHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
   ('/token', TokenHandler),
   ('/list', ReplayListHandler),
-  ('/last', LastHandler)
+  ('/last', LastHandler),
+  # ('/sync', SyncHandler)
 ], debug=True)

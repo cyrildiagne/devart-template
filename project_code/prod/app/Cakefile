@@ -182,7 +182,7 @@ task 'build', 'Build optimized version of the app for the web', ->
   fs.mkdirSync  outputDir
 
   fs.ensureDir outputDir+'/css'
-  exec 'stylus -c -o '+outputDir+'/css ' + 'src/stylus/main.styl', (err, stdout, stderr) ->
+  exec 'stylus -u nib -c -o '+outputDir+'/css ' + 'src/stylus/main.styl', (err, stdout, stderr) ->
     if err then console.log 'exec error: ' + err
     else console.log('stdout: ' + stdout)
 

@@ -208,7 +208,7 @@ windowResized = (ev) ->
   pixelRatio = 1
   # if window.devicePixelRatio
   #   pixelRatio = window.devicePixelRatio
-  view.scaling = v.height / viewport.height
+  view.scaling = v.height / viewport.height * 0.85
 
   view.position.x = v.width * 0.5
   view.position.y = v.height * 0.5

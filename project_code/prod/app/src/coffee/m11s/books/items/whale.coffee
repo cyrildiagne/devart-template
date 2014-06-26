@@ -4,7 +4,7 @@ class mk.m11s.books.Whale
     @view = new paper.Group()
     @view.pivot = new paper.Point 0,0
     @view.transformContent = false
-    @view.z = -2500 
+    @view.z = -4444
 
     @setupMask()
     @mask.position.y -= 450
@@ -51,8 +51,8 @@ class mk.m11s.books.Whale
     
     console.log 'whale jump num : ' + @numJumps
     
-    if @numJumps > 6 then @view.z = 2000
-    else if @numJumps > 4 then @view.z = 0
+    # if @numJumps > 6 then @view.z = 2000
+    # else if @numJumps > 4 then @view.z = 0
 
     @view.scaling = new paper.Point s,s
     if rng('jump') > 0.5 then @view.scaling.x *= -1

@@ -1,18 +1,18 @@
 class QuadWarp
 
-  constructor: (@dom, @storage_key) ->
+  constructor: (@dom) ->
     @current = null
     @view = null
     @pts = []
     @dst = []
     @src = []
-    @initPts()
-    @initPtsView()
-    @initRedHighlight()
-    window.addEventListener 'resize', @onWindowResize
-    @update()
+    @initPts =>
+      @initPtsView()
+      @initRedHighlight()
+      window.addEventListener 'resize', @onWindowResize
+      @update()
 
-  initPts : ->
+  initPts : (callback) ->
     @dst.length = 4
     @src.length = 4
     for i in [0...4]
@@ -20,14 +20,24 @@ class QuadWarp
       @src[i] = {x:0, y:0}
     @src[1].x = @src[2].x = window.innerWidth
     @src[2].y = @src[3].y = window.innerHeight
-    @loadPts()
+    @loadPts callback
 
-  loadPts : ->
-    @dst = JSON.parse localStorage[@storage_key]
+  loadPts : (callback) ->
+    chrome.storage.local.get 'kalia_quadwarp', (data) =>
+      data = data['kalia_quadwarp']
+      if data isnt undefined
+        @dst = JSON.parse data
+        @update()
+      else
+        for i in [0...@src.length]
+          @dst[i].x = @src[i].x
+          @dst[i].y = @src[i].y
+      callback()
 
   savePts : ->
     json = JSON.stringify @dst
-    localStorage.setItem @storage_key, json
+    chrome.storage.local.set {kalia_quadwarp:json}, (data) -> 
+      console.log 'saved '
 
   initPtsView : ->
     @view = document.createElement 'div'
@@ -133,5 +143,5 @@ class QuadWarp
     document.body.style.backgroundColor = 'black'
 
   onWindowResize : =>
-    @initPts()
-    @update()
+    @initPts =>
+      @update()

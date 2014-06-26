@@ -12,7 +12,10 @@
   },
   "permissions": [
     {"fileSystem": ["write", "retainEntries", "directory"]},
-    "storage"
+    "storage",
+    "fullscreen",
+    "alwaysOnTopWindows",
+    "https://www.google-analytics.com/analytics.js"
   ],
   "sockets": {
     "udp": {

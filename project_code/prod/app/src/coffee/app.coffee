@@ -205,7 +205,7 @@ setupTimeline = ->
   setTimeout ->
     mouseMoveTimeline {x:window.innerWidth*0.5}
     if window.innerWidth < $timeline.width()
-      $timeline.on 'mousemove', mousemovetimeline
+      $timeline.on 'mousemove', mouseMoveTimeline
   , 100
 
 setupArrows = ->

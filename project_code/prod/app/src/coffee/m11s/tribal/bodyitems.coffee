@@ -106,7 +106,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     @feathers.push item
     @items.push item
 
-    boomTime = 760
+    boomTime = 760 * 6
 
     delayed boomTime, =>
       part = @getPart 'rightLowerArm'

@@ -16,4 +16,4 @@ class mk.m11s.tribal.Mask extends mk.helpers.SimpleJointItem
   isMaskOverHead: ->
     m = @view.position
     d = (m.x-@head.x) * (m.x-@head.x) + (m.y-@head.y) * (m.y-@head.y)
-    return d < 30 * 30
+    return d < 60 * 60

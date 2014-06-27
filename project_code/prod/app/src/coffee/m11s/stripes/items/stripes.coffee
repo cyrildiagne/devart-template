@@ -11,7 +11,7 @@ class mk.m11s.stripes.Stripes
     @bg.rotate 25
     @bg.position.y = (window.viewport.height + @bg.bounds.height*0.6) * 0.5
     # @bg = new paper.Path.Rectangle(-w*0.5, -h*0.5, w*2, h)
-    @bg.fillColor = '#' + @settings.palette.skin.toString 16 #'black'
+    @bg.fillColor = '#' + @settings.palette.rose.toString 16 #'black'
     @view.addChild(@bg)
 
     colors = [
@@ -20,7 +20,7 @@ class mk.m11s.stripes.Stripes
       @settings.palette.cream
       @settings.palette.lightBlue
       @settings.palette.lightRed
-      @settings.palette.whiteGreen
+      @settings.palette.lightGreen
     ]
     
     @speed = 1.5

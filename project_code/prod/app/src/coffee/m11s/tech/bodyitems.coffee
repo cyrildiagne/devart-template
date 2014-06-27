@@ -2,7 +2,7 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
 
   setupItems : ->
     @color = new paper.Color() #'#151515'
-    @color.brightness = 0.1
+    @color.brightness = 0.2
     @updateBodyColor()
     @bgStrombo = false
     @addTrails()

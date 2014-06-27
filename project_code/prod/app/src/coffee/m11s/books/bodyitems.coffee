@@ -190,7 +190,7 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
   addStars : () ->
     @stars = new mk.m11s.books.Stars @joints[NiTE.HEAD]
     @items.push @stars
-    @cage.switchLightOn()
+    # @cage.switchLightOn()
 
   removeStars : ->
     @cage.switchLightOff()

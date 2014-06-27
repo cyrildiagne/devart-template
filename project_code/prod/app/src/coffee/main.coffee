@@ -128,7 +128,6 @@ beginScene = ->
     light.fadeTo 0.2, 2000
   curtainUp isLive, ->
     start()
-
     dispatch 'started'
     fadeScene 'on', 1000
 
@@ -263,7 +262,7 @@ update = (deltaTime) ->
     window.currentTime = currentTime
 
     TWEEN.update currentTime
-    skeleton.update dt*0.008
+    skeleton.update dt*0.013
     scene.setPersoPose skeleton
     scene.update dt, currentTime
     accumulator -= dt

@@ -83,6 +83,7 @@ class mk.m11s.base.Perso
 
     for i in [0...skeleton.joints.length]
       @joints[i].x = skeleton.joints[i].view.position.x
+      skeleton.joints[i].view.position.y += 20
       @joints[i].y = skeleton.joints[i].view.position.y
       @joints[i].z = skeleton.joints[i].z
 

@@ -22,6 +22,7 @@ class mk.m11s.tribal.Perso extends mk.m11s.base.Perso
       j.prevX = j.x
       j.prevY = j.y
       @deformInit = true
+      @deformSinAmp = 10
 
   setPoseFromSkeleton: (skeleton) ->
 
@@ -53,7 +54,7 @@ class mk.m11s.tribal.Perso extends mk.m11s.base.Perso
     if @items.deformSin
       @deformSinAmp += 0.1
       for j in @joints
-        t = (window.currentTime+j.y*5) / 1500
+        t = (window.currentTime*1.5+j.y) / 2500
         j.x += Math.sin(t) * @deformSinAmp
 
 

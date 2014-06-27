@@ -83,12 +83,12 @@ class mk.m11s.tech.Trail
 
     @visible = @view.visible = false
 
-    for c in ['skin','cream','beige','red','lightRed']
+    for c in ['skin','cream','red','lightRed']
       color = new paper.Color mk.Scene::settings.getHexColor(c)
       mk.m11s.tech.TrailLine::colors.push color
 
     @lines = []
-    @numLinePerPart = 9
+    @numLinePerPart = 7
     for p in parts
       for i in [1...@numLinePerPart]
         # console.log p.joints[0]

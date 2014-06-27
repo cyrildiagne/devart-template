@@ -27,8 +27,10 @@ class mk.m11s.base.Morph
     rightShouldP.x  += (headP.x-rightShouldP.x) * s.shouldersToHead
 
     # push shoulders horizontally away
-    leftShouldP.x   += (-rightShouldP.x+leftShouldP.x) * s.shouldersAppart
-    rightShouldP.x  += (-leftShouldP.x+rightShouldP.x) * s.shouldersAppart
+    shldOffset = (-rightShouldP.x+leftShouldP.x) * s.shouldersAppart
+    leftShouldP.x += shldOffset
+    rightShouldP.x  -= shldOffset
+    # rightShouldP.x  += (-leftShouldP.x+rightShouldP.x) * s.shouldersAppart * 5
 
     # bring elbows closer to shoulders vertical level
     leftElbowP.y  += (rightShouldP.y-leftElbowP.y) * s.elbowsToShoulders

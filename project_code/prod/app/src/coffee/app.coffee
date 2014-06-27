@@ -34,7 +34,7 @@ initApp = ->
   if isLive
     gcs = new CloudStorage()
     quadwarp = new QuadWarp $iframe[0], 'kalia_quadwarp'
-    scenes = ['books']
+    scenes = ['tech', 'tribal', 'stripes', 'birds', 'lockers', 'tiroirs', 'books', 'bulbs']
     currSceneId = 0
     launchCurrentScene()
   else

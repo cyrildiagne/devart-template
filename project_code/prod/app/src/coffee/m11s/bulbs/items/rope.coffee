@@ -2,11 +2,13 @@ class mk.m11s.bulbs.Rope
 
   constructor: (@joints, @colors) ->
     @nbItems              = 12
-    @ropeLength           = 400
+    @ropeLength           = 450
     @relaxationIterations = 10
     @pixelsPerMeter       = 200
     @gravity              = 9.81
     @handleId             = @nbItems-1
+
+    @cordOriginY = -window.viewport.height*0.5-75
 
     @view = new paper.Group()
     @view.z = 9999
@@ -29,7 +31,7 @@ class mk.m11s.bulbs.Rope
         radius: 10
     @view.addChild @handle
     
-    origin = new paper.Point(-150, -window.viewport.height*0.5)
+    origin = new paper.Point(-150, @cordOriginY)
     for i in [0...@nbItems]
         x = origin.x + i * @ropeLength / @nbItems * 0.1
         y = origin.y
@@ -44,7 +46,7 @@ class mk.m11s.bulbs.Rope
     @items[0].isPinned = true
 
   yoyo: (mode) ->
-    initY = -window.viewport.height*0.5
+    initY = @cordOriginY
     item = @items[0]
     delay = 7000
     delay = 7000 if Config::DEBUG
@@ -59,7 +61,7 @@ class mk.m11s.bulbs.Rope
         it.x = it.prev_x = newX + i * @ropeLength / @nbItems * 0.1
         it.y = it.prev_y = initY
         i++
-    tween = new TWEEN.Tween(item).to({y:-window.viewport.height*0.5-700}, 1000)
+    tween = new TWEEN.Tween(item).to({y:initY-700}, 1000)
     # .repeat(1)
     # .yoyo()
     .chain(back)

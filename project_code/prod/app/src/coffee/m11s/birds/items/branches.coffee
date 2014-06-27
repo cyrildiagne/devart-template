@@ -48,7 +48,7 @@ class mk.m11s.birds.Branches
     if vel < @shrinkVel
       @shrinkVel += (vel-@shrinkVel) * 0.02
     else @shrinkVel = vel
-    @bShrink = @shrinkVel > 50
+    @bShrink = @shrinkVel > 250
 
     d = (@j1.x - @prevX)*2 + (@j1.y - @prevY)*2
     speed = if @velocity > d then 0.02 else 0.04
@@ -68,18 +68,19 @@ class mk.m11s.birds.Branches
           if c.vec.length > 1 then bAllChildrenShrunk = false
         if bAllChildrenShrunk
           b.vec.length += (0-b.vec.length) * @growSpeed * 3
-          if b.vec.length < 1
-            b.path.visible = false
+        if b.vec.length < 3
+          b.path.visible = false
         for it in b.items
           it.scale += (0-it.scale) * 0.2
           if it.view and it.scale > 0.01
             it.view.scaling = it.scale
-            it.view.visible = false if it.view.visible and it.scale < 0.02
+            it.view.visible = false if it.view.visible and it.scale < 0.1
       else
         if !b.parent || b.parent.vec.length > b.startLength
           b.vec.length += (b.maxLength-b.vec.length) * @growSpeed
-          if b.vec.length > 1
+          if b.vec.length > 3 and !b.path.visible
             b.path.visible = true
+            mk.Scene::sfx.play 'branch2'
         for it in b.items
           # console.log b.vec.length + ' ' + it.startLength
           if b.vec.length > it.startLength
@@ -161,6 +162,7 @@ class mk.m11s.birds.Branches
     path.strokeWidth = @branchWidth
     path.add start
     path.add start.add(vec)
+    path.visible = false
     @view.addChild path
     
     b = 
@@ -189,6 +191,7 @@ class mk.m11s.birds.Branches
     if view
       @view.addChild view
       view.scaling = 0.1
+      view.visible = false
 
     p =
       start       : start

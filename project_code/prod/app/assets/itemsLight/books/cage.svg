@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg version="1.1" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 612 792" xml:space="preserve">
+<g>
+	<g>
+		<rect x="1.7" y="52.7" fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" width="80" height="80"/>
+		<path fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" d="M1.7,52.7c0-22.1,17.9-40,40-40s40,17.9,40,40"/>
+		<rect x="1.7" y="133.1" fill="#D3D1BB" width="80" height="6"/>
+		<rect x="-3.3" y="139.3" fill="#D3D1BB" width="90" height="4"/>
+		<line fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" x1="1.7" y1="99.8" x2="81.7" y2="99.8"/>
+		<line fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" x1="41.7" y1="12.7" x2="41.7" y2="132.7"/>
+		<g>
+			<line fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" x1="21.2" y1="18.3" x2="21.2" y2="133.1"/>
+			<line fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" x1="62.3" y1="18.3" x2="62.3" y2="133.1"/>
+		</g>
+		<g>
+			<line fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" x1="32.3" y1="14.4" x2="32.3" y2="133.1"/>
+			<line fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" x1="51.2" y1="14.4" x2="51.2" y2="133.1"/>
+		</g>
+		<g>
+			<line fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" x1="11.2" y1="26.8" x2="11.2" y2="133.1"/>
+			<line fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" x1="72.2" y1="26.8" x2="72.2" y2="133.1"/>
+		</g>
+	</g>
+	<circle fill="none" stroke="#D3D1BB" stroke-width="4" stroke-miterlimit="10" cx="41.7" cy="6" r="6"/>
+</g>
+</svg>

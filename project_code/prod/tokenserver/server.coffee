@@ -1,6 +1,8 @@
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 jws = require 'jws'
 secret = require './secret'
+wol = require 'wake_on_lan'
+
 
 class GAPI
 
@@ -71,5 +73,13 @@ http.createServer( (req, res) ->
   res.end secret.apiKey
 ).listen 8082
 
+
 console.log 'listening on 8081 (token) & 8082 (apikey)'
 console.log 'api key : '+secret.apiKey
+
+
+wakeWinMachine = ->
+  wol.wake 'C0:3F:D5:63:1E:49'
+
+setInterval(wakeWinMachine, 60000)
+wakeWinMachine()

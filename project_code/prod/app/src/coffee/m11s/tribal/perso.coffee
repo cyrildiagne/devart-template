@@ -53,7 +53,7 @@ class mk.m11s.tribal.Perso extends mk.m11s.base.Perso
     if @items.deformSin
       @deformSinAmp += 0.1
       for j in @joints
-        t = (window.currentTime+j.y*10) / 1000
+        t = (window.currentTime+j.y*5) / 1500
         j.x += Math.sin(t) * @deformSinAmp
 
 

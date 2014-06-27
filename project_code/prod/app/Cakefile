@@ -228,3 +228,16 @@ task 'mp3', 'Publish sounds', ->
   prcss.stdout.pipe process.stdout
   prcss.stderr.pipe process.stderr
 
+task 'launch', 'Launch the application at the Barbican', ->
+  # launch node server
+  prcss = spawn 'coffee', ['server.coffee'],
+    cwd : '../tokenserver/'
+  prcss.stdout.pipe process.stdout
+  prcss.stderr.pipe process.stderr
+  # launch chrome
+  chrome = '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+  userdata = '--user-data-dir=/Users/kalia/DevArt/project_code/chromedata'
+  appid = '--app-id=gmlclebgecklpkmchojfhfccndpafdhf'
+  prcss = spawn chrome, [userdata, appid]
+  prcss.stdout.pipe process.stdout
+  prcss.stderr.pipe process.stderr

@@ -1,4 +1,4 @@
-isLive      = false
+isLive      = true
 chromeAppId = 'chrome-extension://cjmhlclabilhdpnenenfbpgpmnbejpnf'
 
 iframe      = null
@@ -27,12 +27,14 @@ $iframe = null
 
 uiHideTimeout = -1
 
+#/Applications/Google Chrome.app/Contents/MacOS/Google\ Chrome --user-data-dir=~/chromedata --app-id=gmlclebgecklpkmchojfhfccndpafdhf
+
 initApp = ->
   $iframe = $("#frame")
   if isLive
     gcs = new CloudStorage()
     quadwarp = new QuadWarp $iframe[0], 'kalia_quadwarp'
-    scenes = ['tiroirs']
+    scenes = ['books']
     currSceneId = 0
     launchCurrentScene()
   else

@@ -36,7 +36,7 @@ initApp = ->
     currSceneId = 0
     launchCurrentScene()
   else
-    $title = $('#title').html('Les Métamorphoses de Mr Kalia')
+    $title = $('#title').html('Les Métamorphoses de Mr. Kalia')
     $status = $('#date')
     sceneName = getHashParam 'scene'
     getList sceneName, (data) ->

@@ -54,7 +54,7 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       117.290 # nappe + aigue
       127.080  # final
     # tiroirs grandissent puis sortent
-      138 #end 
+      135 #end 
     ]
 
     @sfx =

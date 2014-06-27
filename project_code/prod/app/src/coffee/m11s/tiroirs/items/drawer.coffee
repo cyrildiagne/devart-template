@@ -67,7 +67,7 @@ class mk.m11s.tiroirs.Drawer
      .start window.currentTime
 
   growToInfinity : ->
-    @follower.zOffset += 300
+    @follower.zOffset += 220
     @isGrowing = true
 
   growItem : ->

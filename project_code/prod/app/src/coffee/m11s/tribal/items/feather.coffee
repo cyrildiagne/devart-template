@@ -19,7 +19,7 @@ class mk.m11s.tribal.Feather
   update: (dt) ->
     @follower.update()
     @view.rotate( @speed )
-    @view.z += 10
+    # @view.z += 10
     if @deform
       @view.scaling = @speed / 9
 
@@ -56,9 +56,16 @@ class mk.m11s.tribal.FeatherGroup
       featherSym = @getFeatherSymbol 90, color
       feather = new mk.m11s.tribal.Feather featherSym, @j1, @j2, (i-0.5)/num * @spacingScale
       feather.view.rotate i*(25-num) - 180
-      feather.view.scale 1 - (i/num)*0.5
+      # feather.view.scale 1 - (i/num)*0.5
+      feather.view.scale 0.01
       feather.setColor color
       # @view.addChild feather.view
+      do (feather, i) ->
+        ds = 1-(i/num)*0.5
+        new TWEEN.Tween({s:0.01}, 3000).delay(i*1500).to({s:ds}).onUpdate(->
+          feather.view.scaling = @s
+          # console.log feather.view.scaling.x
+        ).start window.currentTime
       @feathers.push feather
 
   getFeatherSymbol: (width, color) ->
@@ -71,7 +78,7 @@ class mk.m11s.tribal.FeatherGroup
       [[x,     y],  null,                   vectorIn.rotate(-15)],
       [[width, y],  vectorEnd.rotate(-90),  vectorEnd.rotate(90)],
       [[x,     y],  vectorIn.rotate(15),    null]
-    ];
+    ]
     # path.position = new paper.Point(path.bounds.width*0.5, 150)
     path.fillColor = "#"+color.toString(16)
     return new paper.Symbol(path)

@@ -52,6 +52,7 @@ jade_options.main =
     'm11s/bulbs/settings'
     'm11s/bulbs/items/bulb'
     'm11s/bulbs/items/rope'
+    'm11s/bulbs/items/digiback'
     'm11s/bulbs/bodyitems'
 
     'm11s/thorns/settings'
@@ -82,12 +83,14 @@ jade_options.main =
     'm11s/birds/items/house'
     'm11s/birds/items/lucioles'
     'm11s/birds/items/wildbird'
+    'm11s/birds/items/backlight'
     'm11s/birds/bodyitems'
 
     'm11s/lockers/settings'
     'm11s/lockers/items/lock'
     'm11s/lockers/items/pile'
     'm11s/lockers/items/key'
+    'm11s/lockers/items/door'
     'm11s/lockers/bodyitems'
 
     'm11s/books/settings'

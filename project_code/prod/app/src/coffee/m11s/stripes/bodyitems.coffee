@@ -36,6 +36,7 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
         @fallings.lockPop = false
         @fallings.shapeMode = 'circle'
         @fallings.setMode 'all'
+    return
 
   setupPhysics: ->
     @physics = new mk.helpers.Physics()
@@ -68,6 +69,7 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
           @sfx = mk.Scene::sfx.play 'ballkalia'+(1+Math.floor(Math.random()*3))
 
           @sfx.volume Math.min(1, p.collision.depth / 5)
+    return null
 
   update: (dt) ->
     @physics.update dt

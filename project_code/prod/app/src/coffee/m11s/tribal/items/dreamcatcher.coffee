@@ -48,6 +48,7 @@ class mk.m11s.tribal.DreamCatcher
           .onUpdate(-> panel.scaling = @s )
           .onComplete(-> panel.showing = true)
           .start window.currentTime
+    return
 
   remove : (callback) ->
     numPanels = @panels.length

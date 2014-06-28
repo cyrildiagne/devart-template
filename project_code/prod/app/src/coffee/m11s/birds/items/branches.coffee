@@ -133,7 +133,7 @@ class mk.m11s.birds.Branches
     return startVec
 
   addBranch: () ->
-    mk.Scene::sfx.play 'branch1'
+    # mk.Scene::sfx.play 'branch1'
 
     a = 0
     start = null

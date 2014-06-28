@@ -58,6 +58,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         @addTree()
         @addTree()
         @addTree()
+        @addBackLight()
       when 1 # apparition fleurs/feuilles
         @bTreeGrowsItems = true
         @newTreeItemTick()
@@ -74,6 +75,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
         # @bGrowTrees = false
         break
       when 4 # oiseaux in/out maisons
+        @removeBackLight()
         h.bReleaseBirds = false for h in @houses
         @setNightMode()
       when 5 # apparition lucioles
@@ -86,6 +88,16 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       when 9
         fadeScene 'off', 7000
         break
+
+  addBackLight : ->
+    @backlight = new mk.m11s.birds.BackLight @joints[NiTE.LEFT_FOOT], @joints[NiTE.RIGHT_FOOT]
+    @backlight.show() 
+    @items.push @backlight
+
+  removeBackLight : ->
+    @backlight.hide =>
+      @backlight.clean()
+      @items.splice @items.indexOf(@backlight),1
 
   checkBirdTouch : ->
     distMax = 30 * 30
@@ -102,14 +114,16 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
 
   setNightMode : ->
-    color = @settings.palette.blue
+    color = mk.Scene::settings.getHexColor 'blue'
     i = 0
     for p in @parts
       i++
       p.color = color
-      @fadeToColor p.path, color, 500, 4000
+      # p.path.fillColor = color
+      @fadeToColor p.path, color, 500, 0
       for j in p.jointViews
-        @fadeToColor j.view, color, 500, 4000
+        # j.view.fillColor = color
+        @fadeToColor j.view, color, 500, 0
     @setNightHouses()
     @sendBirdsToHouses()
     @removeTreeItems()
@@ -117,7 +131,7 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
     @addMoon()
     for t in @trees
       for b in t.branches
-        b.path.strokeColor = '#' + color.toString(16)
+        b.path.strokeColor = color
     return null
 
   addMoon : ->
@@ -150,8 +164,8 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
 
 
   fadeToColor : (item, color, duration=1000, delay=0) ->
-    hexa = '#' + color.toString 16
-    hsb = new paper.Color(hexa).convert('hsb')
+    # hexa = '#' + color.toString 16
+    hsb = new paper.Color(color).convert('hsb')
     tween = new TWEEN.Tween(
       h: item.fillColor.hue
       s: item.fillColor.saturation

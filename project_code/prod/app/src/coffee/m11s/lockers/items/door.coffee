@@ -109,7 +109,7 @@ class mk.m11s.lockers.DoorOpen
   addParticle : ->
     p = new paper.Path.Circle
       center :
-        x : -@symb.bounds.width*0.5+2
+        x : -@symb.bounds.width*0.5+15
         y : (rng('ap')-0.5) * @symb.bounds.height * 0.5
       radius : 20
       fillColor : mk.Scene::settings.getHexColor ['red', 'lightRed', 'blue', 'lightBlue'].seedRandom('adp')
@@ -134,8 +134,8 @@ class mk.m11s.lockers.DoorOpen
     @view.scaling = rng('puasyb') * 0.30 + 0.30
 
     @view.position = 
-      x : (-0.5) * window.viewport.width
-      y : (-0.75+@view.scaling.x) * window.viewport.height * 0.5
+      x : (-0.3) * window.viewport.width * rng('test')
+      y : (-0.75+@view.scaling.x) * window.viewport.height * rng('test')
 
     @door.reset()
     @door.isTurning = true

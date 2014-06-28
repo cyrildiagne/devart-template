@@ -26,7 +26,7 @@ class mk.m11s.tiroirs.Buttons
     button.body = @physics.addCircle button, pos, radius,
       restitution: 0.5
       friction : 0.01
-      force : {x:0, y: -radius*0.0015}
+      force : {x:0, y: -radius*0.0025}
 
     button.position = pos
     @buttons.push button

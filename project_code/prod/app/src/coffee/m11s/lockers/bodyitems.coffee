@@ -7,11 +7,11 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @addLockers()
 
     @piles = []
-    # @addPile type for type in [0...3]
+    @addPile type for type in [0...3]
     # delayed 1000, => @flyPile 2
 
-    @doors = []
-    @addDoor()
+    # @doors = []
+    # @addDoor()
 
     @keyId = 0
     @lockId = 0

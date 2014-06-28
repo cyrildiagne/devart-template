@@ -31,7 +31,6 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       mouseUpCallbacks.push =>
         t.bShrink = false for t in @trees
 
-
     # @bGrowHouses = false
     # @timeBetweenNewHouse = 625 * 4
     # @intervalHouse = 0

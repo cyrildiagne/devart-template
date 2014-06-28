@@ -101,7 +101,7 @@ class mk.m11s.tech.Clones
     numDelay = 10
     for i in [0...5]
       cl = new mk.m11s.tech.Clone @parts, numDelay
-      cl.view.scale 0.8
+      # cl.view.scale 0.8
       @view.addChild cl.view
       @clones.push cl
       numDelay += 10

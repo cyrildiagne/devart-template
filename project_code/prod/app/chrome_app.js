@@ -3,8 +3,6 @@ chrome.app.runtime.onLaunched.addListener(function() {
     id: "mainwin",
     state: "fullscreen"
   }, function(win){
-  	setTimeout(function(){
-  		win.fullscreen();
-  	}, 1000)
+  	win.fullscreen();
   });
 });

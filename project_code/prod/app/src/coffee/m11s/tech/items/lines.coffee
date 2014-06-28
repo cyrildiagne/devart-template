@@ -54,8 +54,10 @@ class mk.m11s.tech.TrailLine
     @path.smooth()
 
   update : (dt) ->
-    @pos.x = @j1.x * @pct + @j2.x * (1-@pct)
-    @pos.y = @j1.y * @pct + @j2.y * (1-@pct)
+    dpx = @j1.x * @pct + @j2.x * (1-@pct)
+    dpy = @j1.y * @pct + @j2.y * (1-@pct)
+    @pos.x += (dpx-@pos.x)*0.2
+    @pos.y += (dpy-@pos.y)*0.2
 
     p = @path
     if p.segments.length

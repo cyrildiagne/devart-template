@@ -67,7 +67,7 @@ class mk.m11s.birds.Branches
         for c in b.children
           if c.vec.length > 1 then bAllChildrenShrunk = false
         if bAllChildrenShrunk
-          b.vec.length += (0-b.vec.length) * @growSpeed * 3
+          b.vec.length += (0-b.vec.length) * @growSpeed * 6
         if b.vec.length < 3
           b.path.visible = false
         for it in b.items

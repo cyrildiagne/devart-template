@@ -61,14 +61,13 @@ class mk.m11s.stripes.BodyItems extends mk.m11s.base.BodyItems
           return
         if p.bodyA.label == 'Rectangle Body' or p.bodyB.label == 'Rectangle Body'
           return
-          @sfx = mk.Scene::sfx.play 'barrkalia'
+          # @sfx = mk.Scene::sfx.play 'barrkalia'
         else
           if @sfx
             if @sfx.pos() > 0 and @sfx.pos() < 0.10
               return
-          @sfx = mk.Scene::sfx.play 'ballkalia'+(1+Math.floor(Math.random()*3))
-
-          @sfx.volume Math.min(1, p.collision.depth / 5)
+          # @sfx = mk.Scene::sfx.play 'ballkalia'+(1+Math.floor(Math.random()*3))
+          # @sfx.volume Math.min(1, p.collision.depth / 5)
     return null
 
   update: (dt) ->

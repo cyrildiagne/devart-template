@@ -46,10 +46,6 @@ class mk.m11s.bulbs.DigiPlan
     #   @view.addChild @rightMask
     #   @lightOff
 
-  applyColor : ->
-    for p in @paths
-      p.strokeColor = @color
-
   lightOn : ->
     # @rightMask.fillColor = @leftMask.fillColor = 'white'
 
@@ -121,13 +117,12 @@ class mk.m11s.bulbs.DigiBack
   update : (dt) ->
     for p in @panels
       pct = (1-p.pct)
-      dx = -@head.x * pct * 2
-      dy = @head.y * pct * 0.3
+      dx = -@head.x * pct * 1.5
+      dy = -@head.y * (pct * 0.5)
       speed = 0.0015 + pct * 0.0035
       p.view.position.x += (dx - p.view.position.x) * speed * dt
       p.view.position.y += (dy - p.view.position.y) * speed * dt
       #...
       b = p.initColor.brightness + Math.sin(p.time) * 0.75
-      p.color.brightness = b if b < p.initColor.brightness
-      p.applyColor()
+      p.opacity = Math.sin(p.time)
       p.time += 0.1

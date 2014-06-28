@@ -207,7 +207,8 @@ windowResized = (ev) ->
   pixelRatio = 1
   # if window.devicePixelRatio
   #   pixelRatio = window.devicePixelRatio
-  sceneScale = if isLive then 0.85 else 1
+  # sceneScale = if isLive then 0.85 else 1
+  sceneScale = 1
   view.scaling = v.height / viewport.height * sceneScale
 
   view.position.x = v.width * 0.5

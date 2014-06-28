@@ -11,10 +11,10 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @rope = null
 
     @mode = -1
-    @MODE_CONNECT = 0
+    @MODE_CONNECT = 3
     @MODE_FLOATING = 1
     @MODE_RAYS = 2
-    @MODE_DIGI = 3
+    @MODE_DIGI = 0
     @MODE_LIFT = 4
     @NUM_MODES = 5
     @bLockLight = false
@@ -175,8 +175,8 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
       @cleanMode()
       # if @mode is -1 then @mode = 3
       # else @mode++
-      @mode = @MODE_DIGI
-      # @mode++
+      # @mode = @MODE_DIGI
+      @mode++
       # @mode = @MODE_FLOATING
       if @mode >= @NUM_MODES
         @mode = 0

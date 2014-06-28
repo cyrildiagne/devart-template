@@ -3,7 +3,7 @@ class mk.m11s.birds.Lucioles
   constructor : (@symbol, @leftHand, @rightHand) ->
     @view = new paper.Group()
     @view.transformContent = false
-    @view.z = 0
+    @view.z = 9999
     @leftHandLucioles = []
     @rightHandLucioles = []
     @leavingLucioles = []

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="595.28px" height="841.89px" viewBox="0 0 595.28 841.89" enable-background="new 0 0 595.28 841.89" xml:space="preserve">
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg version="1.1" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 612 792" xml:space="preserve">
 <g>
-	<rect x="1.556" y="40.822" fill="#9F2F43" width="58.653" height="81.219"/>
+	<rect x="1.6" y="5.2" fill="#9F2F43" width="60.3" height="83.5"/>
 </g>
 <g>
-	<path fill="#D5D49B" d="M4.474,44.907h52.817v73.146H4.474V44.907L4.474,44.907z"/>
+	<path fill="#D5D49B" d="M4.6,9.4h54.3v75.2H4.6L4.6,9.4L4.6,9.4z"/>
 </g>
-<polygon fill="#EB3566" points="4.474,40.822 4.474,126.904 3.015,127.974 1.556,126.904 1.556,40.822 "/>
+<polygon fill="#EB3566" points="4.6,5.2 4.6,93.7 3.1,94.8 1.6,93.7 1.6,5.2 "/>
 </svg>

@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="595.28px" height="841.89px" viewBox="0 0 595.28 841.89" enable-background="new 0 0 595.28 841.89" xml:space="preserve">
-<path fill="#F6F4CA" d="M23.733,42.864c0,0,16.146,3.502,25.095,28.013l-4.669,3.793c0,0-10.116,3.891-23.928-4.766
-	S5.933,47.436,5.933,47.436L23.733,42.864z"/>
-<path fill="#EB3566" d="M14.687,35.764c-5.058,0-9.046,3.988-9.046,9.046S9.63,56.482,14.59,56.482c0,0,10.213-5.35,10.213-10.408
-	S19.648,35.764,14.687,35.764z"/>
-<path fill="#F4C3C4" d="M6.031,47.436c-1.07,6.322,4.669,13.423,4.669,13.423h1.654c0,0-2.432-10.602,6.711-14.785l-3.988-6.42
-	H8.171l-0.389-0.681C7.781,38.974,4.669,41.892,6.031,47.436z"/>
-<polygon fill="#363537" points="8.171,44.81 5.933,47.436 0,47.241 6.809,42.864 "/>
-<path fill="#EB3566" d="M17.606,54.634l6.517-11.964c5.155,0.681,15.563,7.392,22.566,22.761
-	C25.484,49.479,17.606,54.634,17.606,54.634z"/>
+<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Tiny//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-tiny.dtd">
+<svg version="1.1" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" viewBox="0 0 612 792" xml:space="preserve">
+<path fill="#ECECE6" d="M24.4,7.3c0,0,16.6,3.6,25.8,28.8L45.4,40c0,0-10.4,4-24.6-4.9S6.1,12,6.1,12L24.4,7.3z"/>
+<path fill="#EB3566" d="M15.1,0C9.9,0,5.8,4.1,5.8,9.3s4.1,12,9.2,12c0,0,10.5-5.5,10.5-10.7S20.2,0,15.1,0z"/>
+<path fill="#F4C3C4" d="M6.2,12C5.1,18.5,11,25.8,11,25.8h1.7c0,0-2.5-10.9,6.9-15.2L15.5,4H8.4L8,3.3C8,3.3,4.8,6.3,6.2,12z"/>
+<polygon fill="#363537" points="8.4,9.3 6.1,12 0,11.8 7,7.3 "/>
+<path fill="#EB3566" d="M18.1,19.4l6.7-12.3c5.3,0.7,16,7.6,23.2,23.4C26.2,14.1,18.1,19.4,18.1,19.4z"/>
 </svg>

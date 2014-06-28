@@ -10,6 +10,7 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
       'assets/items/lockers/pile1.svg'
       'assets/items/lockers/pile2.svg'
       'assets/items/lockers/pile3.svg'
+      'assets/items/lockers/door.svg'
     ]
 
    setupSounds : ->
@@ -36,6 +37,3 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
       sandfly1 : 'SableSenvole_PETIT'
       sandfly2 : 'SableSenvole_MOYEN'
       sandfly3 : 'SableSenvole_GRAND'
-
-#       SableSenvole_GRAND.wav
-# SableSenvole_PETIT.wav

@@ -13,7 +13,7 @@ class mk.m11s.lockers.Key extends mk.helpers.Flying
       wingHeight : 0
       velocity : new paper.Point 3+rng(rngk)*2, 0
       wingSpeed : 0.7
-      pos : new paper.Point -400, (rng(rngk)-0.5) * 800 - 50
+      pos : new paper.Point -600, (rng(rngk)-0.5) * 800 - 50
     @view.scaling = rng(rngk)*0.2 + 0.8
     @view.pivot = new paper.Point @item.bounds.width*0.5,0
     @view.z = 9999

@@ -7,8 +7,11 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @addLockers()
 
     @piles = []
-    @addPile type for type in [0...3]
+    # @addPile type for type in [0...3]
     # delayed 1000, => @flyPile 2
+
+    @doors = []
+    @addDoor()
 
     @keyId = 0
     @lockId = 0
@@ -32,6 +35,19 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
         #   if pile.pile.scaling.x > scaling
         #     @flyPile pile.type
 
+  addDoor : ->
+    door = new mk.m11s.lockers.DoorOpen @doorAnimComplete
+    @doors.push door
+    @items.push door
+
+  doorAnimComplete : (d) =>
+    setTimeout =>
+      @doors.splice @doors.indexOf(d),1
+      @items.splice @items.indexOf(d),1
+      d.clean()
+    , 1
+
+
   addLockers : ->
     parts = @getPartsExcluding ['head']
     rngk = 'addLockers'
@@ -54,7 +70,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @flys.push key
 
   getBiggestPile : ->
-    if !@piles.length then return
+    if !@piles.length then return null
     biggest = @piles[0]
     for p in @piles
       if p.pile.scaling.x > biggest.pile.scaling.x
@@ -76,8 +92,9 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
 
   flyInterval : =>
     p = @getBiggestPile()
-    @flyPile(p.type)
-    delayed 4080, @flyInterval
+    if p
+      @flyPile(p.type)
+      delayed 4080, @flyInterval
 
   getKeyInLock : (fly) ->
     for lock in @locks
@@ -101,7 +118,10 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
         do (fly, lock) =>
           fly.turn =>
             lock.breakFree()
-            @piles[lock.type].addSome()
+            if @doors
+              @addDoor()
+            else
+              @piles[lock.type].addSome()
       if lock || fly.view.position.x > 500
         fly.clean()
         @items.splice @items.indexOf(fly),1

@@ -44,31 +44,32 @@ class mk.m11s.base.Settings
     ]
 
   setupPalette : ->
-    @palette =
-      skin        : 0xdec6c2
-      cream       : 0xe4e6dd
-      lightBlue   : 0x97c6c9
-      blue        : 0x629498
-      beige       : 0xcac8ad
-      lightGreen  : 0xb5cec0
-      green       : 0x629498
-      darkGray    : 0x282022
-      red         : 0xAC3A43
-      lightRed    : 0xEA4E74
-      rose        : 0xF4C3C4
-
     # @palette =
-    #   skin        : 0xEBD2C9
-    #   cream       : 0xECECE6
-    #   lightBlue   : 0x7ED1DA
-    #   blue        : 0x57979E
-    #   beige       : 0xD5D49B
-    #   lightGreen  : 0xF6F4CA
-    #   green       : 0x57979E
-    #   darkGray    : 0x363537
-    #   red         : 0x9F2F43
-    #   lightRed    : 0xEB3566
+    #   skin        : 0xdec6c2
+    #   cream       : 0xe4e6dd
+    #   lightBlue   : 0x97c6c9
+    #   blue        : 0x629498
+    #   beige       : 0xcac8ad
+    #   lightGreen  : 0xb5cec0
+    #   green       : 0x629498
+    #   darkGray    : 0x282022
+    #   red         : 0xAC3A43
+    #   lightRed    : 0xEA4E74
     #   rose        : 0xF4C3C4
+
+    @palette =
+      skin        : 0xEBD2C9
+      cream       : 0xECECE6
+      lightBlue   : 0x7ED1DA
+      blue        : 0x57979E
+      beige       : 0xD5D49B
+      lightGreen  : 0xF6F4CA
+      green       : 0x57979E
+      darkGray    : 0x363537
+      red         : 0x9F2F43
+      lightRed    : 0xEB3566
+      rose        : 0xF4C3C4
+      background  : 0x18181b
 
   getHexColor : (name) ->
     return '#' + @palette[name].toString 16

@@ -130,7 +130,8 @@ class mk.m11s.tiroirs.Drawer
 
     @right = new paper.Path
     @right.add new paper.Point() for i in [0...4]
-    @right.fillColor = mk.Scene::settings.getHexColor(color)
+    @right.fillColor = new paper.Color mk.Scene::settings.getHexColor(color)
+    @right.fillColor.brightness -= 0.2
     @view.addChild @right
 
   toggle : (silent) ->
@@ -164,9 +165,9 @@ class mk.m11s.tiroirs.Drawer
     @follower.update()
 
     if @isGrowing
-      @front.position.x += @growSpeed * @side
-      @front.position.y += @growSpeed * 0.5
-    else
+      @front.position.x += @growSpeed * @side * 0.5
+      @front.position.y += @growSpeed * 0.5 * 0.5
+    else 
       @openness += (@dOpenness-@openness) * 0.005 * dt
       if @isChanging
         if Math.abs(@dOpenness-@openness) < 0.1

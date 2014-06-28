@@ -41,7 +41,7 @@ class mk.m11s.stripes.Perso extends mk.m11s.base.Perso
 
   setupMaskContent : () ->
 
-    @stripes = new mk.m11s.stripes.Stripes @settings, @joints[NiTE.TORSO], 10
+    @stripes = new mk.m11s.stripes.Stripes @settings, @joints[NiTE.TORSO], 10, @joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]
     @content.addChild @stripes.view
 
     @circle = new paper.Path.Circle

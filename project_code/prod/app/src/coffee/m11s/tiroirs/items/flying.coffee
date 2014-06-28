@@ -8,6 +8,8 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
     @firstFlight = true
 
     @bFlyingToDrawer = false
+    @bFlyingOut = false
+
     @onReachedDrawerCallback = null
     @speed = 0.003
     @scale = 1
@@ -31,6 +33,9 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
         y : -10#-0.5*window.viewport.height
       @start()
       delayed 4000, => @onReachedDrawerCallback()
+
+  flyOut : ->
+    @bFlyingOut = true
 
   start: ->
     super()
@@ -67,8 +72,14 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
         @scarf.scarf1.view.scaling = @scarf.scarf2.view.scaling = @scale
       else if @item
         @item.view.scaling = @scale
+
+    else if @bFlyingOut
+
+      @velocity.y -= 0.1
+
     else
-      @timeSinceRandomPos+=dt
+
+      @timeSinceRandomPos += dt
       if @timeSinceRandomPos > @timeBeforeNextRandomPos
         @timeSinceRandomPos -= @timeBeforeNextRandomPos
         @randomPos()

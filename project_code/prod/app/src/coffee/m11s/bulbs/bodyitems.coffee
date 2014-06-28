@@ -11,10 +11,10 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @rope = null
 
     @mode = -1
-    @MODE_CONNECT = 3
-    @MODE_FLOATING = 1
-    @MODE_RAYS = 2
-    @MODE_DIGI = 0
+    @MODE_RAYS = 0
+    @MODE_CONNECT = 1
+    @MODE_FLOATING = 2
+    @MODE_DIGI = 3
     @MODE_LIFT = 4
     @NUM_MODES = 5
     @bLockLight = false
@@ -31,7 +31,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         @addRope()
         break
 
-  update: (dt) ->
+  update : (dt) ->
     super dt
     switch @mode
       when @MODE_CONNECT
@@ -46,7 +46,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         b.updateFloating(dt) for b in @bulbs
         return
   
-  setupMode: ->
+  setupMode : ->
     switch @mode
       when @MODE_CONNECT
         @hidePerso()
@@ -77,7 +77,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         B::maxConnection*=2
       when @MODE_RAYS
         b.removeRay() for b in @bulbs
-        mk.m11s.bulbs.Bulb::maxRays += 2
+        mk.m11s.bulbs.Bulb::maxRays *= 2
       when @MODE_FLOATING
         b.stopFloating() for b in @bulbs
         mk.m11s.bulbs.Bulb::floatPower += 0.35
@@ -88,7 +88,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
   lift: (up=true) ->
     canvas = document.getElementById('paperjs-canvas')
     dst = Math.min(window.viewport.height, window.innerHeight)
-    dst *= 0.95
+    dst *= 0.98
     if !up then dst *= -1
 
     backTween = new TWEEN.Tween({y:dst})
@@ -106,7 +106,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     )
 
     tween = new TWEEN.Tween({y:0})
-    .to({y:-dst}, 1000)
+    .to({y:-dst}, 2000)
     .chain(backTween)
     .onStart(->
       mk.Scene::sfx.play 'liftOut'
@@ -175,7 +175,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
       @cleanMode()
       # if @mode is -1 then @mode = 3
       # else @mode++
-      # @mode = @MODE_DIGI
+      # @mode = @MODE_RAYS
       @mode++
       # @mode = @MODE_FLOATING
       if @mode >= @NUM_MODES

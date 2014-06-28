@@ -111,7 +111,7 @@ class mk.m11s.lockers.DoorOpen
       center :
         x : -@symb.bounds.width*0.5+15
         y : (rng('ap')-0.5) * @symb.bounds.height * 0.5
-      radius : 20
+      radius : 10 + rng('ap') * 15
       fillColor : mk.Scene::settings.getHexColor ['red', 'lightRed', 'blue', 'lightBlue'].seedRandom('adp')
     p.speed = 0.4 + rng('ap') * 0.2
     p.rspeed = (1 + rng('ap')*3)

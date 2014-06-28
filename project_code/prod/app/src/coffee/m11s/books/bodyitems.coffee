@@ -5,7 +5,7 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
     @cage = null
     @boat = null
     @waves = []
-    delayed 1000, => @addHeadBook()
+    # delayed 1000, => @addHeadBook()
     @whale = null
     @numPagesTurned = 0
     @addWhale()
@@ -82,6 +82,8 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
     leftLowJnts = @getJoints [ NiTE.LEFT_FOOT, NiTE.LEFT_KNEE, NiTE.LEFT_HAND ]
     @lowLines = new mk.m11s.books.LineWaves rightLowJnts, leftLowJnts, -3333
     @items.push @lowLines
+
+    return
 
     leftHideJnts =  @getJoints [
       NiTE.LEFT_ELBOW

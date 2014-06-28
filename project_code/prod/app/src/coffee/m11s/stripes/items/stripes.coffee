@@ -1,6 +1,6 @@
 class mk.m11s.stripes.Stripes
 
-  constructor: (@settings, @torso, numStripes) ->
+  constructor: (@settings, @torso, numStripes, @leftHand, @rightHand) ->
     @view = new paper.Group()
     @stripes = []
     # @velTracker = new mk.helpers.JointVelocityTracker @joints.slice(0, numStripes)
@@ -22,6 +22,7 @@ class mk.m11s.stripes.Stripes
       @settings.palette.lightRed
       @settings.palette.lightGreen
     ]
+    @angle = 0
     
     @speed = 1.5
     @introSpeed = 0.1
@@ -59,6 +60,13 @@ class mk.m11s.stripes.Stripes
 
   update: () ->
     # @velTracker.update()
+    v = new paper.Point(@leftHand.x-@rightHand.x, @leftHand.y-@rightHand.y)
+    a = Math.atan2(v.y, v.x) / Math.PI * 180 * 0.5 - 90
+    # @angle = a
+    a += 360 if a < 0
+    @angle = a
+    # @angle += (a-@angle) * 0.05
+    # console.log @angle
 
     if @bg.position.y > 0
       @introSpeed += 0.025
@@ -72,7 +80,7 @@ class mk.m11s.stripes.Stripes
       # vel = Math.sqrt(@velTracker.get(i)) * 0.003 + 0.001
       # s.position.x = @torso.x
       # s.count += 0.1
-      # s.rotation += 1
+      s.rotation = @angle
       s.position.y -= s.speed + sp
       if s.position.y < -window.viewport.height * 0.5
         s.position.y += window.viewport.height + 100

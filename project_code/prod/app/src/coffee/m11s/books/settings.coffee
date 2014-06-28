@@ -18,6 +18,20 @@ class mk.m11s.books.Settings extends mk.m11s.base.Settings
     for i in [0...@assets.length]
       @assets[i] = 'assets/items/books/' + @assets[i] + '.svg'
 
+  setupColors : ->
+    @colors =
+      head          : @palette.cream
+      torso         : @palette.cream
+      pelvis        : @palette.cream
+      leftUpperArm  : @palette.cream
+      leftLowerArm  : @palette.cream
+      rightUpperArm : @palette.cream
+      rightLowerArm : @palette.cream
+      leftUpperLeg  : @palette.cream
+      leftLowerLeg  : @palette.cream
+      rightUpperLeg : @palette.cream
+      rightLowerLeg : @palette.cream
+
   setupSounds : ->
     @track = 'assets/sounds/books/track/Books_short_002.mp3'
     @musicEvents = [

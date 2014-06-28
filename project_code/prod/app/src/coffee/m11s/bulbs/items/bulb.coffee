@@ -21,7 +21,7 @@ class mk.m11s.bulbs.BulbSocket
     speed = if delta > 0 then 0.1 else 0.02
     @freq += delta * speed
     @freq = Math.min(@freq, 0.4)
-    phase = Math.cos(@bounce+=@freq)+1
+    phase = Math.cos(@bounce+=@freq*0.2)+1
     if @mirrored then phase *= -1
     @amp = @freq * @ang
     dRot = @initRotation + phase * @amp
@@ -31,14 +31,15 @@ class mk.m11s.bulbs.BulbSocket
 class mk.m11s.bulbs.Ray
 
   constructor: ->
+    @thick = 45
+    @length = 1200
     @view = new paper.Path()
     @view.pivot = new paper.Point 0,0
     @view.segments = [
       [0, 0]
-      [-800, 0]
-      [-800, 0]
+      [-@length, 0]
+      [-@length, 0]
     ]
-    @thick = 50
     @view.fillColor = mk.Scene::settings.getHexColor 'lightRed'
     @view.opacity = 0.5
     @view.visible = false
@@ -54,12 +55,13 @@ class mk.m11s.bulbs.Ray
     mk.Scene::sfx.play 'laserOn'
     v = @view
     thick = @thick
+    l = @length
     @tween = new TWEEN.Tween({amp:0})
     .to({amp:1}, 600)
     .onUpdate(->
-      v.segments[1].point.x = -800 * @amp
+      v.segments[1].point.x = -l * @amp
       v.segments[1].point.y = -thick * @amp
-      v.segments[2].point.x = -800 * @amp
+      v.segments[2].point.x = -l * @amp
       v.segments[2].point.y = thick * @amp
     )
     .start window.currentTime
@@ -89,7 +91,7 @@ class mk.m11s.bulbs.Bulb
   maxConnection : 16
   numConnections : 0
 
-  maxRays : 1
+  maxRays : 3
   numRays : 0
 
   floatPower : 0.2
@@ -116,6 +118,7 @@ class mk.m11s.bulbs.Bulb
     @isFloating = false
     @floatFollower = null
     @prevPos = null
+    @rayVel = 0
     if @pct > 0.001
       @follower = new mk.helpers.PartEdgeFollower @view, @part.joints[0], @part.joints[1], @pct
       mirrored = @part.name.indexOf('right') isnt -1
@@ -177,32 +180,44 @@ class mk.m11s.bulbs.Bulb
   # 1 --- RED BLINK + RAYS
 
   updateRedBlink: (dt) ->
-    @interval += dt
-    if @interval >= @blinkTime
-      @interval -= @blinkTime
-      if !@turnedOn
+    # @interval += dt
+    # if @interval >= @blinkTime
+    #   @interval -= @blinkTime
+    #   if !@turnedOn
+    #     @turnOn()
+    #   else @turnOff()
+    #   @blinkTime = if @turnedOn then 2000 else 2000 + 8000 * rng(@rngk)
+    if @socket
+      v = @socket.velTracker.get(0)
+      vmin = 40
+      if v > vmin
+        @rayVel = v
+      else
+        @rayVel *= 0.98
+      if @rayVel > vmin & !@turnedOn
         @turnOn()
-      else @turnOff()
-      @blinkTime = if @turnedOn then 2000 else 2000 + 8000 * rng(@rngk)
+      else if @rayVel < vmin && @turnedOn
+        @turnOff()
 
   stopRedBlink : ->
     if @turnedOn then @turnOff()
 
   turnOn: ->
-    @bulb.style.fillColor = @colorOn
-    @halo.style.fillColor = @haloColorOn
-    @halo.visible = true
-    @turnedOn = true
-    if @ray
+    if @ray && !@ray.isShowing
       if mk.m11s.bulbs.Bulb::numRays < mk.m11s.bulbs.Bulb::maxRays
+        @bulb.style.fillColor = @colorOn
+        @halo.style.fillColor = @haloColorOn
+        @halo.visible = true
+        @turnedOn = true
         mk.m11s.bulbs.Bulb::numRays++
         @ray.show()
 
   turnOff: ->
-    @bulb.style.fillColor = @colorOff
-    @halo.style.fillColor = @haloColorOff
-    @halo.visible = false
-    @turnedOn = false
+    if @turnedOn
+      @bulb.style.fillColor = @colorOff
+      @halo.style.fillColor = @haloColorOff
+      @halo.visible = false
+      @turnedOn = false
     if @ray && @ray.isShowing
       @ray.hide ->
         mk.m11s.bulbs.Bulb::numRays--

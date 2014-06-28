@@ -58,6 +58,6 @@ class mk.m11s.tiroirs.DrawerItem
 
   update: (dt) ->
     d = (@view.position.x - @drawer.view.position.x - @offset.x) * @rotationImpact
-    @view.rotation += (d - @view.rotation)*0.003*dt
-    @view.rotation *= 0.97
+    @view.rotation += (d - @view.rotation)*0.01*dt
+    @view.rotation *= 0.99
     @updatePos()

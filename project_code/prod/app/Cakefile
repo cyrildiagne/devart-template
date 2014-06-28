@@ -47,6 +47,7 @@ jade_options.main =
     'm11s/tiroirs/items/hat'
     'm11s/tiroirs/items/scarf'
     'm11s/tiroirs/items/buttons'
+    'm11s/tiroirs/items/background'
     'm11s/tiroirs/bodyitems'
 
     'm11s/bulbs/settings'

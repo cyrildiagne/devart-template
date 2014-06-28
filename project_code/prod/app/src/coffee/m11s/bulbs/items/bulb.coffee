@@ -86,7 +86,7 @@ class mk.m11s.bulbs.Ray
 
 class mk.m11s.bulbs.Bulb
 
-  maxConnection : 0
+  maxConnection : 16
   numConnections : 0
 
   maxRays : 1
@@ -255,7 +255,7 @@ class mk.m11s.bulbs.Bulb
     line.z = 4999 + rng('connectbulb') * 100
     line.strokeColor = @lineColorOff
     # line.opacity = 0.5
-    line.strokeWidth = 3
+    line.strokeWidth = 4
     # line.strokeCap = 'round'
     # line.dashArray = [0.5, 12]
     @connections.push

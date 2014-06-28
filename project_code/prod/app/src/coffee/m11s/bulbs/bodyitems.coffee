@@ -14,10 +14,12 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     @MODE_CONNECT = 0
     @MODE_FLOATING = 1
     @MODE_RAYS = 2
-    @MODE_LIFT = 3
-    @NUM_MODES = 4
+    @MODE_DIGI = 3
+    @MODE_LIFT = 4
+    @NUM_MODES = 5
     @bLockLight = false
     @lifModeIsDown = false
+
 
   clean: ->
     super()
@@ -36,15 +38,18 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         for b in @bulbs
           b.updateConnections(dt)
           b.connectToNearbyBulbs(@bulbs) 
+        return
       when @MODE_RAYS 
         b.updateRedBlink(dt) for b in @bulbs
+        return
       when @MODE_FLOATING
         b.updateFloating(dt) for b in @bulbs
+        return
   
   setupMode: ->
     switch @mode
       when @MODE_CONNECT
-        p.view.visible = false for p in @parts
+        @hidePerso()
       when @MODE_RAYS
         b.setupRay() for b in @bulbs
       when @MODE_LIFT
@@ -53,22 +58,32 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         @lift (@lifModeIsDown=!@lifModeIsDown)
       when @MODE_FLOATING
         b.startFloating() for b in @bulbs
-        
+      when @MODE_DIGI
+        @hidePerso()
+        @addDigiBack()
+  
+  hidePerso : ->
+    p.view.visible = false for p in @parts
+
+  showPerso : ->
+    p.view.visible = true for p in @parts
+
   cleanMode: ->
     switch @mode
       when @MODE_CONNECT
-        p.view.visible = true for p in @parts
+        @showPerso()
         b.removeConnections() for b in @bulbs
         B = mk.m11s.bulbs.Bulb
-        # B::maxConnection += 6
-        if B::maxConnection is 0 then B::maxConnection = 8
-        else B::maxConnection*=2
+        B::maxConnection*=2
       when @MODE_RAYS
         b.removeRay() for b in @bulbs
         mk.m11s.bulbs.Bulb::maxRays += 2
       when @MODE_FLOATING
         b.stopFloating() for b in @bulbs
         mk.m11s.bulbs.Bulb::floatPower += 0.35
+      when @MODE_DIGI
+        @showPerso()
+        @removeDigiBack()
 
   lift: (up=true) ->
     canvas = document.getElementById('paperjs-canvas')
@@ -101,6 +116,16 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
       canvas.style.top = @y+'px'
     ).start window.currentTime
 
+  addDigiBack: ->
+    @digiback = new mk.m11s.bulbs.DigiBack @joints[NiTE.HEAD]
+    @items.push @digiback
+
+  removeDigiBack: ->
+    db = @digiback
+    db.hide =>
+      db.clean()
+      @items.splice @items.indexOf(db),1
+
   addBodyBulbs: ->
     parts = @getPartsExcluding ['head', 'torso', 'pelvis']
     delay = 0
@@ -121,6 +146,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
             @bulbs.push bulb
             bulb.id = id++
             mk.Scene::sfx.play 'bulbShow'+rngi(seed,1,3)
+    return
   
   addHeadBulb: ->
     bulb = new mk.m11s.bulbs.Bulb @getPart('head'), 0, @colorOff, @colorOn, @bulbs.length
@@ -142,11 +168,15 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
     setBackgroundColor '#fff'
     b.lightsOn() for b in @bulbs
 
+    if @digiback
+      @digiback.lightOn
+
     if changeMode
       @cleanMode()
       # if @mode is -1 then @mode = 3
       # else @mode++
-      @mode++
+      @mode = @MODE_DIGI
+      # @mode++
       # @mode = @MODE_FLOATING
       if @mode >= @NUM_MODES
         @mode = 0
@@ -160,5 +190,8 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
 
     mk.Scene::sfx.play 'ropeReleased'
 
-    setBackgroundColor 'black'
+    if @digiback
+      @digiback.lightOff
+
+    setBackgroundColor @settings.getHexColor 'background'
     b.lightsOff() for b in @bulbs

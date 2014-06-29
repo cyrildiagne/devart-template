@@ -87,8 +87,9 @@ class mk.m11s.lockers.DoorBackground
   constructor : (@head) ->
 
     @numStairs = 10
-    @stairHeight = 60
+    @stairHeight = 50
     @perspective = 60
+    @stairStart = 200
 
     @view = new paper.Group()
     @view.transformContent = false
@@ -104,6 +105,14 @@ class mk.m11s.lockers.DoorBackground
     @bg = new paper.Path.Rectangle [-@w*0.5, -@h*0.5], [@w, @h]
     @bg.fillColor = mk.Scene::settings.getHexColor 'lightBlue'
     @view.addChild @bg
+
+    @ground = new paper.Path.Rectangle
+      position : new paper.Point 0, @h*0.5-@stairStart*0.5-@stairHeight*0.25
+      width : @w
+      height : @stairStart + @stairHeight * 0.5
+      pivot : new paper.Point 0,0
+    @ground.fillColor = mk.Scene::settings.getHexColor 'cream'
+    @view.addChild @ground
 
     @stairs = []
     @addStairs()
@@ -126,12 +135,12 @@ class mk.m11s.lockers.DoorBackground
     for i in [@numStairs-1..0] by -1
       s = @stairs[i]
       j = (@numStairs-i)
-      s.position.y = window.viewport.height * 0.5 - j * @stairHeight - 200
-      s.position.x = -j * @perspective - 100
-      offY = @head.y * 0.01 * j
-      offY = Math.min(offY, 0)
+      s.position.y = window.viewport.height * 0.5 - j * @stairHeight - @stairStart
+      s.position.x = -j * @perspective - 200
+      # offY = @head.y * 0.01 * j
+      # offY = Math.min(offY, 0)
       s.position.x += - @head.x * 0.5 * (j/@stairs.length)
-      s.position.y += - offY
+      # s.position.y += - offY
     return
 
 
@@ -198,7 +207,7 @@ class mk.m11s.lockers.DoorOpen
   popupAndShineYouBeautiful : ->
 
     if @door.isClosed
-      @view.scaling = rng('puasyb') * 0.30 + 0.30
+      @view.scaling = rng('puasyb') * 0.20 + 0.15
       @view.position = 
         x : (-0.3) * window.viewport.width * rng('test')
         y : (-0.75+@view.scaling.x) * window.viewport.height * rng('test')

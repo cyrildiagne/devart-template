@@ -92,6 +92,7 @@ jade_options.main =
     'm11s/lockers/items/pile'
     'm11s/lockers/items/key'
     'm11s/lockers/items/door'
+    'm11s/lockers/items/balloons'
     'm11s/lockers/bodyitems'
 
     'm11s/books/settings'

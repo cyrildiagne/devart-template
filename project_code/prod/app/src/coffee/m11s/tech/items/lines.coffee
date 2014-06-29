@@ -85,7 +85,7 @@ class mk.m11s.tech.Trail
 
     @visible = @view.visible = false
 
-    for c in ['skin','cream','red','lightRed']
+    for c in ['skin','red','lightRed']
       color = new paper.Color mk.Scene::settings.getHexColor(c)
       mk.m11s.tech.TrailLine::colors.push color
 

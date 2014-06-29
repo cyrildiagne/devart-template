@@ -1,6 +1,6 @@
 class mk.m11s.tech.Clone
 
-  constructor : (@parts, @numDelay) ->
+  constructor : (@parts, @numDelay, @isLeft) ->
     @view = new paper.Group()
     @view.transformContent = false
 
@@ -16,18 +16,24 @@ class mk.m11s.tech.Clone
     @offset = 0
     @strombo = false
 
-    @valids = [
-      'leftLowerArm', 'rightLowerArm',
-      'leftUpperArm', 'rightUpperArm',
-      'leftLowerLeg', 'rightLowerLeg',
-      # 'leftUpperLeg', 'rightUpperLeg'
-    ]
+    if @isLeft
+      @valids = [
+        'leftLowerArm'
+        'leftUpperArm'
+        'leftLowerLeg'
+      ]
+    else 
+      @valids = [
+        'rightLowerArm'
+        'rightUpperArm'
+        'rightLowerLeg'
+      ]
 
     # for p in @parts
     #   console.log @valids.indexOf(p.name)
 
     @colors = []
-    for c in ['skin','cream','beige','red','lightRed']
+    for c in ['skin','cream','red','lightRed']
       color = mk.Scene::settings.getPaperColor c
       @colors.push color
 
@@ -99,12 +105,13 @@ class mk.m11s.tech.Clones
 
     @clones = []
     numDelay = 10
-    for i in [0...5]
-      cl = new mk.m11s.tech.Clone @parts, numDelay
+    for i in [0...8]
+      numDelay = Math.abs(i-4)*10
+      cl = new mk.m11s.tech.Clone @parts, numDelay, i<4
       # cl.view.scale 0.8
       @view.addChild cl.view
       @clones.push cl
-      numDelay += 10
+      # numDelay += 10
 
     @strombo = false
 
@@ -124,5 +131,5 @@ class mk.m11s.tech.Clones
     if !@visible then return
     # space = @spread / @clones.length
     for i in [0...@clones.length]
-      @clones[i].offset = @spread * (i/@clones.length-0.5)
+      @clones[i].offset = @spread * (i/(@clones.length-1)-0.5)
     c.update() for c in @clones

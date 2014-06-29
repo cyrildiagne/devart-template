@@ -12,6 +12,9 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @door = null
     # @addDoor()
     @numDoorOpen = 0
+    @numDoorOpenMax = 5
+
+    @balloons = null
 
     @keyId = 0
     @lockId = 0
@@ -30,22 +33,27 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @MODE_INSIDE = 2
     @currMode = @MODE_NOTHING
 
-    @setModePile()
-    # @setModeInside()
+    # @setModePile()
+    @setModeInside()
+
+  setOutdoorPelvisColor : ->
+    color = mk.Scene::settings.getHexColor 'blue'
+    parts = @getParts ['leftUpperLeg', 'rightUpperLeg', 'pelvis']
+    p.setColor color,false for p in parts
 
   onMusicEvent : (evId) ->
-    
     switch evId
       # when 1
         # @pilesCanFly = true
       when 3
-        @currMode = @MODE_NOTHING
-        while @piles.length
-          @piles.shift().fly()
-        delayed 2000, =>
-          @addDoor()
-          @currMode = @MODE_DOORS
-          @onUnlock()
+        delayed 10, =>
+          @currMode = @MODE_NOTHING
+          while @piles.length
+            @piles.shift().fly()
+          delayed 7000, =>
+            @addDoor()
+            @currMode = @MODE_DOORS
+          # @onUnlock()
       # when 5
       #   @setModeInside()
         # @pilesCanFly = true
@@ -63,7 +71,12 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
 
   setModeInside : ->
     @addDoor() if !@door
+    @setOutdoorPelvisColor()
     @door.setupInside()
+
+    @balloons = new mk.m11s.lockers.Balloons @joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]
+    @items.push @balloons
+
     @currMode = @MODE_INSIDE
 
   addDoor : ->
@@ -148,12 +161,13 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
         @piles[lock.type].addSome()
       when @MODE_DOORS
         @numDoorOpen++
-        if @numDoorOpen > 3
+        if @numDoorOpen > @numDoorOpenMax
           @setModeInside()
         else
           @door.popupAndShineYouBeautiful()
       when @MODE_INSIDE
-        @door.addParticlesTime += 3000
+        @balloons.addBalloon()
+        # @door.addParticlesTime += 2000
 
   update : (dt) ->
     super dt

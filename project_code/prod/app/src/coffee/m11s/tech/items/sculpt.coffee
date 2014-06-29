@@ -100,12 +100,14 @@ class mk.m11s.tech.Sculpt
     color = new paper.Color mk.Scene::settings.getHexColor(c)
     mk.m11s.tech.SculptShape::colors.push color
 
-    jnts = ['FOOT', 'KNEE', 'HIP', 'SHOULDER', 'ELBOW', 'HAND']
+    jnts = ['FOOT', 'KNEE', 'TORSO', 'SHOULDER', 'ELBOW', 'HAND']
     @shapes = []
     for side in ['LEFT_', 'RIGHT_']
       for i in [0...jnts.length-1]
-        j1 = @joints[NiTE[side+jnts[i]]]
-        j2 = @joints[NiTE[side+jnts[i+1]]]
+        pref1 = if jnts[i] is 'TORSO' then '' else side
+        pref2 = if jnts[i+1] is 'TORSO' then '' else side
+        j1 = @joints[NiTE[pref1+jnts[i]]]
+        j2 = @joints[NiTE[pref2+jnts[i+1]]]
         isHand = (i is 3) or (i is 4) or (i is 5)
         sclpt = new mk.m11s.tech.SculptShape j1, j2, color, @mainView, isHand
         @shapes.push sclpt

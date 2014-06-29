@@ -5,7 +5,7 @@ class mk.m11s.lockers.Balloon
     @ropeLength           = 100 + rng('blnc')*500
     @relaxationIterations = 10
     @pixelsPerMeter       = 200
-    @gravity              = -30 - rng('bln')*20)
+    @gravity              = -30 - rng('bln')*20
     @handleId             = @nbItems-1
 
     @items = []

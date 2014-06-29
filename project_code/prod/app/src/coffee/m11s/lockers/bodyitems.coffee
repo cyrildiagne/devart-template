@@ -22,7 +22,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @timeSinceKey = -4000
     @timeBeforeNextKey = 0
 
-    @pilesCanFly = false
+    # @pilesCanFly = false
 
     @MODE_NOTHING = -1
     @MODE_PILE = 0
@@ -34,11 +34,11 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     # @setModeInside()
 
   onMusicEvent : (evId) ->
-    return
+    
     switch evId
-      when 1
-        @pilesCanFly = true
-      when 4
+      # when 1
+        # @pilesCanFly = true
+      when 3
         @currMode = @MODE_NOTHING
         while @piles.length
           @piles.shift().fly()
@@ -46,8 +46,8 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
           @addDoor()
           @currMode = @MODE_DOORS
           @onUnlock()
-      when 5
-        setModeInside()
+      # when 5
+      #   @setModeInside()
         # @pilesCanFly = true
         # @flyInterval()
         # @scaleFactor = 0.1
@@ -111,7 +111,6 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     return biggest
 
   addPile : (type) ->
-    console.log 'add pile'
     pile = new mk.m11s.lockers.Pile type
     pile.fullCallback = @pileFullCallback
     @items.push pile
@@ -122,7 +121,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
       @flyPile pile.type
 
   flyPile : (type, add=true) ->
-    if !@pilesCanFly then return
+    # if !@pilesCanFly then return
     @piles[type].fly()
     @piles.splice type, 1
     @addPile type if add
@@ -150,7 +149,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
       when @MODE_DOORS
         @numDoorOpen++
         if @numDoorOpen > 3
-          setModeInside()
+          @setModeInside()
         else
           @door.popupAndShineYouBeautiful()
       when @MODE_INSIDE

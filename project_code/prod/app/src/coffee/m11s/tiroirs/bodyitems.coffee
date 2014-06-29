@@ -198,20 +198,20 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     fly.view.transformContent = false
     fly.view.scaling = 0.01
     tween = new TWEEN.Tween({scale:0.01}).to({scale:1}, 700)
-     .delay(400)
-     .easing( TWEEN.Easing.Quadratic.Out )
-     .onStart(->
-      fly.view.position.x = fly.pos.x = drawer.view.position.x
-      fly.view.position.y = fly.pos.y = drawer.view.position.y - 10
-      fly.start()
-     )
-     .onUpdate(->
-      fly.view.scaling = @scale
-     ).start window.currentTime
-
-    setTimeout =>
-      @removeFlying fly
-    , 3000
+    .delay(400)
+    .easing( TWEEN.Easing.Quadratic.Out )
+    .onStart(->
+     fly.view.position.x = fly.pos.x = drawer.view.position.x
+     fly.view.position.y = fly.pos.y = drawer.view.position.y - 10
+     fly.start()
+    )
+    .onUpdate(->
+     fly.view.scaling = @scale
+    ).start window.currentTime
+    console.log 'addFlying'
+    # setTimeout =>
+    #   @removeFlying fly
+    # , 3000
 
 
   addScarf: (drawer) ->
@@ -230,17 +230,17 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     s2 = fly.scarf.scarf2
     s1.view.scaling = s2.view.scaling = fly.view.scaling = 0.01
     tween = new TWEEN.Tween({scale:0.01}).to({scale:1}, 400)
-     .easing( TWEEN.Easing.Quadratic.Out )
-     .onStart(->
-      fly.start()
-     )
-     .onUpdate(->
-      s1.view.scaling = s2.view.scaling = fly.view.scaling = @scale
-     ).start window.currentTime
-
-    setTimeout =>
-      @removeFlying fly
-    , 3000
+    .easing( TWEEN.Easing.Quadratic.Out )
+    .onStart(->
+     fly.start()
+    )
+    .onUpdate(->
+     s1.view.scaling = s2.view.scaling = fly.view.scaling = @scale
+    ).start window.currentTime
+    console.log 'addScarf'
+    # setTimeout =>
+    #   @removeFlying fly
+    # , 3000
 
   removeFlying : (fly) ->
     # fly.flyToDrawer drawer, => 

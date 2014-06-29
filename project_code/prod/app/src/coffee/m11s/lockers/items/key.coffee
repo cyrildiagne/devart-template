@@ -1,8 +1,9 @@
 class mk.m11s.lockers.Key extends mk.helpers.Flying
   
-  constructor : (@id) ->
+  constructor : (@id, asset) ->
     rngk = 'key' + @id
-    asset = ['key1', 'key2'].seedRandom rngk
+    if !asset
+      asset = ['key1', 'key2'].seedRandom rngk
     symbol = mk.Scene::assets[asset]
     @item = symbol.place()
     @item.pivot = new paper.Point 0, 0

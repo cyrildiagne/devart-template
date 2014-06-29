@@ -6,12 +6,12 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @locks = []
     @addLockers()
 
-    @piles = []
-    @addPile type for type in [0...3]
     # delayed 1000, => @flyPile 2
 
-    @doors = []
-    @addDoor()
+    # @doors = []
+    @door = null
+    # @addDoor()
+    @numDoorOpen = 0
 
     @keyId = 0
     @lockId = 0
@@ -24,29 +24,60 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
 
     @pilesCanFly = false
 
+    @MODE_NOTHING = -1
+    @MODE_PILE = 0
+    @MODE_DOORS = 1
+    @MODE_INSIDE = 2
+    @currMode = @MODE_NOTHING
+
+    @setModePile()
+    # @setModeInside()
+
   onMusicEvent : (evId) ->
+    return
     switch evId
-      when 4
+      when 1
         @pilesCanFly = true
-        @flyInterval()
-        @scaleFactor = 0.1
+      when 4
+        @currMode = @MODE_NOTHING
+        while @piles.length
+          @piles.shift().fly()
+        delayed 2000, =>
+          @addDoor()
+          @currMode = @MODE_DOORS
+          @onUnlock()
+      when 5
+        setModeInside()
+        # @pilesCanFly = true
+        # @flyInterval()
+        # @scaleFactor = 0.1
         # for pile in @piles
         #   scaling = mk.m11s.lockers.Pile::SCALE_MAX_BEFORE_FLY
         #   if pile.pile.scaling.x > scaling
         #     @flyPile pile.type
 
+  setModePile : ->
+    @piles = []
+    @addPile type for type in [0...3]
+    @currMode = @MODE_PILE
+
+  setModeInside : ->
+    @addDoor() if !@door
+    @door.setupInside()
+    @currMode = @MODE_INSIDE
+
   addDoor : ->
-    door = new mk.m11s.lockers.DoorOpen @doorAnimComplete
-    @doors.push door
-    @items.push door
+    @door = new mk.m11s.lockers.DoorOpen @joints[NiTE.HEAD], @doorAnimComplete
+    @items.push @door
 
   doorAnimComplete : (d) =>
+    console.log 'anim complete'
+
+  removeDoor : ->
     setTimeout =>
-      @doors.splice @doors.indexOf(d),1
       @items.splice @items.indexOf(d),1
       d.clean()
     , 1
-
 
   addLockers : ->
     parts = @getPartsExcluding ['head']
@@ -65,7 +96,9 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @items.push lock
 
   addKey : ->
-    key = new mk.m11s.lockers.Key @flys.length
+    asset = null
+    if @currMode is @MODE_INSIDE then asset = 'key2'
+    key = new mk.m11s.lockers.Key @flys.length, asset
     @items.push key
     @flys.push key
 
@@ -80,15 +113,19 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
   addPile : (type) ->
     console.log 'add pile'
     pile = new mk.m11s.lockers.Pile type
-    # pile.fullCallback = => @flyPile pile.type
+    pile.fullCallback = @pileFullCallback
     @items.push pile
     @piles.splice type, 0, pile
 
-  flyPile : (type) ->
+  pileFullCallback : (pile) =>
+    if @currMode is @MODE_PILE
+      @flyPile pile.type
+
+  flyPile : (type, add=true) ->
     if !@pilesCanFly then return
     @piles[type].fly()
     @piles.splice type, 1
-    @addPile type
+    @addPile type if add
 
   flyInterval : =>
     p = @getBiggestPile()
@@ -106,6 +143,19 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
           return lock
     return null
 
+  onUnlock : (fly, lock) ->
+    switch @currMode
+      when @MODE_PILE
+        @piles[lock.type].addSome()
+      when @MODE_DOORS
+        @numDoorOpen++
+        if @numDoorOpen > 3
+          setModeInside()
+        else
+          @door.popupAndShineYouBeautiful()
+      when @MODE_INSIDE
+        @door.addParticlesTime += 3000
+
   update : (dt) ->
     super dt
 
@@ -118,10 +168,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
         do (fly, lock) =>
           fly.turn =>
             lock.breakFree()
-            if @doors
-              @addDoor()
-            else
-              @piles[lock.type].addSome()
+            @onUnlock fly, lock
       if lock || fly.view.position.x > 500
         fly.clean()
         @items.splice @items.indexOf(fly),1

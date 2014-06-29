@@ -99,7 +99,7 @@ class mk.m11s.lockers.Tentacles
 
 class mk.m11s.lockers.Pile
 
-  SCALE_MAX_BEFORE_FLY : 2.2
+  SCALE_MAX_BEFORE_FLY : 1.5
 
   constructor : (@type) ->
 
@@ -137,7 +137,7 @@ class mk.m11s.lockers.Pile
     @speed = 0
     @tentacles = null
 
-    @scaleFactor = 0.035
+    @scaleFactor = 0.04
 
   addGrain : ->
     g = new paper.Path.Circle
@@ -153,7 +153,7 @@ class mk.m11s.lockers.Pile
     g.remove()
     @grains.splice @grains.indexOf(g),1
     if @pile.scaling.x > mk.m11s.lockers.Pile::SCALE_MAX_BEFORE_FLY && @grains.length is 0
-      @fullCallback() if @fullCallback
+      @fullCallback(@) if @fullCallback
 
   addSome : ->
     @addGrainTime += 1000
@@ -162,6 +162,7 @@ class mk.m11s.lockers.Pile
     @removeGrain(@grains[0]) while @grains.length
     @tentacles = new mk.m11s.lockers.Tentacles @pile, @color
     @view.insertChild 0, @tentacles.view
+    @view.z = -2000+400
     mk.Scene::sfx.play 'sandfly' + rngi('sf',1,3)
 
   update : (dt) ->

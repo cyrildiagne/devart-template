@@ -37,3 +37,9 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
       sandfly1 : 'SableSenvole_PETIT'
       sandfly2 : 'SableSenvole_MOYEN'
       sandfly3 : 'SableSenvole_GRAND'
+
+  # setupColors : ->
+  #   super()
+  #   @colors['leftUpperLeg'] = @palette.blue
+  #   @colors['rightUpperLeg'] = @palette.blue
+  #   @colors['pelvis'] = @palette.blue

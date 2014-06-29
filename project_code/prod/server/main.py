@@ -93,12 +93,18 @@ class LastHandler(webapp2.RequestHandler):
       self.response.write('"urlId": "' + urlId + '",')
       self.response.write('"date": "' + date + '"}')
     else:
-      self.response.write('<html><head><link rel="stylesheet" href="./last/last.css"></head><body>')
+      self.response.write('<html><head>')
+      self.response.write('<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>')
+      self.response.write('<meta name="mobile-web-app-capable" content="yes">')
+      self.response.write('<link rel="stylesheet" href="./last/last.css"></head><body>')
       self.response.write('<div class="last_scene">')
-      self.response.write('<img src="./last/m11/'+m11+'.png">')
-      self.response.write('<p>Watch the replay of your performance at</p>')
-      self.response.write('<a href="http://goo.gl/'+urlId+'">goo.gl/<span>'+urlId+'</span></a>')
-      self.response.write('<p class="date" data-date="'+date+'"></p>')
+      # self.response.write('<img src="./last/m11/'+m11+'.png">')
+      self.response.write('<img src="./last/m11/birds.svg" class="m11img">')
+      self.response.write('<div class="infos">')
+      self.response.write('<p class="watch">Watch the replay of <span class="highlight">your performance</span> at</p>')
+      self.response.write('<a href="http://goo.gl/'+urlId+'">goo.gl/<span class="highlight">'+urlId+'</span></a>')
+      self.response.write('<p class="date highlight" data-date="'+date+'"></p>')
+      self.response.write('</div>')
       self.response.write('</div>')
       self.response.write('<script src="./vendor/js/jquery.min.js"></script>')
       self.response.write('<script src="./last/moment.js"></script>')
@@ -106,30 +112,31 @@ class LastHandler(webapp2.RequestHandler):
       self.response.write('</body></html>')
 
 
-# class SyncHandler(webapp2.RequestHandler):
+class SyncHandler(webapp2.RequestHandler):
 
-#   def get(self):
-#     self.response.headers.add_header("Access-Control-Allow-Origin", "*")
+  def get(self):
+    self.response.headers.add_header("Access-Control-Allow-Origin", "*")
 
-#     query = Replay.query(ancestor=replay_key()).order(-Replay.date)
-#     ndb_replays = query.fetch()
+    query = Replay.query(ancestor=replay_key()).order(-Replay.date)
+    ndb_replays = query.fetch()
 
-#     # retrieve complete list of items
-#     url = 'https://www.googleapis.com/storage/v1/b/mr-kalia-replays/o?fields=items(name,size)'
-#     data = json.load(urllib2.urlopen(url))
-#     gcs_replays = data['items']
+    # retrieve complete list of items
+    url = 'https://www.googleapis.com/storage/v1/b/mr-kalia-replays/o?fields=items(name,size)'
+    data = json.load(urllib2.urlopen(url))
+    gcs_replays = data['items']
 
-#     # add missing gcs replays to ndb
-#     for r in gcs_replays:
-#       found = False
-#       for ndbr in ndb_replays:
-#         if r['name'] == ndbr.tag:
-#           found = True
-#       if found is False:
-#         # data = json.dumps()
-#         data = urllib.urlencode( {'key' : API_KEY, 'tag' : r['name']} )
-#         res = urllib2.urlopen('http://devartmrkalia.com' + '/last', data)
-#         print res
+    # add missing gcs replays to ndb
+    for r in gcs_replays:
+      found = False
+      for ndbr in ndb_replays:
+        if r['name'] == ndbr.tag:
+          found = True
+      if found is False:
+        # data = json.dumps()
+        data = urllib.urlencode( {'key' : API_KEY, 'tag' : r['name']} )
+        res = urllib2.urlopen('http://devartmrkalia.com' + '/last', data)
+        # res = urllib2.urlopen('http://localhost:8080' + '/last', data)
+        print res
 
 
 class ReplayListHandler(webapp2.RequestHandler):
@@ -191,5 +198,5 @@ app = webapp2.WSGIApplication([
   ('/token', TokenHandler),
   ('/list', ReplayListHandler),
   ('/last', LastHandler),
-  # ('/sync', SyncHandler)
+  ('/sync', SyncHandler)
 ], debug=True)

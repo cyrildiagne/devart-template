@@ -11,7 +11,7 @@ html, body {
   background-color: black;
 }
 .last_scene {
-  font-size: 20px;
+  font-size: 30px;
   width: 100%;
   text-align: center;
   position: absolute;
@@ -22,11 +22,25 @@ html, body {
   -moz-transform    : translate(0,-50%);
   transform         : translate(0,-50%);
 }
+.infos {
+  text-align: left;
+  padding: 30px;
+  margin-top: 110px;
+}
 .last_scene a {
   color : white;
   text-decoration: none;
-  font-size: 54px;
+  font-size: 84px;
 }
-.last_scene .date {
-  color : #505050;
+.watch {
+  text-transform: uppercase;
+}
+.highlight {
+  color : #7ED1DA;
+}
+.m11img {
+  height : 500px;
+}
+.date {
+  margin-top : 60px;
 }

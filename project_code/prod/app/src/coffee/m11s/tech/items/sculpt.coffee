@@ -1,6 +1,6 @@
 class mk.m11s.tech.SculptShape
 
-  colors : []
+  color : null
 
   constructor : (@j1, @j2, @color, @mainView,@isArm = false) ->
     @paths = []
@@ -96,9 +96,9 @@ class mk.m11s.tech.Sculpt
     @view.z = -9999
 
     # c = ['lightBlue','blue','red','lightRed'].seedRandom('sculpt')
-    c = 'lightRed'
+    c = ['lightRed', 'blue'].seedRandom('techlnk')
     color = new paper.Color mk.Scene::settings.getHexColor(c)
-    mk.m11s.tech.SculptShape::colors.push color
+    mk.m11s.tech.SculptShape::color = color
 
     jnts = ['FOOT', 'KNEE', 'TORSO', 'SHOULDER', 'ELBOW', 'HAND']
     @shapes = []
@@ -123,3 +123,11 @@ class mk.m11s.tech.Sculpt
   setVisible : (visible) ->
     for s in @shapes
       s.setVisibility visible
+    if visible
+      c = ['lightRed', 'blue'].seedRandom('techlnk')
+      color = new paper.Color mk.Scene::settings.getHexColor(c)
+      mk.m11s.tech.SculptShape::color = color
+      for s in @shapes
+        s.color = color
+        # for face in s.paths
+        #   face.fillColor = face.initColor = color

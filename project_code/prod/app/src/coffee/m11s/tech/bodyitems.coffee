@@ -10,17 +10,19 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     @addSculpt()
     @addClones()
 
-    @modes = [@trails, @links, @sculpt, @clones]
+    @modes = [@trails, @sculpt, @clones, @links]
     # @stromboInterval()
     @modeItvlTween = null
     @currMode = 0
     @switchModeDelay = 83 * 8 * 2
     @switchModeInterval()
+    # @nextMode()
 
     @numBgFlash = @numPersoFlash = 0
     @stromboIntervalMode = 0
 
   onMusicEvent : (evId) ->
+    return
     switch evId
       when 0
         @modeItvlTween.stop()

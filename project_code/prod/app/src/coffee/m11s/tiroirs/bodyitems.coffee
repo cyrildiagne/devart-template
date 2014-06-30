@@ -40,8 +40,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     @availableJoints = [@joints[NiTE.LEFT_HAND], @joints[NiTE.RIGHT_HAND]]
     @velTracker = new mk.helpers.JointVelocityTracker @availableJoints
 
-    @bg = new mk.m11s.tiroirs.Background()
-    @items.push @bg
+    # @addBackground()
 
   onMusicEvent : (evId) ->
     console.log evId
@@ -53,9 +52,12 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         @ensureDrawersOpen()
       when 2
         @mode = -1
+        @addBackground()
         @closeOpenDrawers()
         @cleanDrawerItems()
-        delayed 3000, => @mode = 1
+        delayed 3000, =>
+          delayed 3000, => @bg.removeLines()
+          @mode = 1
       when 3
         @mode = 1
         @ensureDrawersOpen 1
@@ -92,6 +94,10 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     for d in @drawers
       if d.isOpen
         d.toggle()
+
+  addBackground: ->
+    @bg = new mk.m11s.tiroirs.Background()
+    @items.push @bg
 
   addDrawers: ->
     DrawerClass = m11Class 'Drawer'

@@ -33,6 +33,7 @@ DEFAULT_REPLAY_FOLDER = 'default_replay'
 SECRET  = yaml.load( open("secret.yaml", 'r') )
 API_KEY = SECRET['apikey']
 
+
 class Replay(ndb.Model):
   """Models an individual Guestbook entry."""
   tag      = ndb.StringProperty()
@@ -50,6 +51,7 @@ def shorten(url):
   req.add_header('Content-Type', 'application/json')
   results = json.load(urllib2.urlopen(req))
   return results['id']
+
 
 class LastHandler(webapp2.RequestHandler):
 
@@ -98,8 +100,7 @@ class LastHandler(webapp2.RequestHandler):
       self.response.write('<meta name="mobile-web-app-capable" content="yes">')
       self.response.write('<link rel="stylesheet" href="./last/last.css"></head><body>')
       self.response.write('<div class="last_scene">')
-      # self.response.write('<img src="./last/m11/'+m11+'.png">')
-      self.response.write('<img src="./last/m11/birds.svg" class="m11img">')
+      self.response.write('<img src="./last/m11/'+m11+'.svg" class="m11img">')
       self.response.write('<div class="infos">')
       self.response.write('<p class="watch">Watch the replay of <span class="highlight">your performance</span> at</p>')
       self.response.write('<a href="http://goo.gl/'+urlId+'">goo.gl/<span class="highlight">'+urlId+'</span></a>')
@@ -117,7 +118,7 @@ class SyncHandler(webapp2.RequestHandler):
   def get(self):
     self.response.headers.add_header("Access-Control-Allow-Origin", "*")
 
-    query = Replay.query(ancestor=replay_key()).order(-Replay.date)
+    query = Replay.query(ancestor=replay_key()).order(Replay.date)
     ndb_replays = query.fetch()
 
     # retrieve complete list of items
@@ -198,5 +199,5 @@ app = webapp2.WSGIApplication([
   ('/token', TokenHandler),
   ('/list', ReplayListHandler),
   ('/last', LastHandler),
-  ('/sync', SyncHandler)
+  # ('/sync', SyncHandler)
 ], debug=True)

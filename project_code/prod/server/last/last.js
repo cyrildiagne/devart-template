@@ -19,7 +19,7 @@ setInterval(function(){
       $('a').attr('href', 'http://goo.gl/'+data.urlId);
       $('a').find('span').html(data.urlId);
       mmt = moment( data.date );
-      // $('<img>').attr('src', '/last/m11/'+data.m11+'.svg');
+      $('img').attr('src', '/last/m11/'+data.m11+'.svg');
     }
   });
 }, 1000);

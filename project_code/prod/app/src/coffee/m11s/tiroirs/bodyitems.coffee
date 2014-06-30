@@ -215,9 +215,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
      fly.view.scaling = @scale
     ).start window.currentTime
     console.log 'addFlying'
-    # setTimeout =>
-    #   @removeFlying fly
-    # , 3000
+    delayed 3000, => @removeFlying fly
 
 
   addScarf: (drawer) ->
@@ -243,10 +241,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     .onUpdate(->
      s1.view.scaling = s2.view.scaling = fly.view.scaling = @scale
     ).start window.currentTime
-    console.log 'addScarf'
-    # setTimeout =>
-    #   @removeFlying fly
-    # , 3000
+    delayed 3000, => @removeFlying fly
 
   removeFlying : (fly) ->
     # fly.flyToDrawer drawer, => 

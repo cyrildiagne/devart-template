@@ -67,6 +67,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
 
   stopFire : ->
     fire = @fire
+    if !fire then return
     new TWEEN.Tween({pct:fire.amp}).to({pct:0}, 1000)
     .start(window.currentTime)
     .onUpdate(->

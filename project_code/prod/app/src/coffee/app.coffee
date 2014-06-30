@@ -27,10 +27,8 @@ $iframe = null
 
 uiHideTimeout = -1
 
-if chrome && chrome.sockets
+if typeof chrome isnt 'undefined' && chrome.sockets
   isLive = true
-
-#/Applications/Google Chrome.app/Contents/MacOS/Google\ Chrome --user-data-dir=~/chromedata --app-id=gmlclebgecklpkmchojfhfccndpafdhf
 
 initApp = ->
   $iframe = $("#frame")
@@ -128,6 +126,7 @@ setSceneFromName = (sceneName) ->
     if currentMode is SCENE_RUNNING
       changeScene()
 
+
 # ---- UI -----
 
 setupHashNav = ->
@@ -176,10 +175,10 @@ setupMuteButton = ->
 setupHelpButton = ->
   $help = $('#help')
   $('#about').on 'click', closeAbout
+
   $help.on 'click', (ev) ->
     ev.originalEvent.preventDefault()
     $('#about').removeClass 'inactive'
-
     $('#ui').addClass 'inactive'
     $title.hide()
     $status.hide()
@@ -189,6 +188,8 @@ setupHelpButton = ->
     # ,1)
 
 closeAbout = (ev) ->
+  if $(ev.target).attr('href')
+    return
   ev.originalEvent.preventDefault()
   $('#about').addClass 'inactive'
   $('#ui').removeClass 'inactive'
@@ -219,10 +220,12 @@ setupArrows = ->
 
 setSceneDate = ->
   d = scenes[currSceneId].date
-  time = d.getHours() + ':' + d.getMinutes()
+  min = d.getMinutes()
+  if min < 10 then min = '0'+min
+  time = d.getHours() + ':' + min
   day = d.getDate()
   if day < 10 then day = '0'+day
-  m = d.getMonth()
+  m = d.getMonth()+1
   if m < 10 then m = '0'+m
   date = day + '/' + m + '/' + d.getFullYear()
   $status.html time + ' | ' + date

@@ -19,7 +19,7 @@ class mk.m11s.tiroirs.DrawerItem
     @view.addChild @item
 
     @rotation = 0
-    @rotationImpact = 2 + rng('dri') * 3
+    @rotationImpact = 4 + rng('dri') * 4
 
     @offset = new paper.Point 0,-10
     @updatePos()

@@ -72,14 +72,14 @@ class mk.m11s.tiroirs.Scarf extends mk.helpers.Flying
     @view.z = 9999
 
     @scarf1 = new mk.m11s.tiroirs.ScarfPart new paper.Point(),
-      color     : mk.Scene::settings.getHexColor 'blue'
+      color     : mk.Scene::settings.getHexColor 'red'
       stiffness : 0.85
     @scarf1.view.z = 1997
     @view.addChild @scarf1.view
 
     # j = @joints[NiTE.LEFT_HAND]
     @scarf2 = new mk.m11s.tiroirs.ScarfPart new paper.Point(),
-      color     : mk.Scene::settings.getHexColor 'lightBlue'
+      color     : mk.Scene::settings.getHexColor 'cream'
       stiffness : 0.9
       numPoints : 6
     @scarf2.view.z = 1999

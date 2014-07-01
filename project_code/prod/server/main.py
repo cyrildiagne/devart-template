@@ -118,7 +118,7 @@ class SyncHandler(webapp2.RequestHandler):
   def get(self):
     self.response.headers.add_header("Access-Control-Allow-Origin", "*")
 
-    query = Replay.query(ancestor=replay_key()).order(Replay.date)
+    query = Replay.query(ancestor=replay_key()).order(-Replay.date)
     ndb_replays = query.fetch()
 
     # retrieve complete list of items
@@ -143,7 +143,7 @@ class SyncHandler(webapp2.RequestHandler):
 class ReplayListHandler(webapp2.RequestHandler):
   def get(self):
 
-    query = Replay.query(ancestor=replay_key()).order(-Replay.date)
+    query = Replay.query(ancestor=replay_key()).order(Replay.date)
     replays = query.fetch()
 
     # retrieve complete list of items

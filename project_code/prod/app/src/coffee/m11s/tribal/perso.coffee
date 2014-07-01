@@ -5,7 +5,7 @@ class mk.m11s.tribal.Perso extends mk.m11s.base.Perso
     val = 0
     inc = 2*Math.PI / @joints.length
     @deformInit = false
-    @deformSinAmp = 0
+    @deformSinAmp = 80
     for i in [0...@joints.length]
       j = @joints[i]
       j.val = (val+= inc*0.5)
@@ -54,7 +54,7 @@ class mk.m11s.tribal.Perso extends mk.m11s.base.Perso
     if @items.deformSin
       @deformSinAmp += 0.1
       for j in @joints
-        t = (window.currentTime*2+j.y) / 2500
+        t = (window.currentTime + j.y*3) / 400
         j.x += Math.sin(t) * @deformSinAmp
 
 

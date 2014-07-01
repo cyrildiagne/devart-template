@@ -33,8 +33,8 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @MODE_INSIDE = 2
     @currMode = @MODE_NOTHING
 
-    # @setModePile()
-    @setModeInside()
+    @setModePile()
+    # @setModeInside()
 
   setOutdoorPelvisColor : ->
     color = mk.Scene::settings.getHexColor 'blue'
@@ -48,8 +48,9 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
       when 3
         delayed 10, =>
           @currMode = @MODE_NOTHING
-          while @piles.length
-            @piles.shift().fly()
+          if @piles
+            while @piles.length
+              @piles.shift().fly()
           delayed 7000, =>
             @addDoor()
             @currMode = @MODE_DOORS

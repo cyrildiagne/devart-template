@@ -22,11 +22,11 @@ setInterval(function(){
       $('img').attr('src', '/last/m11/'+data.m11+'.svg');
     }
   });
-}, 1000);
+}, 5000);
 
 $(function(){
   $date = $('.last_scene .date');
   mmt = moment( $date.data('date') );
-  setInterval(updateDate, 1000);
+  setInterval(updateDate, 5000);
   updateDate();
 });

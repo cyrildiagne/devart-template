@@ -250,11 +250,14 @@ class mk.m11s.birds.BodyItems extends mk.m11s.base.BodyItems
       @addTree()
       return
     p.hasTree = true
-    tree = new mk.m11s.birds.Branches p.joints[1], p.joints[0], rng('addTree'),
+    opt =
       branchColor       : p.color
       maxBranches       : Math.floor(rng('addTree')*4) + 5
       maxBranchLength   : rng('addTree') * 450 + 250
       firstBranchAngles : [ang]
+    if p.name is 'leftLowerLeg' or p.name is 'leftUpperLeg' or p.name is 'rightLowerLeg' or p.name is 'rightUpperLeg'
+      opt.velMinForShrink = 150
+    tree = new mk.m11s.birds.Branches p.joints[1], p.joints[0], rng('addTree'), opt
     @items.push tree
     @trees.push tree
     # delayed rng('adtr')*500, -> mk.Scene::sfx.play 'branch2'

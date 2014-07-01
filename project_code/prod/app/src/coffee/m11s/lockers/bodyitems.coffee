@@ -12,7 +12,7 @@ class mk.m11s.lockers.BodyItems extends mk.m11s.base.BodyItems
     @door = null
     # @addDoor()
     @numDoorOpen = 0
-    @numDoorOpenMax = 5
+    @numDoorOpenMax = 3
 
     @balloons = null
 

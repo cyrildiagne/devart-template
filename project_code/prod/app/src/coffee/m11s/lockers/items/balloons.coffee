@@ -3,7 +3,7 @@ class mk.m11s.lockers.Balloon
   constructor: (@hand) ->
     @nbItems              = 12
     @radius               = 60 + rng('bln')*80
-    @ropeLength           = @radius + 50 + rng('blnc')*400
+    @ropeLength           = @radius + 50 + rng('blnc')*500
     @relaxationIterations = 10
     @pixelsPerMeter       = 200
     @gravity              = -30 - rng('bln')*20
@@ -12,7 +12,7 @@ class mk.m11s.lockers.Balloon
     @items = []
     @mouse = new paper.Point()
 
-    @forceX = (rng('blnf')-0.5)*30
+    @forceX = (rng('blnff')-0.5)*30
 
     @view = new paper.Group()
     @view.transformContent = false
@@ -36,7 +36,7 @@ class mk.m11s.lockers.Balloon
 
     @circle = new paper.Path.Circle
       center : [0,0]
-      radius : radius
+      radius : @radius
       fillColor : mk.Scene::settings.getHexColor ['lightRed','beige','blue'].seedRandom('crcl')
     @circle.transformContent = false
     @circle.scaling = 0.01

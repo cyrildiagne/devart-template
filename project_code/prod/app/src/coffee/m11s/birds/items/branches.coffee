@@ -11,6 +11,8 @@ class mk.m11s.birds.Branches
     @timeBetweenBranches        = 675 * 8 * 0.65
     @minDistanceBetweenBranches = 8
     @firstBranchAngles          = [-135, -45]
+    @shrinkSpeed                = 18
+    @velMinForShrink            = 250
 
     @[k] = v for k, v of options
 
@@ -48,7 +50,7 @@ class mk.m11s.birds.Branches
     if vel < @shrinkVel
       @shrinkVel += (vel-@shrinkVel) * 0.02
     else @shrinkVel = vel
-    @bShrink = @shrinkVel > 250
+    @bShrink = @shrinkVel > @velMinForShrink
 
     d = (@j1.x - @prevX)*2 + (@j1.y - @prevY)*2
     speed = if @velocity > d then 0.02 else 0.04
@@ -67,7 +69,7 @@ class mk.m11s.birds.Branches
         for c in b.children
           if c.vec.length > 1 then bAllChildrenShrunk = false
         if bAllChildrenShrunk
-          b.vec.length += (0-b.vec.length) * @growSpeed * 12
+          b.vec.length += (0-b.vec.length) * @growSpeed * @shrinkSpeed
         if b.vec.length < 3
           b.path.visible = false
         for it in b.items

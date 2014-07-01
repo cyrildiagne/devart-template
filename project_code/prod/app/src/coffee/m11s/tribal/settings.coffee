@@ -14,7 +14,7 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
     @track = 'assets/sounds/tribal/track/Tribal_short_004.mp3'
 
     @musicEvents = [
-       # rythmique a disparu avec cut !
+###      # rythmique a disparu avec cut !  
       21.0 # basses + sythe
       32.000 # synthe aigu
       # nappe a disparu avec cut !
@@ -22,7 +22,18 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
       90 # ?
       124.390 # (break)
       126.230 # final
-      139.705 # end
+      139.705 # end###
+
+      # version short - 21 secondes (cut vers 42 secondes)
+      # rythmique a disparu avec cut !  
+      21.0 # basses + sythe
+      32.000 # synthe aigu
+      # nappe a disparu avec cut !
+      42.070 # instru
+      69 # ?
+      103.390 # (break)
+      105.230 # final
+      118.705 # end
     ]
 
     @sfx =

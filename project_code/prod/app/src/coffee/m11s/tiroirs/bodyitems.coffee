@@ -56,12 +56,12 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
         @closeOpenDrawers()
         @cleanDrawerItems()
         delayed 3000, =>
-          delayed 3000, => @bg.removeLines()
           @mode = 1
       when 3
         @mode = 1
         @ensureDrawersOpen 1
       when 7
+        @bg.removeLines()
         @cleanFlyings()
         @mode = 2
         @addButtons()

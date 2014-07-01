@@ -22,7 +22,7 @@ class mk.m11s.tech.BodyItems extends mk.m11s.base.BodyItems
     @stromboIntervalMode = 0
 
   onMusicEvent : (evId) ->
-    return
+    # return
     switch evId
       when 0
         @modeItvlTween.stop()

@@ -11,7 +11,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
 
     delayed 500, => @addMask()
     # @addPattern()
-    
+    # @deformSin = true
     # for k,l of @sounds.loops.tribal
       # if k != 'basse_b' && k != 'deltafeu_b'
       # l.play()
@@ -62,7 +62,7 @@ class mk.m11s.tribal.BodyItems extends mk.m11s.base.BodyItems
     ]
     @fire = new (m11Class 'Fire') colors
     @fire.view.position.x = -200
-    @fire.view.position.y = 550
+    @fire.view.position.y = window.viewport.height * 0.5 - 20
     @items.push @fire
 
   stopFire : ->

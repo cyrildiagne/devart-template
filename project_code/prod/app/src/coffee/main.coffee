@@ -125,7 +125,7 @@ beginScene = ->
   if scene.isStarted then return
   console.log '> begin scene'
   if isLive
-    light.fadeTo 0.2, 2000
+    light.fadeTo 0.04, 800
   curtainUp isLive, ->
     start()
     dispatch 'started'

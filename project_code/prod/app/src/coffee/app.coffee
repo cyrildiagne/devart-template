@@ -35,9 +35,13 @@ initApp = ->
   if isLive
     gcs = new CloudStorage()
     quadwarp = new QuadWarp $iframe[0], 'kalia_quadwarp'
-    scenes = ['tiroirs', 'tribal', 'stripes', 'birds', 'lockers', 'tiroirs', 'books', 'bulbs']
+    scenes = ['birds', 'tribal', 'lockers', 'bulbs', 'birds', 'tribal', 'lockers', 'bulbs']
     currSceneId = 0
     launchCurrentScene()
+    $('html').keypress (ev) =>
+      char = String.fromCharCode(ev.charCode)
+      num = parseInt(char)-1
+      @setSceneFromName scenes[num].tag
   else
     $title = $('#title').html('Les Métamorphoses de Mr. Kalia')
     $status = $('#date')

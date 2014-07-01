@@ -8,6 +8,8 @@ scenes      = null
 currSceneId = -1
 isReady     = false
 
+light = null
+
 currSceneName = null
 
 currentMode    = 0
@@ -33,11 +35,14 @@ if typeof chrome isnt 'undefined' && chrome.sockets
 initApp = ->
   $iframe = $("#frame")
   if isLive
+    light = new DMXLight()
+    light.startPulseAnimation()
     gcs = new CloudStorage()
     quadwarp = new QuadWarp $iframe[0], 'kalia_quadwarp'
-    scenes = ['birds', 'tribal', 'lockers', 'bulbs', 'birds', 'tribal', 'lockers', 'bulbs']
+    scenes = ['birds']#, 'tribal', 'lockers', 'bulbs', 'birds', 'tribal', 'lockers', 'bulbs']
     currSceneId = 0
     launchCurrentScene()
+    $('body').addClass 'live'
     $('html').keypress (ev) =>
       char = String.fromCharCode(ev.charCode)
       num = parseInt(char)-1

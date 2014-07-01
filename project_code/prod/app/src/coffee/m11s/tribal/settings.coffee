@@ -11,18 +11,18 @@ class mk.m11s.tribal.Settings extends mk.m11s.base.Settings
 
    setupSounds : ->
 
-    @track = 'assets/sounds/tribal/track/Tribal_short_004.mp3'
+    @track = 'assets/sounds/tribal/track/Tribal_short_004_RecutBea.mp3'
 
     @musicEvents = [
-###      # rythmique a disparu avec cut !  
-      21.0 # basses + sythe
-      32.000 # synthe aigu
-      # nappe a disparu avec cut !
-      63.070 # instru
-      90 # ?
-      124.390 # (break)
-      126.230 # final
-      139.705 # end###
+      # # rythmique a disparu avec cut !  
+      # 21.0 # basses + sythe
+      # 32.000 # synthe aigu
+      # # nappe a disparu avec cut !
+      # 63.070 # instru
+      # 90 # ?
+      # 124.390 # (break)
+      # 126.230 # final
+      # 139.705 # end###
 
       # version short - 21 secondes (cut vers 42 secondes)
       # rythmique a disparu avec cut !  

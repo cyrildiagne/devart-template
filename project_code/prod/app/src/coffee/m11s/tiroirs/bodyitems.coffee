@@ -46,6 +46,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     console.log evId
 
   onMusicEvent : (evId) ->
+    # return
     switch evId
       when 0 
         @mode = 0
@@ -321,7 +322,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     if @buttons
       @physics.update dt
       @buttons.update dt
-    else if @flys.length
+    if @flys.length
       @velTracker.update()
       @updateFlyings()
 

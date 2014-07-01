@@ -13,7 +13,6 @@ class mk.m11s.tiroirs.Background
     @thickness = window.viewport.width / (@numLines*2)
     @space = @thickness * 2
 
-    
     # setBackgroundColor mk.Scene::settings.getHexColor('lightBlue')
 
     @container = new paper.Group()
@@ -25,8 +24,6 @@ class mk.m11s.tiroirs.Background
     @bDeform = false
     @time = 0
 
-    console.log 'add bg'
-
     c1 = mk.Scene::settings.getHexColor 'blue'
     @addLines c1
 
@@ -35,6 +32,30 @@ class mk.m11s.tiroirs.Background
     
     @container.position.x = -@container.bounds.width*0.5
     @container.position.y = -@container.bounds.height*0.5
+
+    @addGround()
+
+  addGround : ->
+    w = window.viewport.width
+    h = window.viewport.height
+    gh = 200
+    @ground = g = new paper.Path.Rectangle
+      position : new paper.Point 0,0
+      width : w
+      height : gh
+      # pivot : new paper.Point 0,0
+    @ground.position = new paper.Point 0, h*0.5+gh*0.5
+    @ground.transformContent = false
+    @ground.fillColor = mk.Scene::settings.getHexColor 'cream'
+    @view.addChild @ground
+
+    tween = new TWEEN.Tween( {y: h*0.5} )
+    .to( {y: h*0.5-gh*0.5} )
+    .onUpdate(-> 
+      # console.log g.position.y
+      g.position.y = @y
+    )
+    .start window.currentTime
 
   update : (dt) ->
     #...

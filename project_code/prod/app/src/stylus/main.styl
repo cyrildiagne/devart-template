@@ -17,10 +17,8 @@ curtainColor = bulbsColor
 @-webkit-keyframes sinfade
   0%
     opacity 1
-  40%
-    opacity 1
-  70%
-    opacity 0.5
+  50%
+    opacity 0
   100%
     opacity 1
 
@@ -85,8 +83,7 @@ body
     height 100%
     text-align center
     background url('../assets/ui/light.png') center center no-repeat
-    background-size auto 100%
-    transition opacity 2s
+    transition opacity 1.5s
     opacity 0
     animation none
   &.down
@@ -96,7 +93,7 @@ body
     background-color rgb(0,0,0,0)
     .halo
       opacity 1
-      animation: sinfade 4s linear infinite
+      // animation: sinfade 5s linear infinite
 
 
 #curtain, #timeline > a

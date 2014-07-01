@@ -34,7 +34,7 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
       @start()
       delayed 4000, => @onReachedDrawerCallback()
 
-  flyOut : ->
+  flyOut : (@onReachedDrawerCallback) ->
     @bFlyingOut = true
 
   start: ->
@@ -76,6 +76,11 @@ class mk.m11s.tiroirs.Flying extends mk.helpers.Flying
     else if @bFlyingOut
 
       @velocity.y -= 0.1
+      if @velocity.y < -10
+        if @onReachedDrawerCallback
+          @onReachedDrawerCallback()
+          return
+      # console.log @velocity.y
 
     else
 

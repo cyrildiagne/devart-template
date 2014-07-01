@@ -40,8 +40,8 @@ initApp = ->
     launchCurrentScene()
     $('html').keypress (ev) =>
       char = String.fromCharCode(ev.charCode)
-      num = parseInt(char)
-      @setSceneFromName scenes[num]
+      num = parseInt(char)-1
+      @setSceneFromName scenes[num].tag
   else
     $title = $('#title').html('Les Métamorphoses de Mr. Kalia')
     $status = $('#date')

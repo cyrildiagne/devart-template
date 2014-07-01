@@ -127,8 +127,6 @@ jade_path.app = path.join 'src','jade','app.jade'
 jade_options.app = 
   rootDir : './'
   includes : [
-    'utils/artnet_client'
-    'physical/light'
     'app/quadwarp'
     'app/cloudstorage'
     'app/analytics'

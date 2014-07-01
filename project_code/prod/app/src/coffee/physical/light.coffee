@@ -17,13 +17,13 @@ class mk.physical.DMXLight
       @light.send [Math.floor(@currDMXVal)]
       if Math.abs(d) < 1
         @currDMXVal = value
-        clearInterval interval
+        clearInterval @interval
         if callback then callback()
     , 30
 
-  startPulseAnimation : ->
-    fadeTo 0, 2000, ->
-      fadeTo 1, 2000, startPulseAnimation
+  startPulseAnimation : =>
+    @fadeTo 0, 200, =>
+      @fadeTo 1, 500, @startPulseAnimation
 
-  stopPulseAnimation : ->
+  stopPulseAnimation : =>
     clearInterval @interval

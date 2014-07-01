@@ -35,6 +35,7 @@ setupLive = (m11) ->
   isLoading = true
   light = new mk.physical.DMXLight()
   light.setup()
+  light.startPulseAnimation()
   setupApp()
   seed = new Date().getTime()
   setSeed seed
@@ -125,6 +126,7 @@ beginScene = ->
   if scene.isStarted then return
   console.log '> begin scene'
   if isLive
+    light.stopPulseAnimation()
     light.fadeTo 0.04, 800
   curtainUp isLive, ->
     start()

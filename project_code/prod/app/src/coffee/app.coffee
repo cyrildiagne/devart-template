@@ -35,11 +35,12 @@ if typeof chrome isnt 'undefined' && chrome.sockets
 initApp = ->
   $iframe = $("#frame")
   if isLive
-    light = new DMXLight()
-    light.startPulseAnimation()
+    # mk = {physicla:{}}
+    # light = new DMXLight()
+    # light.startPulseAnimation()
     gcs = new CloudStorage()
     quadwarp = new QuadWarp $iframe[0], 'kalia_quadwarp'
-    scenes = ['birds']#, 'tribal', 'lockers', 'bulbs', 'birds', 'tribal', 'lockers', 'bulbs']
+    scenes = ['tribal', 'tech', 'lockers', 'bulbs', 'birds']
     currSceneId = 0
     launchCurrentScene()
     $('body').addClass 'live'

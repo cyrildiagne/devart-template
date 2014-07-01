@@ -1,5 +1,7 @@
 class mk.m11s.bulbs.BulbSocket
 
+  wiggle : 1 # 0.2
+
   constructor: (@view, @follower, @mirrored, radius) ->
     @symbol = mk.m11s.bulbs.BulbSocket.symbol
     @item = @symbol.place()
@@ -21,7 +23,7 @@ class mk.m11s.bulbs.BulbSocket
     speed = if delta > 0 then 0.1 else 0.02
     @freq += delta * speed
     @freq = Math.min(@freq, 0.4)
-    phase = Math.cos(@bounce+=@freq*0.2)+1
+    phase = Math.cos(@bounce+=@freq*mk.m11s.bulbs.BulbSocket::wiggle)+1
     if @mirrored then phase *= -1
     @amp = @freq * @ang
     dRot = @initRotation + phase * @amp

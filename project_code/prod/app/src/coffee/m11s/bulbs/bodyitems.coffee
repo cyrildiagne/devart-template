@@ -51,6 +51,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
       when @MODE_CONNECT
         @hidePerso()
       when @MODE_RAYS
+        mk.m11s.bulbs.BulbSocket::wiggle = 0.2
         b.setupRay() for b in @bulbs
       when @MODE_LIFT
         @onLightsOn(false)
@@ -76,6 +77,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
         B = mk.m11s.bulbs.Bulb
         B::maxConnection*=2
       when @MODE_RAYS
+        mk.m11s.bulbs.BulbSocket::wiggle = 1
         b.removeRay() for b in @bulbs
         mk.m11s.bulbs.Bulb::maxRays *= 2
       when @MODE_FLOATING

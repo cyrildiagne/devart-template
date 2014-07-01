@@ -145,7 +145,7 @@ class mk.m11s.bulbs.BodyItems extends mk.m11s.base.BodyItems
             @items.push bulb
             @bulbs.push bulb
             bulb.id = id++
-            mk.Scene::sfx.play 'bulbShow'+rngi(seed,1,3)
+            mk.Scene::sfx.play 'bulbShow'+rngi(seed,1,2)
     return
   
   addHeadBulb: ->

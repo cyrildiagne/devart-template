@@ -35,12 +35,9 @@ if typeof chrome isnt 'undefined' && chrome.sockets
 initApp = ->
   $iframe = $("#frame")
   if isLive
-    # mk = {physicla:{}}
-    # light = new DMXLight()
-    # light.startPulseAnimation()
     gcs = new CloudStorage()
     quadwarp = new QuadWarp $iframe[0], 'kalia_quadwarp'
-    scenes = ['tribal', 'tech', 'lockers', 'bulbs', 'birds']
+    scenes = ['bulbs', 'lockers', 'birds', 'tiroirs', 'tribal', 'tech', 'stripes']
     currSceneId = 0
     launchCurrentScene()
     $('body').addClass 'live'
@@ -318,9 +315,12 @@ window.onmessage = (e) ->
         $status.html 'closing performance'
     when 'finished'
       console.log 'APP > scene finished'
-      if isLive
-        currSceneId = Math.floor(Math.random()*scenes.length)
-      else
+      # if isLive
+      currSceneId++# = Math.floor(Math.random()*scenes.length)
+      if currSceneId >= scenes.length
+        currSceneId =0
+      # else
+      if !isLive
         $status.html 'cleaning up the stage'
       $iframe[0].contentWindow.location.reload()
     when 'mute'

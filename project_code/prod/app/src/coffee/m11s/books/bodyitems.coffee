@@ -5,13 +5,14 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
     @cage = null
     @boat = null
     @waves = []
-    # delayed 1000, => @addHeadBook()
+    delayed 1000, => @addHeadBook()
     @whale = null
     @numPagesTurned = 0
-    @addWhale()
-    @lines = null
 
-    @addLines()
+    @rock = new mk.m11s.books.Rock()
+    @items.push @rock
+
+    @isFlying = false
 
     # setBackgroundColor 'white'
     
@@ -26,37 +27,36 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
   # clean : ->
   #   mouseDownCallbacks.splice @onPageTurn
 
+  fly : ->
+    @isFlying = true
+    @addLines()
+
+    @addStars()
+
+    # @addWhale()
+    # setInterval =>
+    #   @whale.jump()
+    # , 5000
+
   onPageTurn : (hand) =>
     # if hand then return
     # return
     @numPagesTurned++
     # console.log 'page turned : ' + @numPagesTurned
     
-    # if !@rightLines
-    #   @addLines()
-    #   return
-
-    # if @numPagesTurned < 2 and !@cage
-    #   @addCage @joints[NiTE.LEFT_HAND]#hand
-    #   return
-    
-    if rng('pageturn') > 0.5
+    if @numPagesTurned > 1
       @book.flyAway()
 
-    if @whale
-      # for i in [0...12]
-      #   @addWave()
-      @addBoat() if !@boat
-      if @numPagesTurned > 3 then @whale.jump()
-      return
-
-    if !@stars
-      @addStars()
-      return
-
-    # if @numPagesTurned is 3
-    #   @removeStars()
-    #   return
+    switch @numPagesTurned
+      when 1
+        @addCage @joints[NiTE.LEFT_HAND]
+      when 2
+        @cage.switchLightOn()
+      when 3
+        @removeCage()
+        @fly()
+      # when 4,5,6,7,8,9
+      #   @addWave() for i in [0...10]
 
   addCage : (hand) ->
     h = @joints[NiTE.LEFT_HAND]
@@ -73,53 +73,53 @@ class mk.m11s.books.BodyItems extends mk.m11s.base.BodyItems
         @cage = null
 
   addLines : ->
-    rightUpJnts  = @getJoints [ NiTE.RIGHT_SHOULDER, NiTE.RIGHT_ELBOW, NiTE.HEAD ]
-    leftUpJnts = @getJoints [ NiTE.LEFT_SHOULDER, NiTE.LEFT_ELBOW, NiTE.HEAD ]
+    rightUpJnts  = @getJoints [ NiTE.RIGHT_SHOULDER, NiTE.RIGHT_ELBOW, NiTE.RIGHT_HAND]
+    leftUpJnts = @getJoints [ NiTE.LEFT_SHOULDER, NiTE.LEFT_ELBOW, NiTE.LEFT_HAND ]
     @upLines = new mk.m11s.books.LineWaves rightUpJnts, leftUpJnts, -9999
     @items.push @upLines
 
-    rightLowJnts = @getJoints [ NiTE.RIGHT_FOOT, NiTE.RIGHT_KNEE, NiTE.RIGHT_HAND ]
-    leftLowJnts = @getJoints [ NiTE.LEFT_FOOT, NiTE.LEFT_KNEE, NiTE.LEFT_HAND ]
-    @lowLines = new mk.m11s.books.LineWaves rightLowJnts, leftLowJnts, -3333
-    @items.push @lowLines
+    # rightLowJnts = @getJoints [ NiTE.RIGHT_FOOT, NiTE.RIGHT_HIP, NiTE.RIGHT_HAND ]
+    # leftLowJnts = @getJoints [ NiTE.LEFT_FOOT, NiTE.LEFT_HIP, NiTE.LEFT_HAND ]
+    # @lowLines = new mk.m11s.books.LineWaves rightLowJnts, leftLowJnts, -3333
+    # @items.push @lowLines
 
     return
 
-    leftHideJnts =  @getJoints [
-      NiTE.LEFT_ELBOW
-      NiTE.LEFT_SHOULDER
-      NiTE.TORSO
-      NiTE.LEFT_HAND
-    ]
-    leftHideShape = new mk.m11s.books.HideShape leftHideJnts
-    @items.push leftHideShape
+    # leftHideJnts =  @getJoints [
+    #   NiTE.LEFT_ELBOW
+    #   NiTE.LEFT_SHOULDER
+    #   NiTE.TORSO
+    #   NiTE.LEFT_HAND
+    # ]
+    # leftHideShape = new mk.m11s.books.HideShape leftHideJnts
+    # @items.push leftHideShape
 
-    leftHideJnts =  @getJoints [
-      NiTE.TORSO
-      NiTE.LEFT_HIP
-      NiTE.LEFT_KNEE
-      NiTE.LEFT_HAND
-    ]
-    leftHideShape = new mk.m11s.books.HideShape leftHideJnts
-    @items.push leftHideShape
+    # leftHideJnts =  @getJoints [
+    #   NiTE.TORSO
+    #   NiTE.LEFT_HIP
+    #   NiTE.LEFT_KNEE
+    #   NiTE.LEFT_HAND
+    # ]
+    # leftHideShape = new mk.m11s.books.HideShape leftHideJnts
+    # @items.push leftHideShape
 
-    rightHideJnts =  @getJoints [
-      NiTE.RIGHT_ELBOW
-      NiTE.RIGHT_SHOULDER
-      NiTE.TORSO
-      NiTE.RIGHT_HAND
-    ]
-    rightHideShape = new mk.m11s.books.HideShape rightHideJnts
-    @items.push rightHideShape
+    # rightHideJnts =  @getJoints [
+    #   NiTE.RIGHT_ELBOW
+    #   NiTE.RIGHT_SHOULDER
+    #   NiTE.TORSO
+    #   NiTE.RIGHT_HAND
+    # ]
+    # rightHideShape = new mk.m11s.books.HideShape rightHideJnts
+    # @items.push rightHideShape
 
-    rightHideJnts =  @getJoints [
-      NiTE.TORSO
-      NiTE.RIGHT_HIP
-      NiTE.RIGHT_KNEE
-      NiTE.RIGHT_HAND
-    ]
-    rightHideShape = new mk.m11s.books.HideShape rightHideJnts
-    @items.push rightHideShape
+    # rightHideJnts =  @getJoints [
+    #   NiTE.TORSO
+    #   NiTE.RIGHT_HIP
+    #   NiTE.RIGHT_KNEE
+    #   NiTE.RIGHT_HAND
+    # ]
+    # rightHideShape = new mk.m11s.books.HideShape rightHideJnts
+    # @items.push rightHideShape
 
     hideShape = new mk.m11s.books.HideShape @getJoints([NiTE.LEFT_HIP, NiTE.RIGHT_HIP, NiTE.LEFT_KNEE])
     @items.push hideShape

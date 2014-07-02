@@ -96,7 +96,7 @@ class mk.m11s.books.Page
     #.to({ x: window.viewport.width * (rng('page')-0.5), y: -window.viewport.height*0.6 }, 2000)
     .to(
       x : 10+rng('flyaway')*25
-      y : -8-rng('flyaway')*15
+      y : 8+rng('flyaway')*25
       vbend : Math.random()
       hbend : Math.random()
       rotation : 45 + Math.random() * 125
@@ -204,7 +204,7 @@ class mk.m11s.books.Book
     else
       @coverTop.isTurning = true
 
-  flyAway : (num=2)->
+  flyAway : (num=3)->
     curr = 0
     for i in [@pages.length-3..1]
       p = @pages[i]

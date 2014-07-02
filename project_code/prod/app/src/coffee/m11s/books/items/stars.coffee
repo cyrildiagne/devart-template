@@ -5,8 +5,8 @@ class mk.m11s.books.Stars
     @view.transformContent = false
     @view.z = -3000
 
-    @height = window.viewport.height*0.5
-    @offset = -window.viewport.height*0.25
+    @height = window.viewport.height
+    @offset = -window.viewport.height*0.5
 
     @path = new paper.Path.Circle
       center : [0,0]
@@ -28,16 +28,30 @@ class mk.m11s.books.Stars
     hDist =  - @head.x / (window.viewport.width * 0.5)
     # if hDist < 0 then hDist -= 1
     # else hDist += 1
-    w2 = window.viewport.width * 0.5
+    w2 = window.viewport.height * 0.5
     for s in @view.children
-      s.position.y += (s.dy-s.position.y) * 0.001 * dt
-      s.position.x += s.z * hDist * 0.05
-      if s.position.x > w2
-        s.position.x = - w2
-      else if s.position.x < -w2
-        s.position.x = w2
+      s.position.y += s.z * 0.2#(s.dy-s.position.y) * 0.001 * dt
+      # s.position.x = hDist * 0.05
+      if s.position.y > w2
+        s.position.y = - w2
+      else if s.position.y < -w2
+        s.position.y = w2
 
   remove : (callback) ->
     dy = -window.viewport.height*0.5 - 100
     s.dy = dy for s in @view.children
     delayed 2000, callback
+
+
+class mk.m11s.books.Rock
+
+  constructor : ->
+    @view = new paper.Group()
+    @view.transformContent = false
+    @view.z = -3000
+
+    @rock = new mk.Scene::assets['rock1'].place()
+    @rock.position.y = window.viewport.height * 0.5
+    @view.addChild @rock
+
+  update : (dt) ->

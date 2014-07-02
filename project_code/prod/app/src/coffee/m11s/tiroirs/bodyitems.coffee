@@ -51,7 +51,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       when 0 
         @mode = 0
         @ensureDrawersOpen()
-      when 2
+      when 1
         @mode = -1
         @addBackground()
         @closeOpenDrawers()
@@ -61,7 +61,7 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
       when 3
         @mode = 1
         @ensureDrawersOpen 1
-      when 7
+      when 6
         @bg.removeLines()
         @cleanFlyings()
         @mode = 2

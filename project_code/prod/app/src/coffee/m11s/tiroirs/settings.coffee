@@ -56,7 +56,7 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
     # tiroirs grandissent puis sortent
       135 #end ###
 
-    # version short - 19.09 secondes (cut vers 1:48 secondes)
+    # version short - 19.09 secondes (cut vers 1:48 minutes)
     # tiroirs apparaissent
       12.040 # rythmique - 
     # objets verticaux sortent

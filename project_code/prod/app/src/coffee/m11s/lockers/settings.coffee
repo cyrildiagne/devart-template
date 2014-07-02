@@ -15,7 +15,7 @@ class mk.m11s.lockers.Settings extends mk.m11s.base.Settings
 
    setupSounds : ->
 
-    @track = 'assets/sounds/lockers/track/Lockers_short_002.mp3'
+    @track = 'assets/sounds/lockers/track/Lockers_short_002_RecutBea.mp3'
 
     @musicEvents = [
       # 4.140 # piano

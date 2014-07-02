@@ -171,18 +171,23 @@ class mk.m11s.tiroirs.BodyItems extends mk.m11s.base.BodyItems
     # @flyLock = true
     # delayed 2000, => @flyLock = false
 
-    id = rngi('aflg',1,3)
+    id = rngi('aflg',1,6)
     mk.Scene::sfx.play 'itemFly'
     switch id
       when 1
         obj = 
           symbol : @assets.symbols.tiroirs['hat']
           pivot : new paper.Point 0, 0
-      when 2
+      when 2,3,4
+        nckt = 'necktie'+rngi('neckt',1,3)
         obj = 
-          symbol : @assets.symbols.tiroirs['necktie1']
+          symbol : @assets.symbols.tiroirs[nckt]
           pivot : new paper.Point 0, -28
-      when 3
+      when 5
+        obj = 
+          symbol : @assets.symbols.tiroirs['belt']
+          pivot : new paper.Point 0, -75
+      when 6
         @addScarf drawer
         return
 

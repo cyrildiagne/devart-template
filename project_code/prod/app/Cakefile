@@ -102,6 +102,7 @@ jade_options.main =
     'm11s/books/items/stars'
     'm11s/books/items/cage'
     'm11s/books/items/lines'
+    'm11s/books/items/prisonline'
     'm11s/books/bodyitems'
 
     'm11s/tech/settings'

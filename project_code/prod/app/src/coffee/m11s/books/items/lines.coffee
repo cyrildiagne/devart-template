@@ -36,12 +36,23 @@ class mk.m11s.books.TrailLine
   constructor : (@jnt, @side) ->
     @length = 50
     @path = new paper.Path()
-    @path.strokeWidth = 8 #@jnt.radius + 5
+    @path.strokeWidth = 6
     @path.strokeCap = 'round'
-    # @path.strokeColor = mk.Scene::settings.getHexColor 'blue'
-    @path.strokeColor = 'white'
-    # @path.visible = false
+    @path.strokeColor = mk.Scene::settings.getHexColor 'cream'
     @path.z = 0
+
+    # w = window.viewport.width 
+    # h = window.viewport.height
+    # @path.segments = [
+    #   [@jnt.x, @jnt.y]
+    #   [w*(rng('t')-0.5), h*(rng('t')-0.5)]
+    # ]
+    # p = @path.segments[1].point
+    # switch rngi('t',1,4)
+    #   when 1 then p.x = -w*0.5
+    #   when 2 then p.x = w*0.5
+    #   when 3 then p.y = -h*0.5
+    #   when 4 then p.y = h*0.5
 
     @bUpdate = 0
 
@@ -58,15 +69,18 @@ class mk.m11s.books.TrailLine
   addNew : ->
     @path.add @jnt
     lp = @path.segments.last().point
-    lp.velX = @velX #(@jnt.x - @jntPrev.x) * 0.25
-    lp.velY = @velY #(@jnt.y - @jntPrev.y) * 0.25
-    # @path.strokeWidth = (Math.abs(lp.velY)+Math.abs(lp.velX)) * 4 + 15
+    lp.velX = @velX
+    lp.velY = @velY
     if @path.segments.length > @length
       @path.removeSegment(0)
     @path.smooth()
 
   update : (dt) ->
     p = @path
+
+    # p.segments[0].point.x = @jnt.x
+    # p.segments[0].point.y = @jnt.y
+    # return
 
     @velX += ((@jnt.x - @jntPrev.x) * 0.25 - @velX) * 0.0025 * dt
     @velY += ((@jnt.y - @jntPrev.y) * 0.25 - @velY) * 0.0025 * dt
@@ -77,8 +91,8 @@ class mk.m11s.books.TrailLine
 
     if p.segments.length
       for s in p.segments
-        s.point.x += s.point.velX + @speed
-        s.point.y += s.point.velY
+        s.point.x += s.point.velX 
+        s.point.y += s.point.velY + @speed
 
       p.segments.last().point.x = @jnt.x
       p.segments.last().point.y = @jnt.y
@@ -110,7 +124,7 @@ class mk.m11s.books.Lines
       # @lines.push line2
 
     @paths = []
-    @addPath()
+    # @addPath()
 
   addPath : ->
     @paths = []
@@ -152,7 +166,7 @@ class mk.m11s.books.LineWaves
     @rightLines = new mk.m11s.books.Lines rightJnts, 1
     @view.addChild @rightLines.view
 
-    @leftLines = new mk.m11s.books.Lines leftJnts, -1
+    @leftLines = new mk.m11s.books.Lines leftJnts, 1
     @view.addChild @leftLines.view
 
     console.log 'created'

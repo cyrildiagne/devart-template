@@ -24,7 +24,7 @@ class mk.m11s.books.Whale
     @maxJumps = 7
     
     @path = new paper.Path()
-    @path.fillColor = mk.Scene::settings.getHexColor 'blue'
+    @path.fillColor = mk.Scene::settings.getHexColor 'cream'
     @path.segments = [
       [[0, 0], null, @head.rotate(45)]
       [[0+@width, 0], @head.rotate(180), @head.rotate(180)]
@@ -47,23 +47,23 @@ class mk.m11s.books.Whale
 
   jump : ->
     if @jumping then return
-    s = 0.1+(@numJumps++)*0.4
-    
+    # s = 0.1+(@numJumps++)*0.4
+    s = rng('jmp')*3 + 0.2
     console.log 'whale jump num : ' + @numJumps
     
     # if @numJumps > 6 then @view.z = 2000
     # else if @numJumps > 4 then @view.z = 0
 
     @view.scaling = new paper.Point s,s
-    if rng('jump') > 0.5 then @view.scaling.x *= -1
-    console.log @view.scaling.x
+    # if rng('jump') > 0.5 then @view.scaling.x *= -1
+    # console.log @view.scaling.x
 
     @view.position.x = rng('jump') * window.viewport.width * 0.5
     if view.scaling.x < 0 then @view.position.x *= -1
 
-    if @numJumps is @maxJumps
-      @view.position.x = -600
-      @view.scaling = 3.5
+    # if @numJumps is @maxJumps
+    #   @view.position.x = -600
+    #   @view.scaling = 3.5
 
     @time = Math.PI * 0.8
     @jumping = true

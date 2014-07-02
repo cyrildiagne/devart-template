@@ -38,7 +38,7 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
     @track = 'assets/sounds/tiroirs/track/Drawers_short_002.mp3'
 
     @musicEvents = [
-    # tiroirs apparaissent
+###    # tiroirs apparaissent
       12.040 # rythmique - 
     # objets verticaux sortent
       50.210 # piano
@@ -54,7 +54,26 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       117.290 # nappe + aigue
       127.080  # final
     # tiroirs grandissent puis sortent
-      135 #end 
+      135 #end ###
+
+    # version short - 19.09 secondes (cut vers 1:48 minutes)
+    # tiroirs apparaissent
+      12.040 # rythmique - 
+    # objets verticaux sortent
+      50.210 # piano
+    # objets sortent des tiroirs
+      60.020 # piano + grave)
+      69.300 - 0.5 # guitare
+    # apparition des objets volants
+      78.440 # guitare + grave)
+      88.270 # guitare + aigue)
+      88.380 # nappe
+      108.010 # break
+    # boutons + feuilles sortent des tiroirs
+      98.200 # nappe + aigue
+      107.990  # final
+    # tiroirs grandissent puis sortent
+      115.91 #end 
     ]
 
     @sfx =

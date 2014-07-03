@@ -70,7 +70,7 @@ class mk.m11s.tiroirs.Settings extends mk.m11s.base.Settings
       78.440 # guitare + grave)
       88.270 # guitare + aigue)
       88.380 # nappe
-      108.010 # break
+      88.920 # break
     # boutons + feuilles sortent des tiroirs
       98.200 # nappe + aigue
       107.990  # final

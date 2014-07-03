@@ -303,7 +303,7 @@ window.onmessage = (e) ->
     when 'started'
       console.log 'APP > scene started'
       currentMode = SCENE_RUNNING
-      hashChanged()
+      # hashChanged()
       if !isLive
         $('#ui').removeClass 'inactive'
         setSceneDate()
@@ -315,12 +315,12 @@ window.onmessage = (e) ->
         $status.html 'closing performance'
     when 'finished'
       console.log 'APP > scene finished'
-      # if isLive
-      currSceneId++# = Math.floor(Math.random()*scenes.length)
-      if currSceneId >= scenes.length
-        currSceneId =0
-      # else
-      if !isLive
+      if isLive
+        currSceneId++
+        if currSceneId >= scenes.length
+          currSceneId = 0
+      else
+        # if !isLive
         $status.html 'cleaning up the stage'
       $iframe[0].contentWindow.location.reload()
     when 'mute'

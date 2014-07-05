@@ -112,11 +112,9 @@ restart = ->
 checkHeartbeat = ->
   if heartbeat isnt true
     restart()
-    console.log 'restarting'
-  else console.log 'heartbeat ok'
   heartbeat = false
   setTimeout checkHeartbeat, 60*1000
 
-setTimeout -> checkHeartbeat, 5*60*1000
+setTimeout checkHeartbeat, 5*60*1000
 console.log 'listening on 8083'
 

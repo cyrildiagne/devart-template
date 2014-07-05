@@ -4,6 +4,10 @@ secret = require './secret'
 wol = require 'wake_on_lan'
 
 
+timeout = -1
+heartbeat = true
+
+
 class GAPI
 
   constructor : (options, callback) ->
@@ -51,6 +55,8 @@ class GAPI
     req.send params
 
 
+
+
 gapi = new GAPI()
 
 gapi.getToken (err, token) -> 
@@ -73,6 +79,15 @@ http.createServer( (req, res) ->
   res.end secret.apiKey
 ).listen 8082
 
+http = require 'http'
+http.createServer( (req, res) ->
+  res.writeHead 200, 
+    'Content-Type': 'text/plain'
+    'Access-Control-Allow-Origin' : '*'
+  res.end 'heartbeat received'
+  heartbeat = true
+).listen 8083
+
 
 console.log 'listening on 8081 (token) & 8082 (apikey)'
 console.log 'api key : '+secret.apiKey
@@ -81,5 +96,27 @@ console.log 'api key : '+secret.apiKey
 wakeWinMachine = ->
   wol.wake 'C0:3F:D5:63:1E:49'
 
-setInterval(wakeWinMachine, 60000)
+
+setInterval wakeWinMachine, 60000
 wakeWinMachine()
+
+
+restart = ->
+  sudo = require 'sudo'
+  options =
+    cachePassword : true
+    password : secret.sudo
+  child = sudo [ 'shutdown', '-r', 'now' ], options
+
+
+checkHeartbeat = ->
+  if heartbeat isnt true
+    restart()
+    console.log 'restarting'
+  else console.log 'heartbeat ok'
+  heartbeat = false
+  setTimeout checkHeartbeat, 60*1000
+
+setTimeout -> checkHeartbeat, 5*60*1000
+console.log 'listening on 8083'
+

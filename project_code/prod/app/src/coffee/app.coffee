@@ -5,6 +5,7 @@ iframe      = null
 quadwarp    = null
 gcs         = null
 scenes      = null
+heartbeat   = null
 currSceneId = -1
 isReady     = false
 
@@ -40,6 +41,7 @@ initApp = ->
     scenes = ['bulbs', 'lockers', 'birds', 'tiroirs', 'tribal', 'tech', 'stripes']
     currSceneId = 0
     launchCurrentScene()
+    heartbeat = new Heartbeat()
     $('body').addClass 'live'
     $('html').keypress (ev) =>
       char = String.fromCharCode(ev.charCode)

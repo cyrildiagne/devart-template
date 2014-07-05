@@ -70,7 +70,7 @@ class mk.skeleton.SkeletonSync
               @bTimeoutForComeback = setTimeout =>
                 @bMinOneUser = false
                 @onLastUserOut()
-              , 3000
+              , 5000
           else
             console.log msg
     , 1

@@ -129,6 +129,7 @@ jade_options.app =
   rootDir : './'
   includes : [
     'app/quadwarp'
+    'app/heartbeat'
     'app/cloudstorage'
     'app/analytics'
     'app/viewport'

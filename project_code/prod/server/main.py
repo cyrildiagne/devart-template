@@ -22,6 +22,7 @@ import urllib
 import urllib2
 import math
 import datetime
+import logging
 
 from google.appengine.ext import ndb
 
@@ -45,13 +46,19 @@ def replay_key(replay_folder=DEFAULT_REPLAY_FOLDER):
   return ndb.Key('Replay', replay_folder)
 
 def shorten(url):
-  gurl = 'https://www.googleapis.com/urlshortener/v1/url'
-  data = json.dumps({'longUrl':url, 'key':API_KEY})
+  gurl = 'https://www.googleapis.com/urlshortener/v1/url?key='+API_KEY
+  data = json.dumps({'longUrl':url})
   req = urllib2.Request(gurl, data=data)
   req.add_header('Content-Type', 'application/json')
-  results = json.load(urllib2.urlopen(req))
-  return results['id']
+  result = 'http://goo.gl/L6pZ3y'
+  try:
+    results = json.load(urllib2.urlopen(req))
+    result = results['id']
+  except urllib2.HTTPError, error:
+    contents = error.read()
+    logging.error(contents)
 
+  return result
 
 class LastHandler(webapp2.RequestHandler):
 
@@ -163,6 +170,7 @@ class ReplayListHandler(webapp2.RequestHandler):
 
     # set number of scenes to include in list
     num = self.request.get('num')
+    if num == '8' : num = 29
     if num == '' : num = 100
     num = min( int(num), len(replays))
 

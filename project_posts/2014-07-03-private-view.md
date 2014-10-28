@@ -2,6 +2,7 @@ _by Béatrice_
 
 Digital Revolution exhibition private view opening!
 
+
 ![image](../project_images/20140703_private-view/01.jpg)
 ![image](../project_images/20140703_private-view/02.jpg)
 ![image](../project_images/20140703_private-view/03.jpg)

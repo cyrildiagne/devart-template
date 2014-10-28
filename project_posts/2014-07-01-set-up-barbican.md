@@ -14,6 +14,7 @@ Steps of mr. Kalia installation set-up at Curve Gallery in Barbican Center: cons
 ![image](../project_images/20140701_setup-Barbican/10_IMG_0140.jpg)
 ![image](../project_images/20140701_setup-Barbican/11_IMG_0187.jpg)
 ![image](../project_images/20140701_setup-Barbican/12_IMG_0205.jpg)
+
 _Thanks to James George and Zach Lieberman tips about on/off mode comprehension_
 
 
